@@ -10,8 +10,7 @@ The goal of this project is to help physicists, chemists, engineers, and compute
 Make sure that you have all the following tools and libraries installed and working before attempting to use **ga-benchmark**.
 
 Required tools:
-- Your favorite [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) compiler
-- [Python 3](https://docs.python.org/3)
+- Your favorite [C++14](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
 - [CMake](https://cmake.org)
 
 Required C++ libraries:
@@ -25,9 +24,7 @@ Expected Geometric Algebra libraries and library generators:
 - [GluCat: Clifford Algebra Templates](https://github.com/penguian/glucat)
 - [Versor](http://versor.mat.ucsb.edu)
 
-*NOTE*: Actually, you have to install only the libraries and library generators that you want to test. **ga-benchmark** already provides support for those listed above. The *Further Knowledge* section describes how to include or remove an existing library from the process, and how to include a custom library on it.
-
-*NOTE*: The C++ version may change according to the libraries and library generators used in the benchmark.
+Actually, you have to install only the libraries and library generators that you want to test. **ga-benchmark** already provides support for those listed above. The *Further Knowledge* section describes how to include or remove an existing library from the process, and how to include a custom library on it.
 
 
 ## Building
