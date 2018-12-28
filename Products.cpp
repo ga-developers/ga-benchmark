@@ -25,7 +25,11 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #include <SpecializedProducts.hpp>
 #include "Utils.hpp"
 
-#if defined(IMPLEMENTS_DotProduct)
+#define GABENCHMARK_CAPTURE_PRODUCT(FUNC, CASE) \
+    BENCHMARK_CAPTURE(FUNC, CASE, "") \
+        ->Unit(benchmark::kMillisecond);
+
+#if defined(GABENCHMARK_IMPLEMENTS_DotProduct)
     template<typename... ExtraArgs>
     void BM_Product_DotProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -38,11 +42,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_DotProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_DotProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_GeometricProduct)
+#if defined(GABENCHMARK_IMPLEMENTS_GeometricProduct)
     template<typename... ExtraArgs>
     void BM_Product_GeometricProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -55,11 +58,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_GeometricProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_GeometricProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_HestenesInnerProduct)
+#if defined(GABENCHMARK_IMPLEMENTS_HestenesInnerProduct)
     template<typename... ExtraArgs>
     void BM_Product_HestenesInnerProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -72,11 +74,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_HestenesInnerProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_HestenesInnerProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_LeftContraction)
+#if defined(GABENCHMARK_IMPLEMENTS_LeftContraction)
     template<typename... ExtraArgs>
     void BM_Product_LeftContraction(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -89,11 +90,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_LeftContraction, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_LeftContraction, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_OuterProduct)
+#if defined(GABENCHMARK_IMPLEMENTS_OuterProduct)
     template<typename... ExtraArgs>
     void BM_Product_OuterProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -106,11 +106,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_OuterProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_OuterProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_RegressiveProduct)
+#if defined(GABENCHMARK_IMPLEMENTS_RegressiveProduct)
     template<typename... ExtraArgs>
     void BM_Product_RegressiveProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -123,11 +122,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_RegressiveProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_RegressiveProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_RightContraction)
+#if defined(GABENCHMARK_IMPLEMENTS_RightContraction)
     template<typename... ExtraArgs>
     void BM_Product_RightContraction(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -140,11 +138,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_RightContraction, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_RightContraction, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
-#if defined(IMPLEMENTS_ScalarProduct)
+#if defined(GABENCHMARK_IMPLEMENTS_ScalarProduct)
     template<typename... ExtraArgs>
     void BM_Product_ScalarProduct(benchmark::State &state, ExtraArgs &&...) {
         for (auto _ : state) {
@@ -157,8 +154,7 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         }
     }
 
-    BENCHMARK_CAPTURE(BM_Product_ScalarProduct, GABENCHMARK_LIBRARY, "")
-        ->Unit(benchmark::kMillisecond);
+    GABENCHMARK_CAPTURE_PRODUCT(BM_Product_ScalarProduct, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LEFTGRADE=GABENCHMARK_LEFT_GRADE/RIGHTGRADE=GABENCHMARK_RIGHT_GRADE/GABENCHMARK_LIBRARY)
 #endif
 
 BENCHMARK_MAIN();

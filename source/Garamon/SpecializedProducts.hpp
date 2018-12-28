@@ -24,45 +24,45 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    //#define IMPLEMENTS_DotProduct
+    //#define GABENCHMARK_IMPLEMENTS_DotProduct
     //template<typename LeftArgument, typename RightArgument>
     //constexpr decltype(auto) DotProduct(LeftArgument const &lhs, RightArgument const &rhs);
 
-    #define IMPLEMENTS_GeometricProduct
+    #define GABENCHMARK_IMPLEMENTS_GeometricProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) GeometricProduct(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs * rhs;
     }
 
-    #define IMPLEMENTS_HestenesInnerProduct
+    #define GABENCHMARK_IMPLEMENTS_HestenesInnerProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) HestenesInnerProduct(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs | rhs;
     }
 
-    #define IMPLEMENTS_LeftContraction
+    #define GABENCHMARK_IMPLEMENTS_LeftContraction
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) LeftContraction(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs < rhs;
     }
 
-    #define IMPLEMENTS_OuterProduct
+    #define GABENCHMARK_IMPLEMENTS_OuterProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) OuterProduct(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs ^ rhs;
     }
 
-    #define IMPLEMENTS_RightContraction
+    #define GABENCHMARK_IMPLEMENTS_RightContraction
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) RightContraction(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs > rhs;
     }
 
-    //#define IMPLEMENTS_RegressiveProduct
+    //#define GABENCHMARK_IMPLEMENTS_RegressiveProduct
     //template<typename LeftArgument, typename RightArgument>
     //constexpr decltype(auto) RegressiveProduct(LeftArgument const &lhs, RightArgument const &rhs);
 
-    #define IMPLEMENTS_ScalarProduct
+    #define GABENCHMARK_IMPLEMENTS_ScalarProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) ScalarProduct(LeftArgument const &lhs, RightArgument const &rhs) {
         return lhs.scalarProduct(rhs);
