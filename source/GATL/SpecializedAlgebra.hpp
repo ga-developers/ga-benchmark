@@ -22,13 +22,13 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
-#include <gatl/ga/core.hpp>
-#include <gatl/ga/util.hpp>
-#include <gatl/ga/extra.hpp>
+#include <ga/core.hpp>
+#include <ga/util.hpp>
+#include <ga/extra.hpp>
 
-#if GABENCHMARK_CHECK_MODEL(Euclidean)
+#if GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
-    #include <gatl/ga/model/euclidean.hpp>
+    #include <ga/model/euclidean.hpp>
 
     namespace gabenchmark {
 
@@ -42,9 +42,9 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
     }
 
-#elif GABENCHMARK_CHECK_MODEL(Conformal)
+#elif GABENCHMARK_CHECK_MODEL(ConformalModel)
 
-    #include <gatl/ga/model/conformal.hpp>
+    #include <ga/model/conformal.hpp>
 
     namespace gabenchmark {
 
@@ -58,9 +58,9 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
     }
 
-#elif GABENCHMARK_CHECK_MODEL(Homogeneous)
+#elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
 
-    #include <gatl/ga/model/homogeneous.hpp>
+    #include <ga/model/homogeneous.hpp>
 
     namespace gabenchmark {
 
@@ -74,9 +74,9 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
     }
 
-#elif GABENCHMARK_CHECK_MODEL(Minkowski)
+#elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
-    #include <gatl/ga/model/minkowski.hpp>
+    #include <ga/model/minkowski.hpp>
 
     namespace gabenchmark {
 
@@ -90,10 +90,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
     }
 
-#elif GABENCHMARK_CHECK_MODEL(Signed)
+#elif GABENCHMARK_CHECK_MODEL(SignedModel)
 
-    #include <gatl/ga/model/signed/metric_space.hpp>
-    #include <gatl/ga/model/signed/macro_for_algebra_definition.hpp>
+    #include <ga/model/signed/metric_space.hpp>
+    #include <ga/model/signed/macro_for_algebra_definition.hpp>
 
     namespace gabenchmark {
 

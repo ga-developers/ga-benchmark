@@ -19,129 +19,146 @@ You should have received a copy of the GNU General Public License
 along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 /**/
 
-#include <Declarations.hpp>
+#include "Declarations.hpp"
+#include <SpecializedAlgebra.hpp>
 #include <SpecializedUtils.hpp>
 #include <SpecializedProducts.hpp>
-#include <Utils.hpp>
+#include "Utils.hpp"
 
-template<typename... ExtraArgs>
-void BM_Product_DotProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_DotProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_DotProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::DotProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::DotProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_DotProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_DotProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_GeometricProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_GeometricProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_GeometricProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::GeometricProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::GeometricProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_GeometricProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_GeometricProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_HestenesInnerProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_HestenesInnerProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_HestenesInnerProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::HestenesInnerProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::HestenesInnerProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_HestenesInnerProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_HestenesInnerProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_LeftContraction(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_LeftContraction)
+    template<typename... ExtraArgs>
+    void BM_Product_LeftContraction(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::LeftContraction(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::LeftContraction(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_LeftContraction, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_LeftContraction, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_OuterProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_OuterProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_OuterProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::OuterProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::OuterProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_OuterProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_OuterProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_RegressiveProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_RegressiveProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_RegressiveProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::RegressiveProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::RegressiveProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_RegressiveProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_RegressiveProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_RightContraction(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_RightContraction)
+    template<typename... ExtraArgs>
+    void BM_Product_RightContraction(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::RightContraction(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::RightContraction(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_RightContraction, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_RightContraction, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
-template<typename... ExtraArgs>
-void BM_Product_ScalarProduct(benchmark::State &state, ExtraArgs &&...) {
-    for (auto _ : state) {
-        state.PauseTiming();
-        auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
-        auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
-        state.ResumeTiming();
+#if defined(IMPLEMENTS_ScalarProduct)
+    template<typename... ExtraArgs>
+    void BM_Product_ScalarProduct(benchmark::State &state, ExtraArgs &&...) {
+        for (auto _ : state) {
+            state.PauseTiming();
+            auto lhs = gabenchmark::MakeRandomBlade<GABENCHMARK_LEFT_GRADE>();
+            auto rhs = gabenchmark::MakeRandomBlade<GABENCHMARK_RIGHT_GRADE>();
+            state.ResumeTiming();
 
-        benchmark::DoNotOptimize(gabenchmark::ScalarProduct(lhs, rhs));
+            benchmark::DoNotOptimize(gabenchmark::ScalarProduct(lhs, rhs));
+        }
     }
-}
 
-BENCHMARK_CAPTURE(BM_Product_ScalarProduct, GABENCHMARK_LIBRARY, "")
-    ->Unit(benchmark::kMillisecond);
+    BENCHMARK_CAPTURE(BM_Product_ScalarProduct, GABENCHMARK_LIBRARY, "")
+        ->Unit(benchmark::kMillisecond);
+#endif
 
 BENCHMARK_MAIN();

@@ -17,6 +17,22 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GATL_ENABLED true CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")
-set(GATL_INCLUDE_DIR ${GATL_INCLUDE_DIR} CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
-set(GATL_LIBS_INIT "")  # pure template library
+set(GATL_ENABLED false CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")
+set(GATL_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Template Library (GATL) programs.")
+set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/gatl/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
+set(GATL_INCLUDE_EXTRA_DIR "")
+
+set(GATL_EuclideanModel_D2_LIBS_INIT "")  # pure template library
+set(GATL_EuclideanModel_D3_LIBS_INIT "")  # pure template library
+set(GATL_EuclideanModel_D4_LIBS_INIT "")  # pure template library
+set(GATL_EuclideanModel_D5_LIBS_INIT "")  # pure template library
+
+set(GATL_ConformalModel_D2_LIBS_INIT "")  # pure template library
+set(GATL_ConformalModel_D3_LIBS_INIT "")  # pure template library
+
+set(GATL_HomogeneousModel_D2_LIBS_INIT "")  # pure template library
+set(GATL_HomogeneousModel_D3_LIBS_INIT "")  # pure template library
+set(GATL_HomogeneousModel_D4_LIBS_INIT "")  # pure template library
+
+set(GATL_MinkowskiModel_D2_LIBS_INIT "")  # pure template library
+set(GATL_MinkowskiModel_D3_LIBS_INIT "")  # pure template library

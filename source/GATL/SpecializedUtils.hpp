@@ -22,8 +22,6 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_UTILS_HPP__
 #define __GABENCHMARK_SPECIALIZED_UTILS_HPP__
 
-#include "SpecializedAlgebra.hpp"
-
 namespace gabenchmark {
 
     namespace detail {

@@ -10,7 +10,7 @@ The goal of this project is to help physicists, chemists, engineers, and compute
 Make sure that you have all the following tools and libraries installed and working before attempting to use **ga-benchmark**.
 
 Required tools:
-- Your favorite [C++14](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
+- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
 - [CMake](https://cmake.org)
 
 Required C++ libraries:
@@ -38,8 +38,7 @@ The basic steps for configuring and building **ga-benchmark** look like this:
 ```bash
 $ mkdir build
 $ cd build
-
-$ cmake [-G <generator>] [options] -DCMAKE_BUILD_TYPE=Release ..
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
 ## Compiling and Running
@@ -70,10 +69,11 @@ $ cd ../..
 $ sudo apt install libeigen3-dev
 $ git clone https://git.renater.fr/garamon.git libs/garamon
 $ mkdir libs/garamon/build
+$ mkdir libs/garamon/install
 $ cd libs/garamon/build
 $ cmake ..
 $ make
-$ for model in e3ga e7ga c2ga c3ga c4ga c5ga c6ga c7ga
+$ for model in e3ga c2ga c3ga st3ga
   do
     ./garamon_generator ../conf/$model.conf
     cd output/garamon_$model
@@ -81,6 +81,7 @@ $ for model in e3ga e7ga c2ga c3ga c4ga c5ga c6ga c7ga
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
+    make DESTDIR=../../../../install install
     cd ../../..
   done
 $ cd ../../..

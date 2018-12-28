@@ -24,30 +24,32 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 #include <array>
 #include <cstdint>
+#include <cstdlib>
+#include <iostream>
 #include <random>
 #include <vector>
 
 #include <benchmark/benchmark.h>
 
-#define Euclidean   0x01
-#define Conformal   0x02
-#define Homogeneous 0x03
-#define Minkowski   0x04
-#define Signed      0x05
+#define EuclideanModel   0x01
+#define ConformalModel   0x02
+#define HomogeneousModel 0x03
+#define MinkowskiModel   0x04
+#define SignedModel      0x05
 #define GABENCHMARK_CHECK_MODEL(MODEL) (MODEL == GABENCHMARK_MODEL)
 
 #define Products    0x11
 #define GABENCHMARK_CHECK_OPERATION(OPERATION) (OPERATION == GABENCHMARK_OPERATION)
 
-#if GABENCHMARK_CHECK_MODEL(Euclidean)
+#if GABENCHMARK_CHECK_MODEL(EuclideanModel)
     #define GABENCHMARK_N_DIMENSIONS (GABENCHMARK_D_DIMENSIONS)
-#elif GABENCHMARK_CHECK_MODEL(Conformal)
+#elif GABENCHMARK_CHECK_MODEL(ConformalModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 2)
-#elif GABENCHMARK_CHECK_MODEL(Homogeneous)
+#elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 1)
-#elif GABENCHMARK_CHECK_MODEL(Minkowski)
+#elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 2)
-#elif GABENCHMARK_CHECK_MODEL(Signed)
+#elif GABENCHMARK_CHECK_MODEL(SignedModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_P_DIMENSIONS) + (GABENCHMARK_Q_DIMENSIONS))
 #else
     #error The value assumed by GABENCHMARK_MODEL is invalid.

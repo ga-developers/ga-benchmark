@@ -24,52 +24,48 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    #define IMPLEMENTS_DotProduct
-    template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) DotProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return dot(lhs, rhs);
-    }
+    //#define IMPLEMENTS_DotProduct
+    //template<typename LeftArgument, typename RightArgument>
+    //constexpr decltype(auto) DotProduct(LeftArgument const &lhs, RightArgument const &rhs);
 
     #define IMPLEMENTS_GeometricProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) GeometricProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return gp(lhs, rhs);
+        return lhs * rhs;
     }
 
     #define IMPLEMENTS_HestenesInnerProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) HestenesInnerProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return hip(lhs, rhs);
+        return lhs | rhs;
     }
 
     #define IMPLEMENTS_LeftContraction
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) LeftContraction(LeftArgument const &lhs, RightArgument const &rhs) {
-        return lcont(lhs, rhs);
+        return lhs < rhs;
     }
 
     #define IMPLEMENTS_OuterProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) OuterProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return op(lhs, rhs);
-    }
-
-    #define IMPLEMENTS_RegressiveProduct
-    template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) RegressiveProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return rp(lhs, rhs);
+        return lhs ^ rhs;
     }
 
     #define IMPLEMENTS_RightContraction
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) RightContraction(LeftArgument const &lhs, RightArgument const &rhs) {
-        return rcont(lhs, rhs);
+        return lhs > rhs;
     }
+
+    //#define IMPLEMENTS_RegressiveProduct
+    //template<typename LeftArgument, typename RightArgument>
+    //constexpr decltype(auto) RegressiveProduct(LeftArgument const &lhs, RightArgument const &rhs);
 
     #define IMPLEMENTS_ScalarProduct
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) ScalarProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return sp(lhs, rhs);
+        return lhs.scalarProduct(rhs);
     }
 
 }

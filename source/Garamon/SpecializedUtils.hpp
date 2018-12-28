@@ -1,4 +1,4 @@
-/*
+/**
 Copyright(C) 2018 ga-developers
 
 Repository: https://github.com/ga-developers/ga-benchmark.git
@@ -17,6 +17,27 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
-*/
+/**/
 
-#include "SpecializedProducts.hpp"
+#ifndef __GABENCHMARK_SPECIALIZED_UTILS_HPP__
+#define __GABENCHMARK_SPECIALIZED_UTILS_HPP__
+
+namespace gabenchmark {
+
+    template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
+    Mvec<real_t> MakeBlade(Scalar const &scalar, Factors const &factors) {
+        Mvec<real_t> factor, result(scalar);
+        for (auto const &coords : factors) {
+            std::uint32_t ei = 1;
+            for (auto const &coord : coords) {
+                factor[ei] = coord;
+                ei <<= 1;
+            }
+            result ^= factor;
+        }
+        return result;
+    }
+
+}
+
+#endif // __GABENCHMARK_SPECIALIZED_UTILS_HPP__

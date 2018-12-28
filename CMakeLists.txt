@@ -20,6 +20,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(GA-Benchmark)
+set(CMAKE_BUILD_TYPE Release)
 
 include(CTest)
 
@@ -60,43 +61,48 @@ message(STATUS "Benchmarks:")
 set(OPERATION Products)
 
 set(Products_MODELS_LIST
-  Euclidean
-  Conformal
-  Homogeneous
-  Minkowski
+  EuclideanModel
+  ConformalModel
+  HomogeneousModel
+  MinkowskiModel
 )
 
-set(Products_Euclidean_MAX_D_DIMENSIONS 5)
-set(Products_Conformal_MAX_D_DIMENSIONS 3)
-set(Products_Homogeneous_MAX_D_DIMENSIONS 4)
-set(Products_Minkowski_MAX_D_DIMENSIONS 3)
+set(Products_EuclideanModel_MAX_D_DIMENSIONS 5)
+set(Products_ConformalModel_MAX_D_DIMENSIONS 3)
+set(Products_HomogeneousModel_MAX_D_DIMENSIONS 4)
+set(Products_MinkowskiModel_MAX_D_DIMENSIONS 3)
 
 foreach(LIBRARY ${LIBRARIES_LIST})
   if(${${LIBRARY}_ENABLED})
     message(STATUS "  - " ${LIBRARY})
     message(STATUS "    - " ${OPERATION})
-	foreach(MODEL ${${OPERATION}_MODELS_LIST})
-      foreach(D_DIMENSIONS RANGE 1 ${${OPERATION}_${MODEL}_MAX_D_DIMENSIONS})
-	    foreach(LEFT_GRADE RANGE 0 ${D_DIMENSIONS})
-		  foreach(RIGHT_GRADE RANGE 0 ${D_DIMENSIONS})
-            message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", LEFT_GRADE = " ${LEFT_GRADE} ", RIGHT_GRADE = " ${RIGHT_GRADE})
-            set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
-            set(BENCHMARK_EXEC GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
-            add_executable(${TARGET_NAME} "${PROJECT_SOURCE_DIR}/${OPERATION}.cpp" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}/Specialized${OPERATION}.cpp")
-            set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${BENCHMARK_EXEC})
-            target_compile_definitions(${TARGET_NAME} PRIVATE
-              GABENCHMARK_LIBRARY=${LIBRARY}
-		      GABENCHMARK_OPERATION=${OPERATION}
-		      GABENCHMARK_MODEL=${MODEL}
-		      GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
-		      GABENCHMARK_LEFT_GRADE=${LEFT_GRADE}
-		      GABENCHMARK_RIGHT_GRADE=${RIGHT_GRADE}
-            )
-            target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}" ${${LIBRARY}_INCLUDE_DIR})
-            target_link_libraries(${TARGET_NAME} benchmark ${CMAKE_THREAD_LIBS_INIT} ${${LIBRARY}_LIBS_INIT})
-            add_test(NAME ${TARGET_NAME} COMMAND ${BENCHMARK_EXEC} --benchmark_format=json --benchmark_out=${BENCHMARK_EXEC}.json)
+    foreach(MODEL ${${OPERATION}_MODELS_LIST})
+      foreach(D_DIMENSIONS RANGE 2 ${${OPERATION}_${MODEL}_MAX_D_DIMENSIONS})
+        if(DEFINED ${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT)
+          foreach(LEFT_GRADE RANGE 0 ${D_DIMENSIONS})
+            foreach(RIGHT_GRADE RANGE 0 ${D_DIMENSIONS})
+              message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", LEFT_GRADE = " ${LEFT_GRADE} ", RIGHT_GRADE = " ${RIGHT_GRADE})
+              set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
+              set(BENCHMARK_EXEC GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
+              add_executable(${TARGET_NAME} "${PROJECT_SOURCE_DIR}/${OPERATION}.cpp")
+              set_target_properties(${TARGET_NAME} PROPERTIES
+                OUTPUT_NAME ${BENCHMARK_EXEC}
+                CXX_STANDARD ${${LIBRARY}_CXX_STANDARD}
+              )
+              target_compile_definitions(${TARGET_NAME} PRIVATE
+                GABENCHMARK_LIBRARY=${LIBRARY}
+                GABENCHMARK_OPERATION=${OPERATION}
+                GABENCHMARK_MODEL=${MODEL}
+                GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
+                GABENCHMARK_LEFT_GRADE=${LEFT_GRADE}
+                GABENCHMARK_RIGHT_GRADE=${RIGHT_GRADE}
+              )
+              target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}" ${${LIBRARY}_INCLUDE_EXTRA_DIR} ${${LIBRARY}_INCLUDE_DIR})
+              target_link_libraries(${TARGET_NAME} benchmark ${CMAKE_THREAD_LIBS_INIT} ${${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT})
+              add_test(NAME ${TARGET_NAME} COMMAND ${BENCHMARK_EXEC} --benchmark_format=json --benchmark_out=${BENCHMARK_EXEC}.json)
+            endforeach()
           endforeach()
-        endforeach()
+        endif()
       endforeach()
     endforeach()
   endif()
