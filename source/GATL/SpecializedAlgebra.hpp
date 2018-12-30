@@ -26,23 +26,7 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #include <ga/util.hpp>
 #include <ga/extra.hpp>
 
-#if GABENCHMARK_CHECK_MODEL(EuclideanModel)
-
-    #include <ga/model/euclidean.hpp>
-
-    namespace gabenchmark {
-
-        using namespace ga;
-
-        _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-        _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
-
-    }
-
-#elif GABENCHMARK_CHECK_MODEL(ConformalModel)
+#if GABENCHMARK_CHECK_MODEL(ConformalModel)
 
     #include <ga/model/conformal.hpp>
 
@@ -55,6 +39,22 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
         _GA_UTIL_OVERLOAD(space)
         _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
         _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
+
+    }
+
+#elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
+
+    #include <ga/model/euclidean.hpp>
+
+    namespace gabenchmark {
+
+        using namespace ga;
+
+        _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
+        _GA_CORE_OVERLOAD(space)
+        _GA_UTIL_OVERLOAD(space)
+        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+        _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
 
     }
 

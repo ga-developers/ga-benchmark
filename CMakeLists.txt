@@ -39,6 +39,26 @@ endmacro()
 find_package(benchmark REQUIRED)
 find_package(Threads REQUIRED)
 
+# Set models and parameters
+set(MODELS_LIST
+  ConformalModel
+  EuclideanModel
+  HomogeneousModel
+  MinkowskiModel
+)
+
+set(ConformalModel_MIN_D_DIMENSIONS 2)
+set(ConformalModel_MAX_D_DIMENSIONS 3)
+
+set(EuclideanModel_MIN_D_DIMENSIONS 2)
+set(EuclideanModel_MAX_D_DIMENSIONS 5)
+
+set(HomogeneousModel_MIN_D_DIMENSIONS 2)
+set(HomogeneousModel_MAX_D_DIMENSIONS 4)
+
+set(MinkowskiModel_MIN_D_DIMENSIONS 2)
+set(MinkowskiModel_MAX_D_DIMENSIONS 3)
+
 # Find tested libraries
 subdirlist(LIBRARIES_LIST "${PROJECT_SOURCE_DIR}/source")
 
@@ -60,24 +80,12 @@ message(STATUS "Benchmarks:")
 # ... for products
 set(OPERATION Products)
 
-set(Products_MODELS_LIST
-  EuclideanModel
-  ConformalModel
-  HomogeneousModel
-  MinkowskiModel
-)
-
-set(Products_EuclideanModel_MAX_D_DIMENSIONS 5)
-set(Products_ConformalModel_MAX_D_DIMENSIONS 3)
-set(Products_HomogeneousModel_MAX_D_DIMENSIONS 4)
-set(Products_MinkowskiModel_MAX_D_DIMENSIONS 3)
-
 foreach(LIBRARY ${LIBRARIES_LIST})
   if(${${LIBRARY}_ENABLED})
     message(STATUS "  - " ${LIBRARY})
     message(STATUS "    - " ${OPERATION})
-    foreach(MODEL ${${OPERATION}_MODELS_LIST})
-      foreach(D_DIMENSIONS RANGE 2 ${${OPERATION}_${MODEL}_MAX_D_DIMENSIONS})
+    foreach(MODEL ${MODELS_LIST})
+      foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
         if(DEFINED ${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT)
           foreach(LEFT_GRADE RANGE 0 ${D_DIMENSIONS})
             foreach(RIGHT_GRADE RANGE 0 ${D_DIMENSIONS})

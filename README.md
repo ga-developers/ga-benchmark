@@ -73,10 +73,11 @@ $ mkdir libs/garamon/install
 $ cd libs/garamon/build
 $ cmake ..
 $ make
-$ for model in e3ga c2ga c3ga st3ga
+$ for conf in ../../../source/Garamon/*.conf
   do
-    ./garamon_generator ../conf/$model.conf
-    cd output/garamon_$model
+    ./garamon_generator $conf
+    filename=$(basename -- "$conf")
+    cd output/garamon_"${filename%.*}"
     mkdir build
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -99,16 +100,19 @@ $ cd libs/glucat
 $ make -f admin/Makefile.common cvs
 $ ./configure
 $ make
-$ sudo make install
 $ cd ../..
 ```
 
 ### Versor
 ```bash
 $ git clone https://github.com/wolftype/versor.git libs/versor
-$ cd libs/versor
-$ ./build.sh --math
-$ cd ../..
+$ mkdir libs/versor/build
+$ mkdir libs/versor/install
+$ cd libs/versor/build
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ make
+$ make DESTDIR=../install install
+$ cd ../../..
 ```
 
 ### Custom Library

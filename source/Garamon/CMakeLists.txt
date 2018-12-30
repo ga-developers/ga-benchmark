@@ -23,20 +23,16 @@ set(Garamon_ENABLED true CACHE BOOL "If set, the Geometric Algebra Recursive and
 set(Garamon_CXX_STANDARD 14 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Recursive and Adaptive Monster (Garamon) programs.")
 set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
 set(Garamon_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})
+set(Garamon_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/garamon/install/usr/local/lib" CACHE PATH "The library directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
 
-set(Garamon_LINK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/garamon/install/usr/local/lib")
+set(Garamon_ConformalModel_MNEMONIC "c")
+set(Garamon_EuclideanModel_MNEMONIC "e")
+set(Garamon_HomogeneousModel_MNEMONIC "h")
+set(Garamon_MinkowskiModel_MNEMONIC "m")
 
-# set(Garamon_EuclideanModel_D2_LIBS_INIT "" CACHE STRING "Euclidean geometric algebra 2-D.")
-set(Garamon_EuclideanModel_D3_LIBS_INIT "${Garamon_LINK_DIR}/libe3ga.so" CACHE STRING "Euclidean geometric algebra 3-D.")
-# set(Garamon_EuclideanModel_D4_LIBS_INIT "" CACHE STRING "Euclidean geometric algebra 4-D.")
-# set(Garamon_EuclideanModel_D5_LIBS_INIT "" CACHE STRING "Euclidean geometric algebra 5-D.")
-
-set(Garamon_ConformalModel_D2_LIBS_INIT "${Garamon_LINK_DIR}/libc2ga.so" CACHE STRING "Conformal geometric algebra 2-D.")
-set(Garamon_ConformalModel_D3_LIBS_INIT "${Garamon_LINK_DIR}/libc3ga.so" CACHE STRING "Conformal geometric algebra 3-D.")
-
-# set(Garamon_HomogeneousModel_D2_LIBS_INIT "" CACHE STRING "Homogeneous/Projective geometric algebra 2-D.")
-# set(Garamon_HomogeneousModel_D3_LIBS_INIT "" CACHE STRING "Homogeneous/Projective geometric algebra 3-D.")
-# set(Garamon_HomogeneousModel_D4_LIBS_INIT "" CACHE STRING "Homogeneous/Projective geometric algebra 4-D.")
-
-set(Garamon_MinkowskiModel_D2_LIBS_INIT "${Garamon_LINK_DIR}/libst3ga.so" CACHE STRING "Spacetime algebra 2-D.")
-# set(Garamon_MinkowskiModel_D3_LIBS_INIT "" CACHE STRING "Spacetime algebra 3-D.")
+foreach(MODEL ${MODELS_LIST})
+  foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
+    find_library(Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY NAMES ${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga HINTS ${Garamon_LIBS_DIR})
+    set(Garamon_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT ${Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY} CACHE STRING "")
+  endforeach()
+endforeach()

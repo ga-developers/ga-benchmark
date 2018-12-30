@@ -22,21 +22,7 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
-#if GABENCHMARK_CHECK_MODEL(EuclideanModel)
-
-    #if GABENCHMARK_D_DIMENSIONS == 3
-        
-        #include <e3ga/Mvec.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace e3ga;
-            
-        }
-
-    #endif
-
-#elif GABENCHMARK_CHECK_MODEL(ConformalModel)
+#if GABENCHMARK_CHECK_MODEL(ConformalModel)
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
@@ -60,23 +46,107 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
     #endif
 
+#elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
+
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <e2ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace e2ga;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <e3ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace e3ga;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 4
+        
+        #include <e4ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace e4ga;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 5
+        
+        #include <e5ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace e5ga;
+            
+        }
+
+    #endif
+
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
+
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <h2ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace h2ga;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <h3ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace h3ga;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 4
+        
+        #include <h4ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace h4ga;
+            
+        }
+
+    #endif
 
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
-        #include <st3ga/Mvec.hpp>
+        #include <m2ga/Mvec.hpp>
         
         namespace gabenchmark {
 
-            using namespace st3ga;
+            using namespace m2ga;
+
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <m3ga/Mvec.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace m3ga;
 
         }
 
     #endif
-
-#elif GABENCHMARK_CHECK_MODEL(SignedModel)
 
 #endif
 

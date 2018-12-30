@@ -31,8 +31,8 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 #include <benchmark/benchmark.h>
 
-#define EuclideanModel   0x01
-#define ConformalModel   0x02
+#define ConformalModel   0x01
+#define EuclideanModel   0x02
 #define HomogeneousModel 0x03
 #define MinkowskiModel   0x04
 #define SignedModel      0x05
@@ -41,10 +41,10 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #define Products    0x11
 #define GABENCHMARK_CHECK_OPERATION(OPERATION) (OPERATION == GABENCHMARK_OPERATION)
 
-#if GABENCHMARK_CHECK_MODEL(EuclideanModel)
-    #define GABENCHMARK_N_DIMENSIONS (GABENCHMARK_D_DIMENSIONS)
-#elif GABENCHMARK_CHECK_MODEL(ConformalModel)
+#if GABENCHMARK_CHECK_MODEL(ConformalModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 2)
+#elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
+    #define GABENCHMARK_N_DIMENSIONS (GABENCHMARK_D_DIMENSIONS)
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 1)
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
