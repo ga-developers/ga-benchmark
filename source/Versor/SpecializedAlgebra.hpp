@@ -46,8 +46,11 @@ namespace gabenchmark {
 
 #endif
 
-    using scalar_t = algebra_t::mv_t<algebra_t::types::sca>;
-    using vector_t = algebra_t::mv_t<algebra_t::types::vec>;
+    template<bits::type K>
+    using kvector_t = algebra_t::mv_t<typename blade<GABENCHMARK_N_DIMENSIONS, K>::type>;
+
+    using scalar_t = kvector_t<0>;
+    using vector_t = kvector_t<1>;
 
 }
 

@@ -42,19 +42,19 @@ namespace gabenchmark {
             }
         };
 
-        template<std::size_t Index>
+        template<grade_t Grade>
         struct MakeBladeImpl {
-            template<dims_t Dimensions, typename Factors>
-            static constexpr decltype(auto) Eval(Factors const &factors) {
-                return op(MakeBladeImpl<Index - 1>::Eval<Dimensions>(factors), MakeFactorImpl<Dimensions - 1>::Eval(factors[Index]));
+            template<dims_t Dimensions, typename Scalar, typename Factors>
+            static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &factors) {
+                return op(MakeBladeImpl<Grade - 1>::Eval<Dimensions>(scalar, factors), MakeFactorImpl<Dimensions - 1>::Eval(factors[Grade - 1]));
             }
         };
 
         template<>
         struct MakeBladeImpl<0> {
-            template<dims_t Dimensions, typename Factors>
-            static constexpr decltype(auto) Eval(Factors const &factors) {
-                return MakeFactorImpl<Dimensions - 1>::Eval(factors[0]);
+            template<dims_t Dimensions, typename Scalar, typename Factors>
+            static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &) {
+                return scalar;
             }
         };
 
@@ -62,7 +62,7 @@ namespace gabenchmark {
 
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
     constexpr decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
-        return scalar * detail::MakeBladeImpl<Grade - 1>::Eval<Dimensions>(factors);
+        return detail::MakeBladeImpl<Grade>::Eval<Dimensions>(scalar, factors);
     }
 
 }

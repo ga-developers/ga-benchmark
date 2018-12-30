@@ -17,16 +17,27 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(Versor_ENABLED true CACHE BOOL "If set, the Versor library is added to the benchmark.")
+set(Versor_ENABLED true)
+
 set(Versor_CXX_STANDARD 14 CACHE STRING "The C++ standard whose features are requested to build Versor programs.")
 set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
 set(Versor_INCLUDE_EXTRA_DIR "") # no dependencies
-set(Versor_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/versor/install/usr/local/lib" CACHE PATH "The library directory of the Versor.")
 
-find_library(Versor_LIBRARY NAMES vsr HINTS ${Versor_LIBS_DIR})
+if(NOT EXISTS ${Versor_INCLUDE_DIR})
+  message(WARNING "The path defined in Versor_INCLUDE_DIR doesn't exist.")
+  set(Versor_ENABLED false)
+endif()
+
+find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/versor/install/usr/local/lib")
+if(NOT EXISTS ${Versor_LIBRARY})
+  message(WARNING "The path defined in Versor_LIBRARY doesn't exist.")
+  set(Versor_ENABLED false)
+endif()
 
 foreach(MODEL ${MODELS_LIST})
   foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    set(Versor_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT ${Versor_LIBRARY} CACHE STRING "")
+    set(Versor_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT ${Versor_LIBRARY})
   endforeach()
 endforeach()
+
+set(Versor_ENABLED ${Versor_ENABLED} CACHE BOOL "If set, the Versor library is added to the benchmark.")

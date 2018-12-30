@@ -17,13 +17,21 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GATL_ENABLED false CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")
+set(GATL_ENABLED false) # Leandro is making some adjustments to thehis library
+
 set(GATL_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Template Library (GATL) programs.")
 set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/gatl/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
 set(GATL_INCLUDE_EXTRA_DIR "") # no dependencies
+
+if(NOT EXISTS ${GATL_INCLUDE_DIR})
+  message(WARNING "The path defined in GATL_INCLUDE_DIR doesn't exist.")
+  set(GATL_ENABLED false)
+endif()
 
 foreach(MODEL ${MODELS_LIST})
   foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
     set(GATL_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT "") # pure template library
   endforeach()
 endforeach()
+
+set(GATL_ENABLED ${GATL_ENABLED} CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")
