@@ -25,14 +25,14 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 namespace gabenchmark {
 
     template<typename Scalar>
-    constexpr scalar_t MakeScalar(Scalar const &scalar) {
+    constexpr decltype(auto) MakeScalar(Scalar const &scalar) {
         return scalar_t(scalar);
     }
 
-    template<typename Factor>
-    constexpr vector_t MakeVector(Factor const &coords) {
+    template<dims_t Dimensions, typename Coordinates>
+    constexpr decltype(auto) MakeVector(Coordinates const &coords) {
         vector_t result;
-        for (std::size_t i = 0; i != coords.size(); ++i) {
+        for (dims_t i = 0; i != Dimensions; ++i) {
             result[i] = coords[i];
         }
         return result;
@@ -42,15 +42,15 @@ namespace gabenchmark {
 
         template<grade_t Grade>
         struct MakeBladeImpl {
-            template<typename Scalar, typename Factors>
+            template<dims_t Dimensions, typename Scalar, typename Factors>
             static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &factors) {
-                return MakeBladeImpl<Grade - 1>::Eval(scalar, factors) ^ MakeVector(factors[Grade - 1]);
+                return MakeBladeImpl<Grade - 1>::template Eval<Dimensions>(scalar, factors) ^ MakeVector<Dimensions>(factors[Grade - 1]);
             }
         };
 
         template<>
         struct MakeBladeImpl<0> {
-            template<typename Scalar, typename Factors>
+            template<dims_t Dimensions, typename Scalar, typename Factors>
             static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &) {
                 return MakeScalar(scalar);
             }
@@ -60,7 +60,7 @@ namespace gabenchmark {
 
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
     constexpr decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
-        return detail::MakeBladeImpl<Grade>::Eval(scalar, factors);
+        return detail::MakeBladeImpl<Grade>::template Eval<Dimensions>(scalar, factors);
     }
 
 }

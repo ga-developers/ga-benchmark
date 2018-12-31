@@ -55,6 +55,12 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
     #error The value assumed by GABENCHMARK_MODEL is invalid.
 #endif
 
+#define GABENCHMARK_CAPTURE(FUNC, CASE) \
+    BENCHMARK_CAPTURE(FUNC, CASE, "")->Unit(benchmark::kMillisecond)
+
+#define GABENCHMARK_CAPTURE_PRODUCT(FUNC) \
+    GABENCHMARK_CAPTURE(FUNC, Model=GABENCHMARK_MODEL/D=GABENCHMARK_D_DIMENSIONS/LeftGrade=GABENCHMARK_LEFT_GRADE/RightGrade=GABENCHMARK_RIGHT_GRADE/Library=GABENCHMARK_LIBRARY)
+
 namespace gabenchmark {
 
     using real_t = double;

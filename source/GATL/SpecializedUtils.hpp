@@ -24,29 +24,43 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
+    template<typename Scalar>
+    constexpr decltype(auto) MakeScalar(Scalar const &scalar) {
+        return scalar;
+    }
+
     namespace detail {
 
         template<std::size_t Index>
-        struct MakeFactorImpl {
+        struct MakeVectorImpl {
             template<typename Coordinates>
             static constexpr decltype(auto) Eval(Coordinates const &coords) {
-                return MakeFactorImpl<Index - 1>::Eval(coords) + coords[Index] * e(c<Index + 1>);
+                return MakeVectorImpl<Index - 1>::Eval(coords) + coords[Index] * e(c<Index + 1>);
             }
         };
         
         template<>
-        struct MakeFactorImpl<0> {
+        struct MakeVectorImpl<0> {
             template<typename Coordinates>
             static constexpr decltype(auto) Eval(Coordinates const &coords) {
                 return coords[0] * e(c<1>);
             }
         };
 
+    }
+
+    template<dims_t Dimensions, typename Coordinates>
+    constexpr decltype(auto) MakeVector(Coordinates const &coords) {
+        return MakeVectorImpl<Dimensions - 1>::Eval(coords);
+    }
+
+    namespace detail {
+
         template<grade_t Grade>
         struct MakeBladeImpl {
             template<dims_t Dimensions, typename Scalar, typename Factors>
             static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &factors) {
-                return op(MakeBladeImpl<Grade - 1>::Eval<Dimensions>(scalar, factors), MakeFactorImpl<Dimensions - 1>::Eval(factors[Grade - 1]));
+                return op(MakeBladeImpl<Grade - 1>::template Eval<Dimensions>(scalar, factors), MakeVector<Dimensions>(factors[Grade - 1]));
             }
         };
 
@@ -54,7 +68,7 @@ namespace gabenchmark {
         struct MakeBladeImpl<0> {
             template<dims_t Dimensions, typename Scalar, typename Factors>
             static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &) {
-                return scalar;
+                return MakeScalar(scalar);
             }
         };
 
@@ -62,7 +76,7 @@ namespace gabenchmark {
 
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
     constexpr decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
-        return detail::MakeBladeImpl<Grade>::Eval<Dimensions>(scalar, factors);
+        return detail::MakeBladeImpl<Grade>::template Eval<Dimensions>(scalar, factors);
     }
 
 }
