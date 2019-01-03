@@ -22,89 +22,131 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
 
-    #include <ga/model/conformal.hpp>
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <ga2c.hpp>
+        
+        namespace gabenchmark {
 
-    namespace gabenchmark {
+            using namespace ga2c;
 
-        using namespace ga;
+        }
 
-        _GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-        _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <ga3c.hpp>
+        
+        namespace gabenchmark {
 
-    }
+            using namespace ga3c;
+
+        }
+
+    #endif
 
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
-    #include <ga/model/euclidean.hpp>
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <ga2e.hpp>
+        
+        namespace gabenchmark {
 
-    namespace gabenchmark {
+            using namespace ga2e;
+            
+        }
 
-        using namespace ga;
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <ga3e.hpp>
+        
+        namespace gabenchmark {
 
-        _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-        _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
+            using namespace ga3e;
+            
+        }
 
-    }
+    #elif GABENCHMARK_D_DIMENSIONS == 4
+        
+        #include <ga4e.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace ga4e;
+            
+        }
+
+    #elif GABENCHMARK_D_DIMENSIONS == 5
+        
+        #include <ga5e.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace ga5e;
+            
+        }
+
+    #endif
 
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
 
-    #include <ga/model/homogeneous.hpp>
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <ga2h.hpp>
+        
+        namespace gabenchmark {
 
-    namespace gabenchmark {
+            using namespace ga2h;
+            
+        }
 
-        using namespace ga;
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <ga3h.hpp>
+        
+        namespace gabenchmark {
 
-        _GA_HOMOGENEOUS_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-        _GA_HOMOGENEOUS_ALGEBRA_OVERLOAD(space)
+            using namespace ga3h;
+            
+        }
 
-    }
+    #elif GABENCHMARK_D_DIMENSIONS == 4
+        
+        #include <ga4h.hpp>
+        
+        namespace gabenchmark {
+
+            using namespace ga4h;
+            
+        }
+
+    #endif
 
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
-    #include <ga/model/minkowski.hpp>
+    #if GABENCHMARK_D_DIMENSIONS == 2
+        
+        #include <ga2m.hpp>
+        
+        namespace gabenchmark {
 
-    namespace gabenchmark {
+            using namespace ga2m;
 
-        using namespace ga;
+        }
 
-        _GA_MINKOWSKI_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_D_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-        _GA_MINKOWSKI_ALGEBRA_OVERLOAD(space)
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+        
+        #include <ga3m.hpp>
+        
+        namespace gabenchmark {
 
-    }
+            using namespace ga3m;
 
-#elif GABENCHMARK_CHECK_MODEL(SignedModel)
+        }
 
-    #include <ga/model/signed/metric_space.hpp>
-    #include <ga/model/signed/macro_for_algebra_definition.hpp>
-
-    namespace gabenchmark {
-
-        using namespace ga;
-
-        _GA_SIGNED_ALGEBRA_DEFINITION(space, basis_vectors_names, (GABENCHMARK_P_DIMENSIONS), (GABENCHMARK_Q_DIMENSIONS))
-        _GA_CORE_OVERLOAD(space)
-        _GA_UTIL_OVERLOAD(space)
-        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-
-    }
+    #endif
 
 #endif
 

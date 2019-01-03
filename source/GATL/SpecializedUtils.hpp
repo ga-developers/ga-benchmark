@@ -25,7 +25,7 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 namespace gabenchmark {
 
     template<typename Scalar>
-    constexpr decltype(auto) MakeScalar(Scalar const &scalar) {
+    constexpr Scalar MakeScalar(Scalar const &scalar) {
         return scalar;
     }
 
@@ -51,7 +51,7 @@ namespace gabenchmark {
 
     template<dims_t Dimensions, typename Coordinates>
     constexpr decltype(auto) MakeVector(Coordinates const &coords) {
-        return MakeVectorImpl<Dimensions - 1>::Eval(coords);
+        return detail::MakeVectorImpl<Dimensions - 1>::Eval(coords);
     }
 
     namespace detail {

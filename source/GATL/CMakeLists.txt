@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GATL_ENABLED false) # Leandro is making some adjustments to thehis library
+set(GATL_ENABLED true)
 
 set(GATL_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Template Library (GATL) programs.")
 set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/gatl/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
