@@ -122,4 +122,4 @@ A given library or library generator will be recognized by **ga-benchmark** if a
 
 
 ## License
-This software is licensed under the GNU General Public, version 3. See the [`LICENSE`](LICENSE) file for details.
+This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.
