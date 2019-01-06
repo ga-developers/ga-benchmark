@@ -1,3 +1,6 @@
+# ga-benchmark
+
+## How **ga-benchmark** Recognizes a Solution
 Each library or library generator compared by **ga-benchmark** has to be included in `ga-benchmark/source` as a subfolder. The subfolder contains the benchmark code of the compared solutions and must have the following structure:
 ```
 ga-benchmark/  ................... The root directory of ga-benchmark.
@@ -11,3 +14,6 @@ ga-benchmark/  ................... The root directory of ga-benchmark.
 Auxiliary files and folders can be included in the `ga-benchmark/source/LibraryName` subfolder.
 
 The detailed description of the expected content of each source file required by **ga-benchmark** will be included soon.
+
+---
+<[Back](../README.md)>
