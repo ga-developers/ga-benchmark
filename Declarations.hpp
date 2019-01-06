@@ -35,7 +35,6 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #define EuclideanModel   0x02
 #define HomogeneousModel 0x03
 #define MinkowskiModel   0x04
-#define SignedModel      0x05
 #define GABENCHMARK_CHECK_MODEL(MODEL) (MODEL == GABENCHMARK_MODEL)
 
 #define Products    0x11
@@ -49,8 +48,6 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 1)
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
     #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_D_DIMENSIONS) + 2)
-#elif GABENCHMARK_CHECK_MODEL(SignedModel)
-    #define GABENCHMARK_N_DIMENSIONS ((GABENCHMARK_P_DIMENSIONS) + (GABENCHMARK_Q_DIMENSIONS))
 #else
     #error The value assumed by GABENCHMARK_MODEL is invalid.
 #endif

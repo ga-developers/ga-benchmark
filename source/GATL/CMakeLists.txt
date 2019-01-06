@@ -19,8 +19,7 @@
 
 set(GATL_ENABLED true)
 
-set(GATL_CXX_STANDARD 17 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Template Library (GATL) programs.")
-set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/gatl/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
+set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GATL/repository/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
 set(GATL_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${GATL_INCLUDE_DIR})

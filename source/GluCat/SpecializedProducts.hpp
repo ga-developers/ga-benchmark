@@ -33,12 +33,12 @@ namespace gabenchmark {
 
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) HestenesInnerProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return lhs | rhs;
+        return lhs & rhs;
     }
 
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) LeftContraction(LeftArgument const &lhs, RightArgument const &rhs) {
-        return lhs < rhs;
+        return lhs % rhs;
     }
 
     template<typename LeftArgument, typename RightArgument>
@@ -46,17 +46,11 @@ namespace gabenchmark {
         return lhs ^ rhs;
     }
 
-    template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) RightContraction(LeftArgument const &lhs, RightArgument const &rhs) {
-        return lhs > rhs;
-    }
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_RightContraction
 
     #define GABENCHMARK_DOES_NOT_IMPLEMENT_RegressiveProduct
 
-    template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) ScalarProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-        return lhs.scalarProduct(rhs);
-    }
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_ScalarProduct
 
 }
 

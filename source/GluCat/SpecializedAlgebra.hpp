@@ -22,35 +22,44 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
-#include <vsr/detail/vsr_multivector.h>
+#include <glucat/glucat.h>
+
+typedef glucat::tuning<
+    glucat::DEFAULT_Mult_Matrix_Threshold,
+    glucat::DEFAULT_Div_Max_Steps,
+    glucat::DEFAULT_Sqrt_Max_Steps,
+    glucat::DEFAULT_Log_Max_Outer_Steps,
+    glucat::DEFAULT_Log_Max_Inner_Steps,
+    glucat::DEFAULT_Basis_Max_Count,
+    glucat::DEFAULT_Fast_Size_Threshold,
+    glucat::DEFAULT_Inv_Fast_Dim_Threshold,
+    glucat::DEFAULT_Products_Size_Threshold,
+    glucat::precision_promoted
+> Tune_P;
+
+#include <glucat/glucat_imp.h>
 
 namespace gabenchmark {
 
-    using namespace vsr;
+    using namespace glucat;
 
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
-    
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
+
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL
 
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS)>, real_t>;
+    using multivector_t = framed_multi<real_t, 0, GABENCHMARK_D_DIMENSIONS>;
 
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1>, real_t>;
+    using multivector_t = framed_multi<real_t, 0, GABENCHMARK_D_DIMENSIONS + 1>;
 
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1>, real_t>;
+    using multivector_t = framed_multi<real_t, -1, GABENCHMARK_D_DIMENSIONS + 1>;
 
 #endif
-
-    template<bits::type K>
-    using kvector_t = algebra_t::mv_t<typename blade<GABENCHMARK_N_DIMENSIONS, K>::type>;
-
-    using scalar_t = kvector_t<0>;
-    using vector_t = kvector_t<1>;
 
 }
 

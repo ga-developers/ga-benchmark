@@ -25,42 +25,32 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 namespace gabenchmark {
 
     template<typename Scalar>
-    constexpr scalar_t MakeScalar(Scalar const &scalar) {
-        return scalar_t(scalar);
+    constexpr Scalar MakeScalar(Scalar const &scalar) {
+        return scalar;
     }
 
     template<dims_t Dimensions, typename Coordinates>
-    constexpr vector_t MakeVector(Coordinates const &coords) {
-        vector_t result;
+    constexpr multivector_t MakeVector(Coordinates const &coords) {
+        auto e = [](int i) {
+            char index[10]{};
+            sprintf(index, "{%d}", i < multivector_t::index_set_t::v_hi ? (i + 1) : (multivector_t::index_set_t::v_hi - (i + 1)) );
+            return multivector_t(index);
+        };
+        
+        multivector_t result;
         for (dims_t i = 0; i != Dimensions; ++i) {
-            result[i] = coords[i];
+            result += coords[i] * e(i);
         }
         return result;
     }
 
-    namespace detail {
-
-        template<grade_t Grade>
-        struct MakeBladeImpl {
-            template<dims_t Dimensions, typename Scalar, typename Factors>
-            static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &factors) {
-                return MakeBladeImpl<Grade - 1>::template Eval<Dimensions>(scalar, factors) ^ MakeVector<Dimensions>(factors[Grade - 1]);
-            }
-        };
-
-        template<>
-        struct MakeBladeImpl<0> {
-            template<dims_t Dimensions, typename Scalar, typename Factors>
-            static constexpr decltype(auto) Eval(Scalar const &scalar, Factors const &) {
-                return MakeScalar(scalar);
-            }
-        };
-
-    }
-
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
-    constexpr decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
-        return detail::MakeBladeImpl<Grade>::template Eval<Dimensions>(scalar, factors);
+    constexpr multivector_t MakeBlade(Scalar const &scalar, Factors const &factors) {
+        multivector_t result = MakeScalar(scalar);
+        for (auto const &coords : factors) {
+            result ^= MakeVector<Dimensions>(coords);
+        }
+        return result;
     }
 
 }

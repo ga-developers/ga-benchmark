@@ -24,9 +24,7 @@ along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    //#define GABENCHMARK_IMPLEMENTS_DotProduct
-    //template<typename LeftArgument, typename RightArgument>
-    //constexpr decltype(auto) DotProduct(LeftArgument const &lhs, RightArgument const &rhs);
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_DotProduct
 
     #define GABENCHMARK_IMPLEMENTS_GeometricProduct
     template<typename LeftArgument, typename RightArgument>
@@ -34,9 +32,7 @@ namespace gabenchmark {
         return lhs * rhs;
     }
 
-    //#define GABENCHMARK_IMPLEMENTS_HestenesInnerProduct
-    //template<typename LeftArgument, typename RightArgument>
-    //constexpr decltype(auto) HestenesInnerProduct(LeftArgument const &lhs, RightArgument const &rhs);
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_HestenesInnerProduct
 
     #define GABENCHMARK_IMPLEMENTS_LeftContraction
     template<typename LeftArgument, typename RightArgument>
@@ -50,17 +46,11 @@ namespace gabenchmark {
         return lhs ^ rhs;
     }
 
-    //#define GABENCHMARK_IMPLEMENTS_RightContraction
-    //template<typename LeftArgument, typename RightArgument>
-    //constexpr decltype(auto) RightContraction(LeftArgument const &lhs, RightArgument const &rhs);
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_RightContraction
 
-    //#define GABENCHMARK_IMPLEMENTS_RegressiveProduct
-    //template<typename LeftArgument, typename RightArgument>
-    //constexpr decltype(auto) RegressiveProduct(LeftArgument const &lhs, RightArgument const &rhs);
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_RegressiveProduct
 
-    //#define GABENCHMARK_IMPLEMENTS_ScalarProduct
-    //template<typename LeftArgument, typename RightArgument>
-    //constexpr decltype(auto) ScalarProduct(LeftArgument const &lhs, RightArgument const &rhs);
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_ScalarProduct
 
 }
 

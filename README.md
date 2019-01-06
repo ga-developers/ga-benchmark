@@ -44,7 +44,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release ..
 ## Compiling and Running
 Assuming a makefile generator was used:
 ```bash
-$ make
+$ make -j8
 $ make test
 ```
 
@@ -58,22 +58,22 @@ Here, we assume that `ga-benchmark` is the current folder and Linux operating sy
 ### Gaalop
 ```bash
 $ sudo apt install maven
-$ git clone https://github.com/CallForSanity/Gaalop.git libs/gaalop
-$ cd libs/gaalop
+$ git clone https://github.com/CallForSanity/Gaalop.git libs/Gaalop/repository
+$ cd libs/Gaalop/repository
 $ mvn clean package assembly:directory
-$ cd ../..
+$ cd ../../..
 ```
 
 ### Garamon
 ```bash
 $ sudo apt install libeigen3-dev
-$ git clone https://git.renater.fr/garamon.git libs/garamon
-$ mkdir libs/garamon/build
-$ mkdir libs/garamon/install
-$ cd libs/garamon/build
+$ git clone https://git.renater.fr/garamon.git libs/Garamon/repository
+$ mkdir libs/Garamon/repository/build
+$ mkdir libs/Garamon/install
+$ cd libs/Garamon/repository/build
 $ cmake ..
 $ make
-$ for conf in ../../../source/Garamon/*.conf
+$ for conf in ../../../../source/Garamon/*.conf
   do
     ./garamon_generator $conf
     filename=$(basename -- "$conf")
@@ -82,37 +82,39 @@ $ for conf in ../../../source/Garamon/*.conf
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
-    make DESTDIR=../../../../install install
+    make DESTDIR=../../../../../install install
     cd ../../..
   done
-$ cd ../../..
+$ cd ../../../..
 ```
 
 ### GATL
 ```bash
-$ git clone https://github.com/laffernandes/gatl.git libs/gatl
+$ git clone https://github.com/laffernandes/gatl.git libs/GATL/repository
 ```
 
 ### GluCat
 ```bash
-$ git clone https://github.com/penguian/glucat.git libs/glucat
-$ cd libs/glucat
+$ sudo apt-get install libboost-all-dev
+$ git clone https://github.com/penguian/glucat.git libs/GluCat/repository
+$ cd libs/GluCat/repository
 $ make -f admin/Makefile.common cvs
 $ ./configure
 $ make
-$ cd ../..
+$ make DESTDIR=$(realpath ../install) install
+$ cd ../../..
 ```
 
 ### Versor
 ```bash
-$ git clone https://github.com/wolftype/versor.git libs/versor
-$ mkdir libs/versor/build
-$ mkdir libs/versor/install
-$ cd libs/versor/build
+$ git clone https://github.com/wolftype/versor.git libs/Versor/repository
+$ mkdir libs/Versor/repository/build
+$ mkdir libs/Versor/install
+$ cd libs/Versor/repository/build
 $ cmake -DCMAKE_BUILD_TYPE=Release ..
 $ make
-$ make DESTDIR=../install install
-$ cd ../../..
+$ make DESTDIR=../../install install
+$ cd ../../../..
 ```
 
 ### Custom Library

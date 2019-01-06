@@ -30,8 +30,7 @@ set(Garamon_EuclideanModel_MNEMONIC "e")
 set(Garamon_HomogeneousModel_MNEMONIC "h")
 set(Garamon_MinkowskiModel_MNEMONIC "m")
 
-set(Garamon_CXX_STANDARD 14 CACHE STRING "The C++ standard whose features are requested to build Geometric Algebra Recursive and Adaptive Monster (Garamon) programs.")
-set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
+set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
 set(Garamon_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})
 
 if(NOT EXISTS ${Garamon_INCLUDE_DIR})
@@ -41,7 +40,7 @@ endif()
 
 foreach(MODEL ${MODELS_LIST})
   foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    find_library(Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY NAMES ${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/garamon/install/usr/local/lib")
+    find_library(Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY NAMES ${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/lib")
     if(NOT EXISTS ${Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY})
       message(WARNING "The path defined in Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY doesn't exist.")
       set(Garamon_ENABLED false)

@@ -19,8 +19,7 @@
 
 set(Versor_ENABLED true)
 
-set(Versor_CXX_STANDARD 14 CACHE STRING "The C++ standard whose features are requested to build Versor programs.")
-set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
+set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
 set(Versor_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${Versor_INCLUDE_DIR})
@@ -28,7 +27,7 @@ if(NOT EXISTS ${Versor_INCLUDE_DIR})
   set(Versor_ENABLED false)
 endif()
 
-find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/versor/install/usr/local/lib")
+find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/lib")
 if(NOT EXISTS ${Versor_LIBRARY})
   message(WARNING "The path defined in Versor_LIBRARY doesn't exist.")
   set(Versor_ENABLED false)
