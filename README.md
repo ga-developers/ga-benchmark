@@ -119,3 +119,7 @@ $ cd ../../../..
 
 ### How **ga-benchmark** Recognizes a Solution
 A given library or library generator will be recognized by **ga-benchmark** if and only if the `ga-benchmark/source` folder includes a subfolder with the benchmark code of the given solution. The [`ga-benchmark/source/README.md`](source/README.md) file presents detailed instructions about how to prepare such subfolder.
+
+
+## License
+This software is licensed under the GNU General Public, version 3. See the [`LICENSE`](LICENSE) file for details.

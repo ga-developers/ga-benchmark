@@ -1,7 +1,7 @@
 # ga-benchmark
 
 ## How **ga-benchmark** Recognizes a Solution
-Each library or library generator compared by **ga-benchmark** has to be included in `ga-benchmark/source` as a subfolder. The subfolder contains the benchmark code of the compared solutions and must have the following structure:
+Each library and library generator compared by **ga-benchmark** has to be included in `ga-benchmark/source` as a subfolder. The subfolder contains the benchmark code of the compared solutions and must have the following structure:
 ```
 ga-benchmark/  ................... The root directory of ga-benchmark.
   source/  ....................... The directory including the benchmark code of all compared solutions.

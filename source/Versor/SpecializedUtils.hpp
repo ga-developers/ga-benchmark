@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see < https://www.gnu.org/licenses/>.
+along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
 #ifndef __GABENCHMARK_SPECIALIZED_UTILS_HPP__
