@@ -7,7 +7,7 @@ The goal of this project is to help physicists, chemists, engineers, and compute
 
 
 ## Requirements
-Make sure that you have all the following tools and libraries installed and working before attempting to use **ga-benchmark**.
+Make sure that you have all the following tools, libraries and library generators installed and working before attempting to use **ga-benchmark**.
 
 Required tools:
 - Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
@@ -24,7 +24,7 @@ Expected Geometric Algebra libraries and library generators:
 - [GluCat: Clifford Algebra Templates](https://github.com/penguian/glucat)
 - [Versor](http://versor.mat.ucsb.edu)
 
-Actually, you have to install only the libraries and library generators that you want to test. **ga-benchmark** already provides support for those listed above. The *Further Knowledge* section describes how to include or remove an existing library from the process, and how to include a custom library on it.
+The *Further Knowledge* section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above.
 
 
 ## Building
@@ -34,7 +34,7 @@ $ git clone https://github.com/ga-developers/ga-benchmark.git ga-benchmark
 $ cd ga-benchmark
 ```
 
-The basic steps for configuring and building **ga-benchmark** look like this:
+The basic steps for configuring and building **ga-benchmark** look like this in Linux:
 ```bash
 $ mkdir build
 $ cd build
@@ -51,9 +51,9 @@ $ make test
 ## Further Knowledge
 If your system does not include the expected libraries and library generators listed above then you must install them following the instructions provided by the developers.
 
-The commands below summarize the installation process for each of the expected tools. However, it is important to note that the process may have changed with the release of new versions.
+The commands below summarize the installation process of each of the expected solutions. However, it is important to note that the process may have changed with the release of new versions.
 
-Here, we assume that `ga-benchmark` is the current folder and Linux operating system.
+Here, we assume that `ga-benchmark` is the current folder and Linux operating system. The installation procedures will place the expected solutions inside the `ga-benchmark/libs` folder.
 
 ### Gaalop
 ```bash
@@ -117,5 +117,5 @@ $ make DESTDIR=../../install install
 $ cd ../../../..
 ```
 
-### Custom Library
-Coming soon.
+### How **ga-benchmark** Recognizes a Solution
+A given library or library generator will be recognized by **ga-benchmark** if and only if the `ga-benchmark/source` folder includes a subfolder with the benchmark code of the given solution. The [ga-benchmark/source/README.md](source/README.md) file presents detailed instructions about how to prepare such subfolder.
