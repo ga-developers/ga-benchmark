@@ -17,20 +17,20 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GluCat_ENABLED true)
+set(GluCatMatrixMulti_ENABLED true)
 
-set(GluCat_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
-set(GluCat_INCLUDE_EXTRA_DIR "") # no dependencies
+set(GluCatMatrixMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
+set(GluCatMatrixMulti_INCLUDE_EXTRA_DIR "") # no dependencies
 
-if(NOT EXISTS ${GluCat_INCLUDE_DIR})
-  message(WARNING "The path defined in GluCat_INCLUDE_DIR doesn't exist.")
-  set(GluCat_ENABLED false)
+if(NOT EXISTS ${GluCatMatrixMulti_INCLUDE_DIR})
+  message(WARNING "The path defined in GluCatMatrixMulti_INCLUDE_DIR doesn't exist.")
+  set(GluCatMatrixMulti_ENABLED false)
 endif()
 
 foreach(MODEL ${MODELS_LIST})
   foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    set(GluCat_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT "") # pure template library
+    set(GluCatMatrixMulti_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT "") # pure template library
   endforeach()
 endforeach()
 
-set(GluCat_ENABLED ${GluCat_ENABLED} CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")
+set(GluCatMatrixMulti_ENABLED ${GluCatMatrixMulti_ENABLED} CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")

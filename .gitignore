@@ -5,3 +5,5 @@
 /libs/Versor
 /build
 /.vscode
+/results
+/__pycache__

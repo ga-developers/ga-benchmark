@@ -11,11 +11,19 @@ Make sure that you have all the following tools, libraries and library generator
 
 Required tools:
 - Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
+- [Python 3](https://www.python.org) interpreter
 - [CMake](https://cmake.org)
 
 Required C++ libraries:
 - [Google Benchmark](https://github.com/google/benchmark)
 - Threads (pthread library on Linux, shlwapi library on Windows, and kstat library on Solaris)
+
+Required Python modules:
+- argparse
+- json
+- matplotlib
+- numpy
+- typing
 
 Expected Geometric Algebra libraries and library generators:
 - [Gaalop: Geometic Algebra Algorithms Optimizer](http://www.gaalop.de)
@@ -47,6 +55,15 @@ Assuming a makefile generator was used:
 $ make -j8
 $ make test
 ```
+
+## Ploting Results
+Assuming that the current folder is `ga-benchmark/build` and you want to save resulting charts and tables to the `ga-benchmark/results` folder:
+```bash
+$ cd ..
+$ python -m plot -i ./build -o ./results
+```
+
+If everything is alright, then results are in the `ga-benchmark/results` folder.
 
 ## Further Knowledge
 If your system does not include the expected libraries and library generators listed above then you must install them following the instructions provided by the developers.
