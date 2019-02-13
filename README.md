@@ -16,14 +16,14 @@ Required tools:
 
 Required C++ libraries:
 - [Google Benchmark](https://github.com/google/benchmark)
-- Threads (pthread library on Linux, shlwapi library on Windows, and kstat library on Solaris)
+- Threads (`pthread` library on Linux, `shlwapi` library on Windows, and `kstat` library on Solaris)
 
 Required Python modules:
-- argparse
-- json
-- matplotlib
-- numpy
-- typing
+- `argparse`
+- `json`
+- `matplotlib`
+- `numpy`
+- `typing`
 
 Expected Geometric Algebra libraries and library generators:
 - [Gaalop: Geometic Algebra Algorithms Optimizer](http://www.gaalop.de)
@@ -32,7 +32,7 @@ Expected Geometric Algebra libraries and library generators:
 - [GluCat: Clifford Algebra Templates](https://github.com/penguian/glucat)
 - [Versor](http://versor.mat.ucsb.edu)
 
-The *Further Knowledge* section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above.
+The *Further Knowledge* section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above. Notice that Gaalop and Garamon must be instrumented 
 
 
 ## Building
@@ -74,12 +74,17 @@ Here, we assume that `ga-benchmark` is the current folder and Linux operating sy
 
 ### Gaalop
 ```bash
-$ sudo apt install maven
-$ git clone https://github.com/CallForSanity/Gaalop.git libs/Gaalop/repository
-$ cd libs/Gaalop/repository
-$ mvn clean package assembly:directory
-$ cd ../../..
+$ sudo apt install xmaxima
+$ sudo apt install default-jre
+$ mkdir -p libs/Gaalop/download
+$ wget -O libs/Gaalop/download/GaalopPrecompiler.tar.gz "http://www.gaalop.de/wp-content/uploads/x86-64/GaalopPrecompiler-2.0.1447-Linux.tar.gz"
+$ tar xf libs/Gaalop/download/GaalopPrecompiler.tar.gz -C libs/Gaalop/download
+$ mkdir -p libs/Gaalop/install/usr/local/bin/GaalopPrecompiler
+$ mv libs/Gaalop/download/GaalopPrecompiler-2.0.1447-Linux/* libs/Gaalop/install/usr/local/bin/GaalopPrecompiler
+$ rmdir libs/Gaalop/download/GaalopPrecompiler-2.0.1447-Linux
 ```
+
+See [Gaalop's download page](http://www.gaalop.de/download/) for a list of prebuilt binaries of the precompiler for Linux and Windows.
 
 ### Garamon
 ```bash
@@ -90,7 +95,7 @@ $ mkdir libs/Garamon/install
 $ cd libs/Garamon/repository/build
 $ cmake ..
 $ make
-$ for conf in ../../../../source/Garamon/*.conf
+$ for conf in ../../../../source/Garamon/algebras/*.conf
   do
     ./garamon_generator $conf
     filename=$(basename -- "$conf")
@@ -112,11 +117,12 @@ $ git clone https://github.com/laffernandes/gatl.git libs/GATL/repository
 
 ### GluCat
 ```bash
-$ sudo apt-get install libboost-all-dev
+$ sudo apt install libeigen3-dev
+$ sudo apt install libboost-all-dev
 $ git clone https://github.com/penguian/glucat.git libs/GluCat/repository
 $ cd libs/GluCat/repository
 $ make -f admin/Makefile.common cvs
-$ ./configure
+$ ./configure --disable-pyclical
 $ make
 $ make DESTDIR=$(realpath ../install) install
 $ cd ../../..

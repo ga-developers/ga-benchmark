@@ -24,33 +24,24 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    template<typename Scalar>
-    constexpr Scalar MakeScalar(Scalar const &scalar) {
-        return scalar;
-    }
-
-    template<dims_t Dimensions, typename Coordinates>
-    constexpr multivector_t MakeVector(Coordinates const &coords) {
-        auto e = [](int i) {
-            char index[10]{};
-            sprintf(index, "{%d}", i < GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ? (i + 1) : (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS - (i + 1)) );
-            return multivector_t(index);
-        };
-        
-        multivector_t result;
-        for (dims_t i = 0; i != Dimensions; ++i) {
-            result += coords[i] * e(i);
-        }
-        return result;
-    }
-
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
-    constexpr multivector_t MakeBlade(Scalar const &scalar, Factors const &factors) {
-        multivector_t result = MakeScalar(scalar);
-        for (auto const &coords : factors) {
-            result ^= MakeVector<Dimensions>(coords);
+    constexpr decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
+#pragma gpc begin
+#pragma clucalc begin
+        i = 0;
+        mv_tmp = scalar * 1;
+        loop {
+            if (i == Grade)
+                break;
+            mv_factor = mv_from_array(factors[i], BasisBlades(1));
+            mv_tmp = mv_tmp ^ mv_factor;
+            i = i + 1;
         }
-        return result;
+
+        ?mv_result = mv_tmp;
+#pragma clucalc end
+        return mv_result;
+#pragma gpc end
     }
 
 }

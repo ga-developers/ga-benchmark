@@ -47,19 +47,27 @@ namespace gabenchmark {
 
     #define GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL
 
+    #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 0
+    #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS 0
+
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
-    using multivector_t = matrix_multi<real_t, 0, GABENCHMARK_D_DIMENSIONS>;
+    #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 0
+    #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS (GABENCHMARK_D_DIMENSIONS)
 
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
 
-    using multivector_t = matrix_multi<real_t, 0, GABENCHMARK_D_DIMENSIONS + 1>;
+    #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 0
+    #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ((GABENCHMARK_D_DIMENSIONS) + 1)
 
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
-    using multivector_t = matrix_multi<real_t, -1, GABENCHMARK_D_DIMENSIONS + 1>;
+    #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 1
+    #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ((GABENCHMARK_D_DIMENSIONS) + 1)
 
 #endif
+
+    using multivector_t = matrix_multi<real_t>;
 
 }
 

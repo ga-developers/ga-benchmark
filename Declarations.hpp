@@ -60,7 +60,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    using real_t = double;
+    using real_t = float;
 
     using grade_t = std::int32_t;
     using dims_t = std::uint32_t;

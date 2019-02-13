@@ -96,10 +96,13 @@ foreach(LIBRARY ${LIBRARIES_LIST})
           foreach(LEFT_GRADE RANGE 0 ${D_DIMENSIONS})
             foreach(RIGHT_GRADE RANGE 0 ${D_DIMENSIONS})
               message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", LEFT_GRADE = " ${LEFT_GRADE} ", RIGHT_GRADE = " ${RIGHT_GRADE})
+              
               set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
               set(BENCHMARK_EXEC GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
               add_executable(${TARGET_NAME} "${PROJECT_SOURCE_DIR}/${OPERATION}.cpp")
-              set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${BENCHMARK_EXEC})
+              
+              sset_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${BENCHMARK_EXEC})
+              
               target_compile_definitions(${TARGET_NAME} PRIVATE
                 GABENCHMARK_LIBRARY=${LIBRARY}
                 GABENCHMARK_OPERATION=${OPERATION}
@@ -108,9 +111,26 @@ foreach(LIBRARY ${LIBRARIES_LIST})
                 GABENCHMARK_LEFT_GRADE=${LEFT_GRADE}
                 GABENCHMARK_RIGHT_GRADE=${RIGHT_GRADE}
               )
-              target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}" ${${LIBRARY}_INCLUDE_EXTRA_DIR} ${${LIBRARY}_INCLUDE_DIR})
+              
+              string(CONFIGURE "${${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_INCLUDE_DIR}" TARGET_INCLUDE_DIR)
+              target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}" ${${LIBRARY}_INCLUDE_EXTRA_DIR} ${${LIBRARY}_INCLUDE_DIR} ${TARGET_INCLUDE_DIR})
               target_link_libraries(${TARGET_NAME} benchmark ${CMAKE_THREAD_LIBS_INIT} ${${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT})
+              
+              if(${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_PRE_BUILD_COMMANDS)
+                string(CONFIGURE "${${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_PRE_BUILD_COMMANDS}" TARGET_CUSTOM_COMMANDS)
+                add_custom_target(${TARGET_NAME}_PRE_BUILD ${TARGET_CUSTOM_COMMANDS})
+                add_dependencies(${TARGET_NAME} ${TARGET_NAME}_PRE_BUILD)
+              endif()
+              
+              foreach(TIME PRE_LINK POST_BUILD)
+                if(${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_${TIME}_COMMANDS)
+                  string(CONFIGURE "${${LIBRARY}_${MODEL}_D${D_DIMENSIONS}_${TIME}_COMMANDS}" TARGET_CUSTOM_COMMANDS)
+                  add_custom_command(TARGET ${TARGET_NAME} ${TIME} ${TARGET_CUSTOM_COMMANDS})
+                endif()
+              endforeach()
+
               add_test(NAME ${TARGET_NAME} COMMAND ${BENCHMARK_EXEC} --benchmark_format=json --benchmark_out=${BENCHMARK_EXEC}.json)
+
             endforeach()
           endforeach()
         endif()

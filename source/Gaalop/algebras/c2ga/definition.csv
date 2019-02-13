@@ -1,0 +1,5 @@
+1,e1,e2,eo,ei
+ep=0.5*ei-eo,em=0.5*ei+eo
+1,e1,e2,ep,em
+e1=1,e2=1,ep=1,em=-1
+eo=0.5*em-0.5*ep,ei=ep+em
