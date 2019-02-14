@@ -17,22 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GATL_ENABLED true)
+include("${CMAKE_CURRENT_LIST_DIR}/ConfigureBasisBlades.cmake")
 
-# Set (global) include directories and libraries
-set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GATL/repository/cpp/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
-set(GATL_INCLUDE_EXTRA_DIR "")
-
-if(NOT EXISTS ${GATL_INCLUDE_DIR})
-  message(WARNING "The path defined in GATL_INCLUDE_DIR doesn't exist.")
-  set(GATL_ENABLED false)
-endif()
-
-set(GATL_LIBS_INIT "")
-
-# Set include directories and libraries for products
-set(GATL_Products_INCLUDE_DIR "")
-set(GATL_Products_LIBS_INIT "")
-
-# Job done!
-set(GATL_ENABLED ${GATL_ENABLED} CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")
+configure_file(${INFILE} ${OUTFILE} @ONLY)

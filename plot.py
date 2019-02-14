@@ -129,10 +129,10 @@ def _get_axes_bounds_for_products(operations: dict) -> Tuple[int, int, int, int,
     return x_min, x_max, y_min, y_max, z_min, z_max
 
 
-def _plot_data(data: dict, all_libraries: set, folder: str, verbose: bool) -> None:
+def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> None:
     """Produce PDF files showing charts and tables with the results.
     :param data: a dictionary returned by the _read_data(...) function.
-    :param all_libraries: a set including the name of all libraries and library generators.
+    :param all_libraries: a list including the name of all libraries and library generators.
     :param folder: the path to the folder where the files will be written.
     :param verbose: indicates whether the processing messages should be displayed. 
     """
@@ -156,7 +156,7 @@ def _plot_data(data: dict, all_libraries: set, folder: str, verbose: bool) -> No
                                 message('  Ploting results to "%s"... ', os.path.join('OUTPUT_FOLDER', relative_path))
                                 os.makedirs(os.path.join(folder, relative_path), exist_ok=True)
                                 best_library = np.full(X.shape, '', np.object)
-                                best_color = np.full(X.shape, -1, np.float32)
+                                best_color_ind = np.full(X.shape, -1, np.float32)
                                 best_Z = np.full(X.shape, float('inf'), np.float32)
                                 for library, values in libraries.items():
                                     color_ind = all_libraries.index(library) / (len(all_libraries) - 1)
@@ -168,7 +168,7 @@ def _plot_data(data: dict, all_libraries: set, folder: str, verbose: bool) -> No
 
                                     replace = Z < best_Z
                                     best_library[replace] = library
-                                    best_color[replace] = color_ind
+                                    best_color_ind[replace] = color_ind
                                     best_Z[replace] = Z[replace]
                                     
                                     fig = plt.figure('%s %dD - %s, %s - %s - %s' % (model, d, group, operation, library, metric))
@@ -194,7 +194,7 @@ def _plot_data(data: dict, all_libraries: set, folder: str, verbose: bool) -> No
                                 ax.set_xticks(np.arange(x_min, x_max + 1))
                                 ax.set_ylabel('RHS Grade')
                                 ax.set_yticks(np.arange(y_min, y_max + 1))
-                                ax.imshow(best_color, interpolation='none', origin='lower', cmap=cmap)
+                                ax.imshow(best_color_ind, interpolation='none', origin='lower', cmap=cmap, vmin=0, vmax=1)
                                 for x, y in zip(X.flatten(), Y.flatten()):
                                     ax.text(y, x, '%s\n%1.5f ms' % (best_library[x, y], best_Z[x, y]), va='center', ha='center')
                                 fig.tight_layout()

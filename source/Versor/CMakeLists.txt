@@ -19,6 +19,14 @@
 
 set(Versor_ENABLED true)
 
+# Find Versor library
+find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/lib")
+if(NOT EXISTS ${Versor_LIBRARY})
+  message(WARNING "The path defined in Versor_LIBRARY doesn't exist.")
+  set(Versor_ENABLED false)
+endif()
+
+# Set (global) include directories and libraries
 set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
 set(Versor_INCLUDE_EXTRA_DIR "") # no dependencies
 
@@ -27,16 +35,11 @@ if(NOT EXISTS ${Versor_INCLUDE_DIR})
   set(Versor_ENABLED false)
 endif()
 
-find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/lib")
-if(NOT EXISTS ${Versor_LIBRARY})
-  message(WARNING "The path defined in Versor_LIBRARY doesn't exist.")
-  set(Versor_ENABLED false)
-endif()
+set(Versor_LIBS_INIT ${Versor_LIBRARY})
 
-foreach(MODEL ${MODELS_LIST})
-  foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    set(Versor_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT ${Versor_LIBRARY})
-  endforeach()
-endforeach()
+# Set include directories and libraries for products
+set(Versor_Products_INCLUDE_DIR "")
+set(Versor_Products_LIBS_INIT "")
 
+# Job done!
 set(Versor_ENABLED ${Versor_ENABLED} CACHE BOOL "If set, the Versor library is added to the benchmark.")

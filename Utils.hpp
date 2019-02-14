@@ -35,10 +35,10 @@ namespace gabenchmark {
     decltype(auto) MakeRandomBlade() {
         real_t scalar = detail::uniform_distribution(detail::random_engine);
 
-        std::vector<vector_coords> factors;
+        factors_list_t factors;
         factors.reserve(Grade);
         for (std::size_t factor_ind = 0; factor_ind != Grade; ++factor_ind) {
-            vector_coords factor{};
+            vector_coords_t factor{};
             factor[factor_ind] = 1;
             for (std::size_t coord_ind = Grade; coord_ind != GABENCHMARK_N_DIMENSIONS; ++coord_ind) {
                 factor[coord_ind] = detail::uniform_distribution(detail::random_engine);

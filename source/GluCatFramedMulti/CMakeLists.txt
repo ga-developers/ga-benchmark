@@ -19,18 +19,20 @@
 
 set(GluCatFramedMulti_ENABLED true)
 
+# Set (global) include directories and libraries
 set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
-set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "") # no dependencies
+set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "")
 
 if(NOT EXISTS ${GluCatFramedMulti_INCLUDE_DIR})
   message(WARNING "The path defined in GluCatFramedMulti_INCLUDE_DIR doesn't exist.")
   set(GluCatFramedMulti_ENABLED false)
 endif()
 
-foreach(MODEL ${MODELS_LIST})
-  foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    set(GluCatFramedMulti_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT "") # pure template library
-  endforeach()
-endforeach()
+set(GluCatFramedMulti_LIBS_INIT "")
 
+# Set include directories and libraries for products
+set(GluCatFramedMulti_Products_INCLUDE_DIR "")
+set(GluCatFramedMulti_Products_LIBS_INIT "")
+
+# Job done!
 set(GluCatFramedMulti_ENABLED ${GluCatFramedMulti_ENABLED} CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")

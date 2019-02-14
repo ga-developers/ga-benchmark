@@ -65,7 +65,11 @@ namespace gabenchmark {
     using grade_t = std::int32_t;
     using dims_t = std::uint32_t;
 
-    using vector_coords = std::array<real_t, GABENCHMARK_N_DIMENSIONS>;
+    using vector_coords_t = std::array<real_t, GABENCHMARK_N_DIMENSIONS>;
+    using factors_list_t = std::vector<vector_coords_t>;
+
+    template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
+    decltype(auto) MakeBlade(Scalar const &, Factors const &);
 
 }
 

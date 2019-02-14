@@ -29,56 +29,57 @@ namespace gabenchmark {
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) GeometricProduct(LeftArgument const &lhs, RightArgument const &rhs) {
 #pragma gpc begin
-        mv_lhs = mv_from_array(lhs, BasisBlades(@LEFT_GRADE@));
-        mv_rhs = mv_from_array(rhs, BasisBlades(@RIGHT_GRADE@));
+        a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+        b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
 #pragma clucalc begin
-        ?mv_result = mv_lhs * mv_rhs;
+        ?gp_r = a * b;
 #pragma clucalc end
-        return mv_result;
 #pragma gpc end
-    }
 
-    #define GABENCHMARK_DOES_NOT_IMPLEMENT_HestenesInnerProduct
+        return to_array(gp_r);
+    }
 
     template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) LeftContraction(LeftArgument const &lhs, RightArgument const &rhs) {
+    constexpr decltype(auto) HestenesInnerProduct(LeftArgument const &lhs, RightArgument const &rhs) {
+#if (GABENCHMARK_LEFT_GRADE != 0) && (GABENCHMARK_RIGHT_GRADE != 0)
 #pragma gpc begin
-        mv_lhs = mv_from_array(lhs, BasisBlades(@LEFT_GRADE@));
-        mv_rhs = mv_from_array(rhs, BasisBlades(@RIGHT_GRADE@));
+        a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+        b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
 #pragma clucalc begin
-        ?mv_result = mv_lhs . mv_rhs;
+        ?hip_r = a . b;
 #pragma clucalc end
-        return mv_result;
 #pragma gpc end
+
+        return to_array(hip_r);
+#else
+        return to_array(real_t(0)); // A workaround solution to cases where hip_r simplifies to zero and the variable is not declared by Gaalop's Preprocessor.
+#endif
     }
+
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_LeftContraction
 
     template<typename LeftArgument, typename RightArgument>
     constexpr decltype(auto) OuterProduct(LeftArgument const &lhs, RightArgument const &rhs) {
+#if ((GABENCHMARK_LEFT_GRADE + GABENCHMARK_RIGHT_GRADE) <= GABENCHMARK_N_DIMENSIONS)
 #pragma gpc begin
-        mv_lhs = mv_from_array(lhs, BasisBlades(@LEFT_GRADE@));
-        mv_rhs = mv_from_array(rhs, BasisBlades(@RIGHT_GRADE@));
+        a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+        b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
 #pragma clucalc begin
-        ?mv_result = mv_lhs ^ mv_rhs;
+        ?op_r = a ^ b;
 #pragma clucalc end
-        return mv_result;
 #pragma gpc end
+
+        return to_array(op_r);
+#else
+        return to_array(real_t(0)); // A workaround solution to cases where op_r simplifies to zero and the variable is not declared by Gaalop's Preprocessor.
+#endif
     }
 
     #define GABENCHMARK_DOES_NOT_IMPLEMENT_RegressiveProduct
 
     #define GABENCHMARK_DOES_NOT_IMPLEMENT_RightContraction
 
-    template<typename LeftArgument, typename RightArgument>
-    constexpr decltype(auto) ScalarProduct(LeftArgument const &lhs, RightArgument const &rhs) {
-#pragma gpc begin
-        mv_lhs = mv_from_array(lhs, BasisBlades(@LEFT_GRADE@));
-        mv_rhs = mv_from_array(rhs, BasisBlades(@RIGHT_GRADE@));
-#pragma clucalc begin
-        ?mv_result = (mv_lhs * mv_rhs) ° 0;
-#pragma clucalc end
-        return mv_result;
-#pragma gpc end
-    }
+    #define GABENCHMARK_DOES_NOT_IMPLEMENT_ScalarProduct
 
 }
 

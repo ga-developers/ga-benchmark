@@ -25,12 +25,12 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 namespace gabenchmark {
 
     template<typename Scalar>
-    constexpr Scalar MakeScalar(Scalar const &scalar) {
+    Scalar MakeScalar(Scalar const &scalar) {
         return scalar;
     }
 
     template<dims_t Dimensions, typename Coordinates>
-    constexpr multivector_t MakeVector(Coordinates const &coords) {
+    multivector_t MakeVector(Coordinates const &coords) {
         auto e = [](int i) {
             char index[10]{};
             sprintf(index, "{%d}", i < GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ? (i + 1) : (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS - (i + 1)) );
@@ -45,7 +45,7 @@ namespace gabenchmark {
     }
 
     template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
-    constexpr multivector_t MakeBlade(Scalar const &scalar, Factors const &factors) {
+    decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
         multivector_t result = MakeScalar(scalar);
         for (auto const &coords : factors) {
             result ^= MakeVector<Dimensions>(coords);

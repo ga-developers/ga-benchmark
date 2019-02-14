@@ -19,6 +19,16 @@
 
 set(Gaalop_ENABLED true)
 
+# Set some constant values
+set(Gaalop_ConformalModel_MNEMONIC "c")
+set(Gaalop_EuclideanModel_MNEMONIC "e")
+set(Gaalop_HomogeneousModel_MNEMONIC "h")
+set(Gaalop_MinkowskiModel_MNEMONIC "m")
+
+set(Gaalop_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalop/install/usr/local/bin/GaalopPrecompiler")
+set(Gaalop_ALGEBRA_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/algebras")
+
+# Find required packages and tools
 find_package(Java COMPONENTS Runtime)
 if(NOT ${Java_FOUND})
   message(WARNING "Gaalop requires Java, which was not found.")
@@ -31,21 +41,7 @@ if(MAXIMA_BIN-NOTFOUND)
   set(Gaalop_ENABLED false)
 endif()
 
-set(Gaalop_ConformalModel_MNEMONIC "c")
-set(Gaalop_EuclideanModel_MNEMONIC "e")
-set(Gaalop_HomogeneousModel_MNEMONIC "h")
-set(Gaalop_MinkowskiModel_MNEMONIC "m")
-
-set(Gaalop_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalop/install/usr/local/bin/GaalopPrecompiler")
-
-find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include" DOC "The include directory of the Geometric Algebra Algorithms Optimizer (Gaalop).")
-set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies
-
-if(NOT EXISTS ${Gaalop_INCLUDE_DIR})
-  message(WARNING "The path defined in Gaalop_INCLUDE_DIR doesn't exist.")
-  set(Gaalop_ENABLED false)
-endif()
-
+# Find Gaalop library
 find_library(Gaalop_LIBRARY NAMES gpc-base HINTS "${Gaalop_ROOT_DIR}/lib" DOC "The library of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 
 if(NOT EXISTS ${Gaalop_LIBRARY})
@@ -53,6 +49,7 @@ if(NOT EXISTS ${Gaalop_LIBRARY})
   set(Gaalop_ENABLED false)
 endif()
 
+# Find Gaalop interpreter
 find_file(Gaalop_JAR_FILE NAMES starter-1.0.0.jar HINTS "${Gaalop_ROOT_DIR}/share/gpc/gaalop" DOC "The interpreter of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 
 if(NOT EXISTS ${Gaalop_JAR_FILE})
@@ -62,31 +59,30 @@ endif()
 
 get_filename_component(Gaalop_JAR_DIR ${Gaalop_JAR_FILE} DIRECTORY)
 
-foreach(MODEL ${MODELS_LIST})
-  foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-    set(Gaalop_${MODEL}_D${D_DIMENSIONS}_LIBS_INIT ${Gaalop_LIBRARY})
-    
-    set(Gaalop_ALGEBRA_NAME ${Gaalop_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga)
-    set(Gaalop_ALGEBRA_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/algebras")
+# Set (global) include directories and libraries
+find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include" DOC "The include directory of the Geometric Algebra Algorithms Optimizer (Gaalop).")
+set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies
 
-    set(Gaalop_${MODEL}_D${D_DIMENSIONS}_INCLUDE_DIR "")
-    set(Gaalop_${MODEL}_D${D_DIMENSIONS}_PRE_BUILD_COMMANDS "")
-    file(GLOB Gaalop_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop" "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/*")
-    foreach(Gaalop_SOURCE_FILE ${Gaalop_SOURCE_FILES})
-      if(${Gaalop_SOURCE_FILE} MATCHES ".*\\.cpg$")
-        get_filename_component(Gaalop_SOURCE_FILENAME ${Gaalop_SOURCE_FILE} NAME_WE)
-        set(Gaalop_GENERATED_FILE "${Gaalop_SOURCE_FILENAME}.cpp")
-      elseif(${Gaalop_SOURCE_FILE} MATCHES ".*\\.hpg$")
-        get_filename_component(Gaalop_SOURCE_FILENAME ${Gaalop_SOURCE_FILE} NAME_WE)
-        set(Gaalop_GENERATED_FILE "${Gaalop_SOURCE_FILENAME}.hpp")
-      else()
-        continue()
-      endif()
-      list(APPEND Gaalop_${MODEL}_D${D_DIMENSIONS}_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/source/\${TARGET_NAME}")
-      list(APPEND Gaalop_${MODEL}_D${D_DIMENSIONS}_PRE_BUILD_COMMANDS COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/source/\${TARGET_NAME}")
-      list(APPEND Gaalop_${MODEL}_D${D_DIMENSIONS}_PRE_BUILD_COMMANDS COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraName "${Gaalop_ALGEBRA_NAME}" -algebraBaseDir "${Gaalop_ALGEBRA_BASE_DIR}" -m "${MAXIMA_BIN}" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/${Gaalop_SOURCE_FILE}" -o "${CMAKE_CURRENT_BINARY_DIR}/source/\${TARGET_NAME}/${Gaalop_GENERATED_FILE}" WORKING_DIRECTORY "${Gaalop_JAR_DIR}")
-    endforeach()
-  endforeach()
-endforeach()
+if(NOT EXISTS ${Gaalop_INCLUDE_DIR})
+  message(WARNING "The path defined in Gaalop_INCLUDE_DIR doesn't exist.")
+  set(Gaalop_ENABLED false)
+endif()
 
+set(Gaalop_LIBS_INIT ${Gaalop_LIBRARY})
+
+# Set include directories, libraries and pre-build commands for products
+set(Gaalop_Products_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}")
+set(Gaalop_Products_LIBS_INIT "")
+
+set(Gaalop_Products_PRE_BUILD_COMMANDS
+  COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}"
+  ""
+  COMMAND "${CMAKE_COMMAND}" "-DMODEL=\${MODEL}" "-DD_DIMENSIONS=\${D_DIMENSIONS}" "-DINFILE=\"${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/SpecializedUtils.hpg.in\"" "-DOUTFILE=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpg\"" -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/ConfigureSpecializedUtils.cmake"
+  COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraBaseDir "${Gaalop_ALGEBRA_ROOT_DIR}" -m "${MAXIMA_BIN}" -algebraName "\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpg" -o "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpp" WORKING_DIRECTORY "${Gaalop_JAR_DIR}"
+  ""
+  COMMAND "${CMAKE_COMMAND}" "-DMODEL=\${MODEL}" "-DD_DIMENSIONS=\${D_DIMENSIONS}" "-DLEFT_GRADE=\${LEFT_GRADE}" "-DRIGHT_GRADE=\${RIGHT_GRADE}" "-DINFILE=\"${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/SpecializedProducts.hpg.in\"" "-DOUTFILE=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpg\"" -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/ConfigureSpecializedProducts.cmake"
+  COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraBaseDir "${Gaalop_ALGEBRA_ROOT_DIR}" -m "${MAXIMA_BIN}" -algebraName "\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpg" -o "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpp" WORKING_DIRECTORY "${Gaalop_JAR_DIR}"
+)
+
+# Job done!
 set(Gaalop_ENABLED ${Gaalop_ENABLED} CACHE BOOL "If set, the Geometric Algebra Algorithms Optimizer (Gaalop) is added to the benchmark.")

@@ -22,6 +22,19 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
-// Nothing to do.
+namespace gabenchmark {
+
+    namespace detail {
+
+        constexpr std::uint64_t binomial_coefficient(dims_t const n, dims_t const k) {
+            return k != 0 && k != n ? (binomial_coefficient(n - 1, k - 1) + binomial_coefficient(n - 1, k)) : 1;
+        }
+
+    }
+
+    template<grade_t K>
+    using kvector_t = std::array<real_t, detail::binomial_coefficient(GABENCHMARK_N_DIMENSIONS, K)>;
+
+}
 
 #endif // __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
