@@ -17,7 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-include("${CMAKE_CURRENT_LIST_DIR}/ConfigureBasisBlades.cmake")
+set(ORIGINAL_IN_FILE "${CMAKE_CURRENT_LIST_DIR}/SpecializedProducts.hpg.in")
+set(GENERATED_IN_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedProducts.hpg.in")
+set(GENERATED_HPG_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedProducts.hpg")
+set(GENERATED_HPP_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedProducts.hpp")
+
+include("${CMAKE_CURRENT_LIST_DIR}/SetBasisBlades.cmake")
 
 if(NOT DEFINED BASIS_BLADES_${LEFT_GRADE})
   message(FATAL_ERROR "The BASIS_BLADES_${LEFT_GRADE} variable was not defined.")
@@ -29,4 +34,11 @@ if(NOT DEFINED BASIS_BLADES_${RIGHT_GRADE})
 endif()
 set(RIGHT_BASIS_BLADES "${BASIS_BLADES_${RIGHT_GRADE}}")
 
-configure_file(${INFILE} ${OUTFILE} @ONLY)
+execute_process(COMMAND ${CMAKE_COMMAND} -E compare_files "${ORIGINAL_IN_FILE}" "${GENERATED_IN_FILE}" RESULT_VARIABLE FILES_ARE_DIFFERENT)
+if(FILES_ARE_DIFFERENT)
+  file(MAKE_DIRECTORY ${Gaalop_OPTIMIZATION_DIR})
+  file(COPY "${ORIGINAL_IN_FILE}" DESTINATION ${Gaalop_OPTIMIZATION_DIR})
+  configure_file("${GENERATED_IN_FILE}" "${GENERATED_HPG_FILE}" @ONLY)
+  get_filename_component(Gaalop_JAR_DIR ${Gaalop_JAR_FILE} DIRECTORY)
+  execute_process(COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraBaseDir "${CMAKE_CURRENT_LIST_DIR}/algebras" -algebraName "${Gaalop_ALGEBRA_NAME}" -m "${MAXIMA_BIN}" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${GENERATED_HPG_FILE}" -o "${GENERATED_HPP_FILE}" WORKING_DIRECTORY "${Gaalop_JAR_DIR}")
+endif()

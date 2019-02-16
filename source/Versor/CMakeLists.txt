@@ -41,5 +41,9 @@ set(Versor_LIBS_INIT ${Versor_LIBRARY})
 set(Versor_Products_INCLUDE_DIR "")
 set(Versor_Products_LIBS_INIT "")
 
+# Set include directories and libraries for inverse kinematics
+set(Versor_InverseKinematics_INCLUDE_DIR "")
+set(Versor_InverseKinematics_LIBS_INIT "")
+
 # Job done!
 set(Versor_ENABLED ${Versor_ENABLED} CACHE BOOL "If set, the Versor library is added to the benchmark.")

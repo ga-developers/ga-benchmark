@@ -17,6 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
+if(NOT DEFINED MODEL)
+  message(FATAL_ERROR "The MODEL variable was not defined.")
+endif()
+
+if(NOT DEFINED D_DIMENSIONS)
+  message(FATAL_ERROR "The D_DIMENSIONS variable was not defined.")
+endif()
+
 if(MODEL STREQUAL "ConformalModel")
 
   if(D_DIMENSIONS EQUAL 2)

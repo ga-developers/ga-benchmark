@@ -26,7 +26,6 @@ set(Gaalop_HomogeneousModel_MNEMONIC "h")
 set(Gaalop_MinkowskiModel_MNEMONIC "m")
 
 set(Gaalop_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalop/install/usr/local/bin/GaalopPrecompiler")
-set(Gaalop_ALGEBRA_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/algebras")
 
 # Find required packages and tools
 find_package(Java COMPONENTS Runtime)
@@ -57,8 +56,6 @@ if(NOT EXISTS ${Gaalop_JAR_FILE})
   set(Gaalop_ENABLED false)
 endif()
 
-get_filename_component(Gaalop_JAR_DIR ${Gaalop_JAR_FILE} DIRECTORY)
-
 # Set (global) include directories and libraries
 find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include" DOC "The include directory of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies
@@ -75,13 +72,49 @@ set(Gaalop_Products_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\
 set(Gaalop_Products_LIBS_INIT "")
 
 set(Gaalop_Products_PRE_BUILD_COMMANDS
-  COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}"
-  ""
-  COMMAND "${CMAKE_COMMAND}" "-DMODEL=\${MODEL}" "-DD_DIMENSIONS=\${D_DIMENSIONS}" "-DINFILE=\"${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/SpecializedUtils.hpg.in\"" "-DOUTFILE=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpg\"" -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/ConfigureSpecializedUtils.cmake"
-  COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraBaseDir "${Gaalop_ALGEBRA_ROOT_DIR}" -m "${MAXIMA_BIN}" -algebraName "\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpg" -o "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedUtils.hpp" WORKING_DIRECTORY "${Gaalop_JAR_DIR}"
-  ""
-  COMMAND "${CMAKE_COMMAND}" "-DMODEL=\${MODEL}" "-DD_DIMENSIONS=\${D_DIMENSIONS}" "-DLEFT_GRADE=\${LEFT_GRADE}" "-DRIGHT_GRADE=\${RIGHT_GRADE}" "-DINFILE=\"${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/SpecializedProducts.hpg.in\"" "-DOUTFILE=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpg\"" -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/ConfigureSpecializedProducts.cmake"
-  COMMAND "${Java_JAVA_EXECUTABLE}" -jar "${Gaalop_JAR_FILE}" -algebraBaseDir "${Gaalop_ALGEBRA_ROOT_DIR}" -m "${MAXIMA_BIN}" -algebraName "\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga" -optimizer "de.gaalop.tba.Plugin" -generator "de.gaalop.compressed.Plugin" -i "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpg" -o "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}/SpecializedProducts.hpp" WORKING_DIRECTORY "${Gaalop_JAR_DIR}"
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    "-DMODEL=\${MODEL}"
+    "-DD_DIMENSIONS=\${D_DIMENSIONS}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedUtils.cmake"
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    "-DMODEL=\${MODEL}"
+    "-DD_DIMENSIONS=\${D_DIMENSIONS}"
+    "-DLEFT_GRADE=\${LEFT_GRADE}"
+    "-DRIGHT_GRADE=\${RIGHT_GRADE}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedProducts.cmake"
+)
+
+# Set include directories, libraries and pre-build commands for inverse kinematics
+set(Gaalop_InverseKinematics_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}")
+set(Gaalop_InverseKinematics_LIBS_INIT "")
+
+set(Gaalop_InverseKinematics_PRE_BUILD_COMMANDS
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    "-DMODEL=\${MODEL}"
+    "-DD_DIMENSIONS=\${D_DIMENSIONS}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedUtils.cmake"
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedInverseKinematics.cmake"
 )
 
 # Job done!
