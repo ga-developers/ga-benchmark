@@ -160,7 +160,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                                 best_Z = np.full(X.shape, float('inf'), np.float32)
                                 for library, values in libraries.items():
                                     color_ind = all_libraries.index(library) / (len(all_libraries) - 1)
-                                    color = cmap(color_ind)
+                                    color = mpl.colors.rgb2hex(cmap(color_ind))
 
                                     Z = np.full(X.shape, float('inf'), np.float32)
                                     for xy, z in values.items():
