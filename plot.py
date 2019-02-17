@@ -39,7 +39,7 @@ def _context_to_key(context: dict) -> str:
         str(context['cpu_scaling_enabled']),
         str(context['load_avg'])
     )
-    
+
 
 def _parse_benchmark_name(name: str) -> Tuple[str, str, str, str, int, dict]:
     """Parse benchmark name to a set of values.
@@ -49,7 +49,7 @@ def _parse_benchmark_name(name: str) -> Tuple[str, str, str, str, int, dict]:
     params = name.split('/')
 
     _, group, operation = params[0].split('_')
-    
+
     library, model, d, args = None, None, None, dict()
     for pair in params[1:]:
         key, value = pair.split('=')
@@ -134,7 +134,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
     :param data: a dictionary returned by the _read_data(...) function.
     :param all_libraries: a list including the name of all libraries and library generators.
     :param folder: the path to the folder where the files will be written.
-    :param verbose: indicates whether the processing messages should be displayed. 
+    :param verbose: indicates whether the processing messages should be displayed.
     """
     def message(msg, *argv):
         if verbose: print(msg % argv, end='')
@@ -153,7 +153,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                             X_, Y_ = X.ravel() - 0.5, Y.ravel() - 0.5
                             for operation, libraries in operations.items():
                                 relative_path = os.path.join(context_key, metric, model, str(d), group, operation)
-                                message('  Ploting results to "%s"... ', os.path.join('OUTPUT_FOLDER', relative_path))
+                                message('  Plotting results to "%s"... ', os.path.join('OUTPUT_FOLDER', relative_path))
                                 os.makedirs(os.path.join(folder, relative_path), exist_ok=True)
                                 best_library = np.full(X.shape, '', np.object)
                                 best_color_ind = np.full(X.shape, -1, np.float32)
@@ -164,13 +164,13 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
 
                                     Z = np.full(X.shape, float('inf'), np.float32)
                                     for xy, z in values.items():
-                                        Z[xy[0] - x_min, xy[1] - y_min] = z
+                                        Z[xy[1] - y_min, xy[0] - x_min] = z
 
                                     replace = Z < best_Z
                                     best_library[replace] = library
                                     best_color_ind[replace] = color_ind
                                     best_Z[replace] = Z[replace]
-                                    
+
                                     fig = plt.figure('%s %dD - %s, %s - %s - %s' % (model, d, group, operation, library, metric))
                                     ax = fig.add_subplot(111, projection='3d')
                                     ax.set_xlabel('LHS Grade')
@@ -187,7 +187,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                                     fig.savefig(os.path.join(folder, relative_path, library + '.pdf'))
                                     # plt.show()
                                     plt.close(fig)
-                                
+
                                 fig = plt.figure('%s %dD - %s, %s - %s' % (model, d, group, operation, metric))
                                 ax = fig.add_subplot(111)
                                 ax.set_xlabel('LHS Grade')
@@ -196,7 +196,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                                 ax.set_yticks(np.arange(y_min, y_max + 1))
                                 ax.imshow(best_color_ind, interpolation='none', origin='lower', cmap=cmap, vmin=0, vmax=1)
                                 for x, y in zip(X.flatten(), Y.flatten()):
-                                    ax.text(y, x, '%s\n%1.5f ms' % (best_library[x, y], best_Z[x, y]), va='center', ha='center')
+                                    ax.text(y, x, '%s\n%1.5f ms' % (best_library[y-y_min, x-x_min], best_Z[y-y_min, x-x_min]), va='center', ha='center')
                                 fig.tight_layout()
                                 fig.savefig(os.path.join(folder, relative_path, 'Result.pdf'))
                                 # plt.show()
