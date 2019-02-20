@@ -67,7 +67,18 @@ namespace gabenchmark {
 
 #endif
 
-    using multivector_t = matrix_multi<real_t>;
+#if (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS <= 4)
+    #define GABENCHMARK_GLUCAT_LO (-4)
+    #define GABENCHMARK_GLUCAT_HI (4)
+#elif (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS <= 8)
+    #define GABENCHMARK_GLUCAT_LO (-8)
+    #define GABENCHMARK_GLUCAT_HI (8)
+#else
+    #define GABENCHMARK_GLUCAT_LO (DEFAULT_LO)
+    #define GABENCHMARK_GLUCAT_HI (DEFAULT_HI)
+#endif
+
+    using multivector_t = matrix_multi<real_t, GABENCHMARK_GLUCAT_LO, GABENCHMARK_GLUCAT_HI>;
 
 }
 
