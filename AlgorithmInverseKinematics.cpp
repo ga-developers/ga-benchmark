@@ -25,10 +25,10 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 #if !defined(GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL)
 
     #include <SpecializedUtils.hpp>
-    #include <SpecializedInverseKinematics.hpp>
+    #include <SpecializedAlgorithmInverseKinematics.hpp>
     #include "Utils.hpp"
 
-    #if !defined(GABENCHMARK_DOES_NOT_IMPLEMENT_InverseKinematics)
+    #if !defined(GABENCHMARK_DOES_NOT_IMPLEMENT_AlgorithmInverseKinematics)
         template<typename... ExtraArgs>
         void BM_Algorithm_InverseKinematics(benchmark::State &state, ExtraArgs &&...) {
             for (auto _ : state) {

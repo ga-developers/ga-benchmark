@@ -110,7 +110,7 @@ endforeach()
 # Set operations
 set(OPERATIONS_LIST
   Products
-  InverseKinematics
+  AlgorithmInverseKinematics
 )
 
 message(STATUS "")
@@ -163,7 +163,7 @@ foreach(LIBRARY ${LIBRARIES_LIST})
     endif()
 
     # ... for inverse kinematics
-    set(OPERATION InverseKinematics)
+    set(OPERATION AlgorithmInverseKinematics)
     if(GABenchmark_${OPERATION}_ENABLED)
       set(MODEL ConformalModel)
       set(D_DIMENSIONS 3)

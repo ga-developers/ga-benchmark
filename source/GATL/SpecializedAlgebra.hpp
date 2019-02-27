@@ -22,6 +22,8 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 #define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
 
+#define GA_DEFAULT_FLOATING_POINT_TYPE gabenchmark::real_t
+
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
 
     #if GABENCHMARK_D_DIMENSIONS == 2

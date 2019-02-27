@@ -19,8 +19,8 @@ You should have received a copy of the GNU General Public License
 along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GABENCHMARK_SPECIALIZED_INVERSE_KINEMATICS_HPP__
-#define __GABENCHMARK_SPECIALIZED_INVERSE_KINEMATICS_HPP__
+#ifndef __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
+#define __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
 
 namespace gabenchmark {
 
@@ -75,7 +75,7 @@ namespace gabenchmark {
 
         Pg_help = createPoint(J3_x, J3_y + 1, J3_z);
         Lginit = *(J3^Pg_help^ei);
-        Lg = (R4*R3*T2*R1) * Lginit * ~(R4*R3*T2*R1);
+        ?Lg = (R4*R3*T2*R1) * Lginit * ~(R4*R3*T2*R1);
         ?Rg = expp(ang5*Lg/2);
 
         ?Jg_f = (Rg*R3*T2*R1) * Jg * ~(Rg*R3*T2*R1);
@@ -87,4 +87,4 @@ namespace gabenchmark {
 
 }
 
-#endif // __GABENCHMARK_SPECIALIZED_INVERSE_KINEMATICS_HPP__
+#endif // __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__

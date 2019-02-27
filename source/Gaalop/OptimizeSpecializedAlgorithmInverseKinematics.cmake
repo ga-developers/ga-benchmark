@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(ORIGINAL_HPG_FILE "${CMAKE_CURRENT_LIST_DIR}/SpecializedInverseKinematics.hpg")
-set(GENERATED_HPG_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedInverseKinematics.hpg")
-set(GENERATED_HPP_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedInverseKinematics.hpp")
+set(ORIGINAL_HPG_FILE "${CMAKE_CURRENT_LIST_DIR}/SpecializedAlgorithmInverseKinematics.hpg")
+set(GENERATED_HPG_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedAlgorithmInverseKinematics.hpg")
+set(GENERATED_HPP_FILE "${Gaalop_OPTIMIZATION_DIR}/SpecializedAlgorithmInverseKinematics.hpp")
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E compare_files "${ORIGINAL_HPG_FILE}" "${GENERATED_HPG_FILE}" RESULT_VARIABLE FILES_ARE_DIFFERENT)
 if(FILES_ARE_DIFFERENT)

@@ -37,7 +37,8 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 #define MinkowskiModel   0x04
 #define GABENCHMARK_CHECK_MODEL(MODEL) (MODEL == GABENCHMARK_MODEL)
 
-#define Products    0x11
+#define Products                   0x11
+#define AlgorithmInverseKinematics 0x12
 #define GABENCHMARK_CHECK_OPERATION(OPERATION) (OPERATION == GABENCHMARK_OPERATION)
 
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
@@ -63,7 +64,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    using real_t = float;
+    using real_t = std::float_t;
 
     using grade_t = std::int32_t;
     using dims_t = std::uint32_t;

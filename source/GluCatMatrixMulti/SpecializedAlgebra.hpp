@@ -45,10 +45,22 @@ namespace gabenchmark {
 
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
 
-    #define GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL
+    // GluCat requires mapping from Minkoski to Conformal and vice-versa.
 
-    #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 0
-    #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS 0
+    #if GABENCHMARK_CHECK_OPERATION(Products)
+
+        // For products, only native implementations of the model are considered.
+        #define GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL
+
+        #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 0
+        #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS 0
+
+    #else
+
+        #define GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS 1
+        #define GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ((GABENCHMARK_D_DIMENSIONS) + 1)
+
+    #endif
 
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
@@ -67,18 +79,7 @@ namespace gabenchmark {
 
 #endif
 
-#if (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS <= 4)
-    #define GABENCHMARK_GLUCAT_LO (-4)
-    #define GABENCHMARK_GLUCAT_HI (4)
-#elif (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS <= 8)
-    #define GABENCHMARK_GLUCAT_LO (-8)
-    #define GABENCHMARK_GLUCAT_HI (8)
-#else
-    #define GABENCHMARK_GLUCAT_LO (DEFAULT_LO)
-    #define GABENCHMARK_GLUCAT_HI (DEFAULT_HI)
-#endif
-
-    using multivector_t = matrix_multi<real_t, GABENCHMARK_GLUCAT_LO, GABENCHMARK_GLUCAT_HI>;
+    using multivector_t = matrix_multi<real_t, -std::max(GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS, GABENCHMARK_GLUCAT_POSITIVE_GENERATORS), std::max(GABENCHMARK_GLUCAT_NEGATIVE_GENERATORS, GABENCHMARK_GLUCAT_POSITIVE_GENERATORS)>;
 
 }
 

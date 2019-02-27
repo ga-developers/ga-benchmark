@@ -59,8 +59,8 @@ set(Garamon_Products_INCLUDE_DIR "")
 set(Garamon_Products_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
 
 # Set include directories and libraries for inverse kinematics
-set(Garamon_InverseKinematics_INCLUDE_DIR "")
-set(Garamon_InverseKinematics_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
+set(Garamon_AlgorithmInverseKinematics_INCLUDE_DIR "")
+set(Garamon_AlgorithmInverseKinematics_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
 
 # Job done!
 set(Garamon_ENABLED ${Garamon_ENABLED} CACHE BOOL "If set, the Geometric Algebra Recursive and Adaptive Monster (Garamon) is added to the benchmark.")

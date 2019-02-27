@@ -35,8 +35,8 @@ set(GATL_Products_INCLUDE_DIR "")
 set(GATL_Products_LIBS_INIT "")
 
 # Set include directories and libraries for inverse kinematics
-set(GATL_InverseKinematics_INCLUDE_DIR "")
-set(GATL_InverseKinematics_LIBS_INIT "")
+set(GATL_AlgorithmInverseKinematics_INCLUDE_DIR "")
+set(GATL_AlgorithmInverseKinematics_LIBS_INIT "")
 
 # Job done!
 set(GATL_ENABLED ${GATL_ENABLED} CACHE BOOL "If set, the Geometric Algebra Template Library (GATL) is added to the benchmark.")

@@ -28,23 +28,53 @@ namespace gabenchmark {
 
     using namespace vsr;
 
+}
+
 #if GABENCHMARK_CHECK_MODEL(ConformalModel)
-    
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
+
+    #if GABENCHMARK_D_DIMENSIONS == 2
+
+        #include <vsr/space/vsr_cga2D.h>
+
+    #elif GABENCHMARK_D_DIMENSIONS == 3
+
+        #include <vsr/space/vsr_cga3D.h>
+
+    #endif
+        
+    namespace gabenchmark {
+
+        using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
+
+    }
 
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS)>, real_t>;
+    namespace gabenchmark {
+
+        using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS)>, real_t>;
+
+    }
 
 #elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1>, real_t>;
+    namespace gabenchmark {
+
+        using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1>, real_t>;
+
+    }
 
 #elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
 
-    using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1>, real_t>;
+    namespace gabenchmark {
+
+        using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1>, real_t>;
+
+    }
 
 #endif
+
+namespace gabenchmark {
 
     template<bits::type K>
     using kvector_t = algebra_t::mv_t<typename blade<GABENCHMARK_N_DIMENSIONS, K>::type>;

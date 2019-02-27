@@ -35,8 +35,8 @@ set(GluCatFramedMulti_Products_INCLUDE_DIR "")
 set(GluCatFramedMulti_Products_LIBS_INIT "")
 
 # Set include directories and libraries for inverse kinematics
-set(GluCatFramedMulti_InverseKinematics_INCLUDE_DIR "")
-set(GluCatFramedMulti_InverseKinematics_LIBS_INIT "")
+set(GluCatFramedMulti_AlgorithmInverseKinematics_INCLUDE_DIR "")
+set(GluCatFramedMulti_AlgorithmInverseKinematics_LIBS_INIT "")
 
 # Job done!
 set(GluCatFramedMulti_ENABLED ${GluCatFramedMulti_ENABLED} CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")

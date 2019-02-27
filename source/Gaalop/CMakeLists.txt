@@ -95,10 +95,10 @@ set(Gaalop_Products_PRE_BUILD_COMMANDS
 )
 
 # Set include directories, libraries and pre-build commands for inverse kinematics
-set(Gaalop_InverseKinematics_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}")
-set(Gaalop_InverseKinematics_LIBS_INIT "")
+set(Gaalop_AlgorithmInverseKinematics_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}")
+set(Gaalop_AlgorithmInverseKinematics_LIBS_INIT "")
 
-set(Gaalop_InverseKinematics_PRE_BUILD_COMMANDS
+set(Gaalop_AlgorithmInverseKinematics_PRE_BUILD_COMMANDS
   COMMAND "${CMAKE_COMMAND}"
     "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
     "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
@@ -114,7 +114,7 @@ set(Gaalop_InverseKinematics_PRE_BUILD_COMMANDS
     "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
     "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
     "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
-    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedInverseKinematics.cmake"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedAlgorithmInverseKinematics.cmake"
 )
 
 # Job done!
