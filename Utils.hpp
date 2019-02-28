@@ -31,8 +31,8 @@ namespace gabenchmark {
 
     }
 
-    constexpr real_t pi = std::acos(static_cast<real_t>(-1));
-    constexpr real_t two_pi = 2 * std::acos(static_cast<real_t>(-1));
+    const static real_t pi = std::acos(static_cast<real_t>(-1));
+    const static real_t two_pi = 2 * pi;
 
     real_t MakeRandomAngle() {
         return two_pi * detail::uniform_distribution(detail::random_engine);

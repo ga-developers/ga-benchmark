@@ -31,11 +31,15 @@ include(CTest)
 find_package(benchmark REQUIRED)
 find_package(Threads REQUIRED)
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set(GoogleBenchmark_EXTRA_LIBRARIES shlwapi) # Google Benchmark needs extra libraries on Windows
+endif()
+
 find_path(GoogleBenchmark_INCLUDE_DIR NAMES benchmark/benchmark.h PATHS "${benchmark_DIR}/include" "${benchmark_DIR}/../../../include" DOC "The directory where benchmark includes reside")
 set(GoogleBenchmark_INCLUDE_DIRS ${GoogleBenchmark_INCLUDE_DIR})
 
 find_library(GoogleBenchmark_LIBRARY NAMES benchmark PATHS "${benchmark_DIR}/lib" "${benchmark_DIR}/../../../lib" DOC "The benchmark library")
-set(GoogleBenchmark_LIBRARIES ${GoogleBenchmark_LIBRARY})
+set(GoogleBenchmark_LIBRARIES ${GoogleBenchmark_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${GoogleBenchmark_EXTRA_LIBRARIES})
 
 # Implement some useful macros
 macro(subdir_list RESULT PARENTDIR)
@@ -56,7 +60,7 @@ function(configure_target TARGET_NAME OPERATION LIBRARY)
   target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${LIBRARY}" ${GoogleBenchmark_INCLUDE_DIRS} ${${LIBRARY}_INCLUDE_EXTRA_DIR} ${${LIBRARY}_INCLUDE_DIR} ${${OPERATION}_INCLUDE_DIR})
             
   string(CONFIGURE "${${LIBRARY}_${OPERATION}_LIBS_INIT}" ${OPERATION}_LIBS_INIT)
-  target_link_libraries(${TARGET_NAME} ${CMAKE_THREAD_LIBS_INIT} ${GoogleBenchmark_LIBRARIES} ${${LIBRARY}_LIBS_INIT} ${${OPERATION}_LIBS_INIT})
+  target_link_libraries(${TARGET_NAME} ${GoogleBenchmark_LIBRARIES} ${${LIBRARY}_LIBS_INIT} ${${OPERATION}_LIBS_INIT})
             
   if(${LIBRARY}_${OPERATION}_PRE_BUILD_COMMANDS)
     string(CONFIGURE "${${LIBRARY}_${OPERATION}_PRE_BUILD_COMMANDS}" ${OPERATION}_CUSTOM_COMMANDS)
