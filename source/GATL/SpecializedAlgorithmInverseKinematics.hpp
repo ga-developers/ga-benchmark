@@ -77,7 +77,7 @@ namespace gabenchmark {
 
         auto Jg_f = apply_rotor(Rg * R3 * T2 * R1, Jg);
 
-        return std::make_tuple(R1, R2, R3, R4, Rg, Jg_f);
+        return std::make_tuple(R1, R2, R3, T2, R4, Rg, Jg_f);
     }
     
 }

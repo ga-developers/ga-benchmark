@@ -28,7 +28,7 @@ set(Garamon_MinkowskiModel_MNEMONIC "m")
 # Find required packages
 find_package(Eigen3)
 if(NOT ${EIGEN3_FOUND})
-  message(WARNING "Garamon requires Eigen3, which was not found.")
+  # message(WARNING "Garamon requires Eigen3, which was not found.")
   set(Garamon_ENABLED false)
 endif()
 
@@ -37,7 +37,7 @@ foreach(MODEL ${MODELS_LIST})
   foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
     find_library(Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY NAMES ${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/lib")
     if(NOT EXISTS ${Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY})
-      message(WARNING "The path defined in Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY doesn't exist.")
+      # message(WARNING "The path defined in Garamon_${Garamon_${MODEL}_MNEMONIC}${D_DIMENSIONS}ga_LIBRARY doesn't exist.")
       set(Garamon_ENABLED false)
     endif()
   endforeach()
@@ -48,7 +48,7 @@ set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/lo
 set(Garamon_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})
 
 if(NOT EXISTS ${Garamon_INCLUDE_DIR})
-  message(WARNING "The path defined in Garamon_INCLUDE_DIR doesn't exist.")
+  # message(WARNING "The path defined in Garamon_INCLUDE_DIR doesn't exist.")
   set(Garamon_ENABLED false)
 endif()
 

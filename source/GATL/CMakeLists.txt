@@ -24,7 +24,7 @@ set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GATL/repository/cpp/inclu
 set(GATL_INCLUDE_EXTRA_DIR "")
 
 if(NOT EXISTS ${GATL_INCLUDE_DIR})
-  message(WARNING "The path defined in GATL_INCLUDE_DIR doesn't exist.")
+  # message(WARNING "The path defined in GATL_INCLUDE_DIR doesn't exist.")
   set(GATL_ENABLED false)
 endif()
 

@@ -24,7 +24,7 @@ set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/insta
 set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "")
 
 if(NOT EXISTS ${GluCatFramedMulti_INCLUDE_DIR})
-  message(WARNING "The path defined in GluCatFramedMulti_INCLUDE_DIR doesn't exist.")
+  # message(WARNING "The path defined in GluCatFramedMulti_INCLUDE_DIR doesn't exist.")
   set(GluCatFramedMulti_ENABLED false)
 endif()
 

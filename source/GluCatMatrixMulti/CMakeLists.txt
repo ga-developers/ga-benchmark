@@ -24,7 +24,7 @@ set(GluCatMatrixMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/insta
 set(GluCatMatrixMulti_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${GluCatMatrixMulti_INCLUDE_DIR})
-  message(WARNING "The path defined in GluCatMatrixMulti_INCLUDE_DIR doesn't exist.")
+  # message(WARNING "The path defined in GluCatMatrixMulti_INCLUDE_DIR doesn't exist.")
   set(GluCatMatrixMulti_ENABLED false)
 endif()
 

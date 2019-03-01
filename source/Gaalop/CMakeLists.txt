@@ -30,13 +30,13 @@ set(Gaalop_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalop/install/usr/local/b
 # Find required packages and tools
 find_package(Java COMPONENTS Runtime)
 if(NOT ${Java_FOUND})
-  message(WARNING "Gaalop requires Java, which was not found.")
+  # message(WARNING "Gaalop requires Java, which was not found.")
   set(Gaalop_ENABLED false)
 endif()
 
 find_program(MAXIMA_BIN NAMES "maxima" "maxima.sh" "maxima.bat" CACHE PATH "Maxima binary path.")
 if(MAXIMA_BIN-NOTFOUND)
-  message(WARNING "Gaalop requires Maxima, which was not found.")
+  # message(WARNING "Gaalop requires Maxima, which was not found.")
   set(Gaalop_ENABLED false)
 endif()
 
@@ -44,7 +44,7 @@ endif()
 find_library(Gaalop_LIBRARY NAMES gpc-base HINTS "${Gaalop_ROOT_DIR}/lib" DOC "The library of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 
 if(NOT EXISTS ${Gaalop_LIBRARY})
-  message(WARNING "The path defined in Gaalop_LIBRARY doesn't exist.")
+  # message(WARNING "The path defined in Gaalop_LIBRARY doesn't exist.")
   set(Gaalop_ENABLED false)
 endif()
 
@@ -52,7 +52,7 @@ endif()
 find_file(Gaalop_JAR_FILE NAMES starter-1.0.0.jar HINTS "${Gaalop_ROOT_DIR}/share/gpc/gaalop" DOC "The interpreter of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 
 if(NOT EXISTS ${Gaalop_JAR_FILE})
-  message(WARNING "The path defined in Gaalop_JAR_FILE doesn't exist.")
+  # message(WARNING "The path defined in Gaalop_JAR_FILE doesn't exist.")
   set(Gaalop_ENABLED false)
 endif()
 
@@ -61,7 +61,7 @@ find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include"
 set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${Gaalop_INCLUDE_DIR})
-  message(WARNING "The path defined in Gaalop_INCLUDE_DIR doesn't exist.")
+  # message(WARNING "The path defined in Gaalop_INCLUDE_DIR doesn't exist.")
   set(Gaalop_ENABLED false)
 endif()
 
