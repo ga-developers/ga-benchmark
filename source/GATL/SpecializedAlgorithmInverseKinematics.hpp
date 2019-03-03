@@ -25,7 +25,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 namespace gabenchmark {
 
     template<typename Type>
-    decltype(auto) expp(Type const &arg) {
+    inline decltype(auto) expp(Type const &arg) {
         auto lazy = make_lazy_context(arg);
         auto x = lazy.template argument<0>();
         return lazy.eval(c<1> + x + x * x / c<2> + x * x * x / c<6> + x * x * x * x / c<24>);
@@ -53,7 +53,7 @@ namespace gabenchmark {
         auto P2_help = point(J1_x, J1_y + c<1>, J1_z);
         auto L2init = dual(J1 ^ P2_help ^ ni);
         auto L2 = apply_rotor(R1, L2init);
-        auto R2 = expp((ang2 / c<2>) * L2); 
+        auto R2 = expp((ang2 / c<2>) * L2);
 
         auto J2_f = apply_rotor(R2 * R1, J2);
 
@@ -63,11 +63,11 @@ namespace gabenchmark {
         auto R3 = expp((ang3 / c<2>) * L3);
 
         auto J2_rot1 = apply_rotor(R1, J2);
-        auto t2 = (sp(J2_f, e1) - sp(J2_rot1, e1)) * e1 + (sp(J2_f, e2) - sp(J2_rot1, e2)) * e2 + (sp(J2_f, e3) - sp(J2_rot1, e3)) * e3;
+        auto t2 = euclidean_vector(sp(J2_f, e1) - sp(J2_rot1, e1), sp(J2_f, e2) - sp(J2_rot1, e2), sp(J2_f, e3) - sp(J2_rot1, e3));
         auto T2 = expp((c<-1> / c<2>) * (t2 ^ ni));
 
         auto L4init = dual(J3 ^ Jg ^ ni);
-        auto L4 = apply_rotor(R3 * T2 * R1, L4init / rnorm(L4init));
+        auto L4 = apply_rotor(R3 * T2 * R1, unit(L4init));
         auto R4 = expp((ang4 / c<2>) * L4);
 
         auto Pg_help = point(J3_x, J3_y + c<1>, J3_z);

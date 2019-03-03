@@ -19,14 +19,4 @@ You should have received a copy of the GNU General Public License
 along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
-#define __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
-
-namespace gabenchmark {
-
-    //TODO Write me!
-    #define GABENCHMARK_DOES_NOT_IMPLEMENT_AlgorithmInverseKinematics
-
-}
-
-#endif // __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
+#include "../GluCatFramedMulti/SpecializedAlgorithmInverseKinematics.hpp"

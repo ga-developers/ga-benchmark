@@ -36,18 +36,35 @@ namespace gabenchmark {
 
         #include <vsr/space/vsr_cga2D.h>
 
+        namespace gabenchmark {
+            
+            using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
+
+            static auto const e1 = cga2D::Vec(1, 0);
+            static auto const e2 = cga2D::Vec(0, 1);
+            static auto const no = cga2D::Ori(1);
+            static auto const ni = cga2D::Inf(1);
+
+        }
+
     #elif GABENCHMARK_D_DIMENSIONS == 3
 
         #include <vsr/space/vsr_cga3D.h>
 
+        namespace gabenchmark {
+
+            using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
+            
+            static auto const e1 = cga::Vec(1, 0, 0);
+            static auto const e2 = cga::Vec(0, 1, 0);
+            static auto const e3 = cga::Vec(0, 0, 1);
+            static auto const no = cga::Ori(1);
+            static auto const ni = cga::Inf(1);
+
+        }
+
     #endif
         
-    namespace gabenchmark {
-
-        using algebra_t = algebra<metric<(GABENCHMARK_D_DIMENSIONS) + 1, 1, true>, real_t>;
-
-    }
-
 #elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
 
     namespace gabenchmark {
@@ -81,6 +98,11 @@ namespace gabenchmark {
 
     using scalar_t = kvector_t<0>;
     using vector_t = kvector_t<1>;
+
+    template<typename RotorType, typename ArgumentType>
+    inline decltype(auto) apply_rotor(RotorType const &rotor, ArgumentType const &arg) {
+        return rotor * arg * ~rotor;
+    }
 
 }
 

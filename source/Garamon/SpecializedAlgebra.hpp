@@ -32,6 +32,29 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
             using namespace c2ga;
 
+            static auto const e1 = c2ga::e1<real_t>();
+            static auto const e2 = c2ga::e2<real_t>();
+            static auto const no = c2ga::eo<real_t>();
+            static auto const ni = c2ga::ei<real_t>();
+
+            template<typename Type>
+            inline Mvec<Type> euclidean_vector(Type const &x, Type const &y) {
+                Mvec<Type> mv;
+                mv[E1] = x;
+                mv[E2] = y;
+                return mv;
+            }
+
+            template<typename Type>
+            inline Mvec<Type> point(Type const &x, Type const &y) {
+                Mvec<Type> mv;
+                mv[E1] = x;
+                mv[E2] = y;
+                mv[Ei] = 0.5 * mv.quadraticNorm();
+                mv[Eo] = 1.0;
+                return mv;
+            }
+
         }
 
     #elif GABENCHMARK_D_DIMENSIONS == 3
@@ -41,6 +64,32 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
         namespace gabenchmark {
 
             using namespace c3ga;
+
+            static auto const e1 = c3ga::e1<real_t>();
+            static auto const e2 = c3ga::e2<real_t>();
+            static auto const e3 = c3ga::e3<real_t>();
+            static auto const no = c3ga::eo<real_t>();
+            static auto const ni = c3ga::ei<real_t>();
+
+            template<typename Type>
+            inline Mvec<Type> euclidean_vector(Type const &x, Type const &y, Type const &z) {
+                Mvec<Type> mv;
+                mv[E1] = x;
+                mv[E2] = y;
+                mv[E3] = z;
+                return mv;
+            }
+
+            template<typename Type>
+            inline Mvec<Type> point(Type const &x, Type const &y, Type const &z) {
+                Mvec<Type> mv;
+                mv[E1] = x;
+                mv[E2] = y;
+                mv[E3] = z;
+                mv[Ei] = 0.5 * mv.quadraticNorm();
+                mv[Eo] = 1.0;
+                return mv;
+            }
 
         }
 
@@ -149,5 +198,14 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
     #endif
 
 #endif
+
+namespace gabenchmark {
+
+    template<typename RotorType, typename ArgumentType>
+    inline decltype(auto) apply_rotor(RotorType const &rotor, ArgumentType const &arg) {
+        return rotor * arg * ~rotor;
+    }
+
+}
 
 #endif // __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__

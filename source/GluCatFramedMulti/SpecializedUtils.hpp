@@ -31,15 +31,9 @@ namespace gabenchmark {
 
     template<dims_t Dimensions, typename Coordinates>
     multivector_t MakeVector(Coordinates const &coords) {
-        auto e = [](int i) {
-            char index[10]{};
-            sprintf(index, "{%d}", i < GABENCHMARK_GLUCAT_POSITIVE_GENERATORS ? (i + 1) : (GABENCHMARK_GLUCAT_POSITIVE_GENERATORS - (i + 1)) );
-            return multivector_t(index);
-        };
-        
         multivector_t result;
         for (dims_t i = 0; i != Dimensions; ++i) {
-            result += coords[i] * e(i);
+            result += coords[i] * e(i + 1);
         }
         return result;
     }

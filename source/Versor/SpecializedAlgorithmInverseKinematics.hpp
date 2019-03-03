@@ -24,21 +24,10 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
 namespace gabenchmark {
 
-    constexpr auto e1 = cga::Vector(1, 0, 0);
-    constexpr auto e2 = cga::Vector(0, 1, 0);
-    constexpr auto e3 = cga::Vector(0, 0, 1);
-    constexpr auto no = cga::Ori(1);
-    constexpr auto ni = cga::Inf(1);
-
     template<typename Type>
-    decltype(auto) expp(Type const &arg) {
-        return arg + arg * (arg * 0.5 + arg * (arg / 6.0 + arg * arg / 24.0)) + 1.0;
+    inline decltype(auto) expp(Type const &arg) {
+        return arg + arg * ((arg * 0.5) + arg * ((arg / 6.0) + arg * (arg / 24.0))) + 1.0;
     };
-
-    template<typename RotorType, typename ArgumentType>
-    decltype(auto) apply_rotor(RotorType const &rotor, ArgumentType const &arg) {
-        return rotor * arg * ~rotor;
-    }
 
     template<typename Scalar>
     constexpr decltype(auto) InverseKinematics(Scalar const &ang1, Scalar const &ang2, Scalar const &ang3, Scalar const &ang4, Scalar const &ang5) {
@@ -72,7 +61,7 @@ namespace gabenchmark {
         auto R3 = expp(L3 * (0.5 * ang3));
 
         auto J2_rot1 = apply_rotor(R1, J2);
-        auto t2 = ((e1 <= J2_f) - (e1 <= J2_rot1)) * e1 + ((e2 <= J2_f) - (e2 <= J2_rot1)) * e2 + ((e3 <= J2_f) - (e3 <= J2_rot1)) * e3;
+        auto t2 = vector_t((e1 <= J2_f)[0] - (e1 <= J2_rot1)[0], (e2 <= J2_f)[0] - (e2 <= J2_rot1)[0], (e3 <= J2_f)[0] - (e3 <= J2_rot1)[0]);
         auto T2 = expp((t2 ^ ni) * (-0.5));
 
         auto L4init = (J3 ^ Jg ^ ni).dual();
