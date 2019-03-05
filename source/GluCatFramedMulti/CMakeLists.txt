@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(GluCatFramedMulti_ENABLED true)
+set(GluCatFramedMulti_SUCCESS true)
 
 # Set (global) include directories and libraries
 set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
@@ -25,7 +25,7 @@ set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "")
 
 if(NOT EXISTS ${GluCatFramedMulti_INCLUDE_DIR})
   # message(WARNING "The path defined in GluCatFramedMulti_INCLUDE_DIR doesn't exist.")
-  set(GluCatFramedMulti_ENABLED false)
+  set(GluCatFramedMulti_SUCCESS false)
 endif()
 
 set(GluCatFramedMulti_LIBS_INIT "")
@@ -39,4 +39,8 @@ set(GluCatFramedMulti_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(GluCatFramedMulti_AlgorithmInverseKinematics_LIBS_INIT "")
 
 # Job done!
-set(GluCatFramedMulti_ENABLED ${GluCatFramedMulti_ENABLED} CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")
+if(${GluCatFramedMulti_SUCCESS})
+  set(GluCatFramedMulti_ENABLED true CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")
+else()
+  set(GluCatFramedMulti_ENABLED false CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark." FORCE)
+endif()

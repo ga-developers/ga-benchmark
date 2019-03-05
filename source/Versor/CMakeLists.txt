@@ -17,13 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(Versor_ENABLED true)
+set(Versor_SUCCESS true)
 
 # Find Versor library
 find_library(Versor_LIBRARY NAMES vsr HINTS "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/lib")
 if(NOT EXISTS ${Versor_LIBRARY})
   # message(WARNING "The path defined in Versor_LIBRARY doesn't exist.")
-  set(Versor_ENABLED false)
+  set(Versor_SUCCESS false)
 endif()
 
 # Set (global) include directories and libraries
@@ -32,7 +32,7 @@ set(Versor_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${Versor_INCLUDE_DIR})
   # message(WARNING "The path defined in Versor_INCLUDE_DIR doesn't exist.")
-  set(Versor_ENABLED false)
+  set(Versor_SUCCESS false)
 endif()
 
 set(Versor_LIBS_INIT ${Versor_LIBRARY})
@@ -46,4 +46,8 @@ set(Versor_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Versor_AlgorithmInverseKinematics_LIBS_INIT "")
 
 # Job done!
-set(Versor_ENABLED ${Versor_ENABLED} CACHE BOOL "If set, the Versor library is added to the benchmark.")
+if(${Versor_SUCCESS})
+  set(Versor_ENABLED true CACHE BOOL "If set, the Versor library is added to the benchmark.")
+else()
+  set(Versor_ENABLED false CACHE BOOL "If set, the Versor library is added to the benchmark." FORCE)
+endif()

@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
-set(Gaalop_ENABLED true)
+set(Gaalop_SUCCESS true)
 
 # Set some constant values
 set(Gaalop_ConformalModel_MNEMONIC "c")
@@ -31,13 +31,13 @@ set(Gaalop_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalop/install/usr/local/b
 find_package(Java COMPONENTS Runtime)
 if(NOT ${Java_FOUND})
   # message(WARNING "Gaalop requires Java, which was not found.")
-  set(Gaalop_ENABLED false)
+  set(Gaalop_SUCCESS false)
 endif()
 
 find_program(MAXIMA_BIN NAMES "maxima" "maxima.sh" "maxima.bat" CACHE PATH "Maxima binary path.")
 if(MAXIMA_BIN-NOTFOUND)
   # message(WARNING "Gaalop requires Maxima, which was not found.")
-  set(Gaalop_ENABLED false)
+  set(Gaalop_SUCCESS false)
 endif()
 
 # Find Gaalop library
@@ -45,7 +45,7 @@ find_library(Gaalop_LIBRARY NAMES gpc-base HINTS "${Gaalop_ROOT_DIR}/lib" DOC "T
 
 if(NOT EXISTS ${Gaalop_LIBRARY})
   # message(WARNING "The path defined in Gaalop_LIBRARY doesn't exist.")
-  set(Gaalop_ENABLED false)
+  set(Gaalop_SUCCESS false)
 endif()
 
 # Find Gaalop interpreter
@@ -53,7 +53,7 @@ find_file(Gaalop_JAR_FILE NAMES starter-1.0.0.jar HINTS "${Gaalop_ROOT_DIR}/shar
 
 if(NOT EXISTS ${Gaalop_JAR_FILE})
   # message(WARNING "The path defined in Gaalop_JAR_FILE doesn't exist.")
-  set(Gaalop_ENABLED false)
+  set(Gaalop_SUCCESS false)
 endif()
 
 # Set (global) include directories and libraries
@@ -62,7 +62,7 @@ set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies
 
 if(NOT EXISTS ${Gaalop_INCLUDE_DIR})
   # message(WARNING "The path defined in Gaalop_INCLUDE_DIR doesn't exist.")
-  set(Gaalop_ENABLED false)
+  set(Gaalop_SUCCESS false)
 endif()
 
 set(Gaalop_LIBS_INIT ${Gaalop_LIBRARY})
@@ -118,4 +118,8 @@ set(Gaalop_AlgorithmInverseKinematics_PRE_BUILD_COMMANDS
 )
 
 # Job done!
-set(Gaalop_ENABLED ${Gaalop_ENABLED} CACHE BOOL "If set, the Geometric Algebra Algorithms Optimizer (Gaalop) is added to the benchmark.")
+if(${Gaalop_SUCCESS})
+  set(Gaalop_ENABLED true CACHE BOOL "If set, the Geometric Algebra Algorithms Optimizer (Gaalop) is added to the benchmark.")
+else()
+  set(Gaalop_ENABLED false CACHE BOOL "If set, the Geometric Algebra Algorithms Optimizer (Gaalop) is added to the benchmark." FORCE)
+endif()
