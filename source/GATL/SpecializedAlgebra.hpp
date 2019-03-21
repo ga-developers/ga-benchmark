@@ -28,7 +28,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
-        #include <ga2c.hpp>
+        #include <gatl/ga2c.hpp>
         
         namespace gabenchmark {
 
@@ -38,7 +38,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 3
         
-        #include <ga3c.hpp>
+        #include <gatl/ga3c.hpp>
         
         namespace gabenchmark {
 
@@ -52,7 +52,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
-        #include <ga2e.hpp>
+        #include <gatl/ga2e.hpp>
         
         namespace gabenchmark {
 
@@ -62,7 +62,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 3
         
-        #include <ga3e.hpp>
+        #include <gatl/ga3e.hpp>
         
         namespace gabenchmark {
 
@@ -72,7 +72,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 4
         
-        #include <ga4e.hpp>
+        #include <gatl/ga4e.hpp>
         
         namespace gabenchmark {
 
@@ -82,7 +82,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 5
         
-        #include <ga5e.hpp>
+        #include <gatl/ga5e.hpp>
         
         namespace gabenchmark {
 
@@ -96,7 +96,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
-        #include <ga2h.hpp>
+        #include <gatl/ga2h.hpp>
         
         namespace gabenchmark {
 
@@ -106,7 +106,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 3
         
-        #include <ga3h.hpp>
+        #include <gatl/ga3h.hpp>
         
         namespace gabenchmark {
 
@@ -116,7 +116,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 4
         
-        #include <ga4h.hpp>
+        #include <gatl/ga4h.hpp>
         
         namespace gabenchmark {
 
@@ -130,7 +130,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #if GABENCHMARK_D_DIMENSIONS == 2
         
-        #include <ga2m.hpp>
+        #include <gatl/ga2m.hpp>
         
         namespace gabenchmark {
 
@@ -140,7 +140,7 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
 
     #elif GABENCHMARK_D_DIMENSIONS == 3
         
-        #include <ga3m.hpp>
+        #include <gatl/ga3m.hpp>
         
         namespace gabenchmark {
 
