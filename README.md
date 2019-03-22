@@ -7,11 +7,12 @@ Contents:
 4. [Compiling and Running](#4-compiling-and-running)
 5. [Ploting Results](#5-ploting-results)
 6. [Further Knowledge](#6-further-knowledge)
-  1. [Gaalop](#61-gaalop)
-  2. [Garamon](#62-garamon)
-  3. [GATL](#63-gatl)
-  4. [GluCat](#64-glucat)
-  5. [Versor](#65-versor)
+   - [Gaalop](#gaalop)
+   - [Garamon](#garamon)
+   - [GATL](#gatl)
+   - [GluCat](#glucat)
+   - [Versor](#versor)
+   - [How ga-benchmark Recognizes a Solution](#how-ga-benchmark-recognizes-a-solution)
 7. [License](#7-license)
 
 
@@ -87,7 +88,7 @@ The commands below summarize the installation process of each of the expected so
 
 Here, we assume that `ga-benchmark` is the current folder and Linux operating system. The installation procedures will place the expected solutions inside the `ga-benchmark/libs` folder.
 
-### 6.1. Gaalop
+### Gaalop
 ```bash
 $ sudo apt install xmaxima
 $ sudo apt install default-jre
@@ -101,7 +102,7 @@ $ rmdir libs/Gaalop/download/GaalopPrecompiler-2.0.1447-Linux
 
 See [Gaalop's download page](http://www.gaalop.de/download/) for a list of prebuilt binaries of the precompiler for Linux and Windows.
 
-### 6.2. Garamon
+### Garamon
 ```bash
 $ sudo apt install libeigen3-dev
 $ git clone https://git.renater.fr/garamon.git libs/Garamon/repository
@@ -125,12 +126,12 @@ $ for conf in ../../../../source/Garamon/algebras/*.conf
 $ cd ../../../..
 ```
 
-### 6.3. GATL
+### GATL
 ```bash
 $ git clone https://github.com/laffernandes/gatl.git libs/GATL/repository
 ```
 
-### 6.4. GluCat
+### GluCat
 ```bash
 $ sudo apt install libeigen3-dev
 $ sudo apt install libboost-all-dev
@@ -143,7 +144,7 @@ $ make DESTDIR=$(realpath ../install) install
 $ cd ../../..
 ```
 
-### 6.5. Versor
+### Versor
 ```bash
 $ git clone https://github.com/wolftype/versor.git libs/Versor/repository
 $ mkdir libs/Versor/repository/build
