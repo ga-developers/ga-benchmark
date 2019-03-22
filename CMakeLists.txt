@@ -89,15 +89,30 @@ set(MODELS_LIST
   MinkowskiModel
 )
 
+message(STATUS "")
+message(STATUS "Set of models:")
+foreach(MODEL ${MODELS_LIST})
+  set(GABenchmarkModel_${MODEL}_ENABLED TRUE CACHE BOOL "If set, operations of this model are added to the benchmark.")
+  if(${GABenchmarkModel_${MODEL}_ENABLED})
+    message(STATUS "  - " ${MODEL} " (enabled)")
+  else()
+    message(STATUS "  - " ${MODEL} " (disabled)")
+  endif()
+endforeach()
+
+set(ConformalModel_EXTRA_DIMENSIONS 2)
 set(ConformalModel_MIN_D_DIMENSIONS 2)
 set(ConformalModel_MAX_D_DIMENSIONS 3)
 
+set(EuclideanModel_EXTRA_DIMENSIONS 0)
 set(EuclideanModel_MIN_D_DIMENSIONS 2)
 set(EuclideanModel_MAX_D_DIMENSIONS 5)
 
+set(HomogeneousModel_EXTRA_DIMENSIONS 1)
 set(HomogeneousModel_MIN_D_DIMENSIONS 2)
 set(HomogeneousModel_MAX_D_DIMENSIONS 4)
 
+set(MinkowskiModel_EXTRA_DIMENSIONS 2)
 set(MinkowskiModel_MIN_D_DIMENSIONS 2)
 set(MinkowskiModel_MAX_D_DIMENSIONS 3)
 
@@ -130,8 +145,8 @@ set(OPERATIONS_LIST
 message(STATUS "")
 message(STATUS "Set of operations:")
 foreach(OPERATION ${OPERATIONS_LIST})
-  set(GABenchmark_${OPERATION}_ENABLED TRUE CACHE BOOL "If set, this kind of operation is added to the benchmark.")
-  if(${GABenchmark_${OPERATION}_ENABLED})
+  set(GABenchmarkOperation_${OPERATION}_ENABLED TRUE CACHE BOOL "If set, this kind of operation is added to the benchmark.")
+  if(${GABenchmarkOperation_${OPERATION}_ENABLED})
     message(STATUS "  - " ${OPERATION} " (enabled)")
   else()
     message(STATUS "  - " ${OPERATION} " (disabled)")
@@ -149,52 +164,57 @@ foreach(LIBRARY ${LIBRARIES_LIST})
 
     # ... for products
     set(OPERATION Products)
-    if(GABenchmark_${OPERATION}_ENABLED)
+    if(GABenchmarkOperation_${OPERATION}_ENABLED)
       message(STATUS "    - " ${OPERATION})
       foreach(MODEL ${MODELS_LIST})
-        foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
-          foreach(LEFT_GRADE RANGE 0 ${D_DIMENSIONS})
-            foreach(RIGHT_GRADE RANGE 0 ${D_DIMENSIONS})
-              message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", LEFT_GRADE = " ${LEFT_GRADE} ", RIGHT_GRADE = " ${RIGHT_GRADE})
+        if(GABenchmarkModel_${MODEL}_ENABLED)
+          foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
+            math(EXPR N_DIMENSIONS "${D_DIMENSIONS} + ${${MODEL}_EXTRA_DIMENSIONS}")
+            foreach(LEFT_GRADE RANGE 0 ${N_DIMENSIONS})
+              foreach(RIGHT_GRADE RANGE 0 ${N_DIMENSIONS})
+                message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", LEFT_GRADE = " ${LEFT_GRADE} ", RIGHT_GRADE = " ${RIGHT_GRADE})
+                  
+                set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
+
+                configure_target(${TARGET_NAME} ${OPERATION} ${LIBRARY})
                 
-              set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_LEFTGRADE${LEFT_GRADE}_RIGHTGRADE${RIGHT_GRADE}_${LIBRARY})
+                target_compile_definitions(${TARGET_NAME} PRIVATE
+                  GABENCHMARK_LIBRARY=${LIBRARY}
+                  GABENCHMARK_OPERATION=${OPERATION}
+                  GABENCHMARK_MODEL=${MODEL}
+                  GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
+                  GABENCHMARK_LEFT_GRADE=${LEFT_GRADE}
+                  GABENCHMARK_RIGHT_GRADE=${RIGHT_GRADE}
+                )
 
-              configure_target(${TARGET_NAME} ${OPERATION} ${LIBRARY})
-              
-              target_compile_definitions(${TARGET_NAME} PRIVATE
-                GABENCHMARK_LIBRARY=${LIBRARY}
-                GABENCHMARK_OPERATION=${OPERATION}
-                GABENCHMARK_MODEL=${MODEL}
-                GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
-                GABENCHMARK_LEFT_GRADE=${LEFT_GRADE}
-                GABENCHMARK_RIGHT_GRADE=${RIGHT_GRADE}
-              )
-
-              endforeach()
+                endforeach()
+            endforeach()
           endforeach()
-        endforeach()
+        endif()
       endforeach()
     endif()
 
     # ... for inverse kinematics
     set(OPERATION AlgorithmInverseKinematics)
-    if(GABenchmark_${OPERATION}_ENABLED)
+    if(GABenchmarkOperation_${OPERATION}_ENABLED)
       set(MODEL ConformalModel)
-      set(D_DIMENSIONS 3)
+      if(GABenchmarkModel_${MODEL}_ENABLED)
+        set(D_DIMENSIONS 3)
 
-      message(STATUS "    - " ${OPERATION})
-      message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS})
-                
-      set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_${LIBRARY})
+        message(STATUS "    - " ${OPERATION})
+        message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS})
+                  
+        set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_${LIBRARY})
 
-      configure_target(${TARGET_NAME} ${OPERATION} ${LIBRARY})
+        configure_target(${TARGET_NAME} ${OPERATION} ${LIBRARY})
 
-      target_compile_definitions(${TARGET_NAME} PRIVATE
-        GABENCHMARK_LIBRARY=${LIBRARY}
-        GABENCHMARK_OPERATION=${OPERATION}
-        GABENCHMARK_MODEL=${MODEL}
-        GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
-      )
+        target_compile_definitions(${TARGET_NAME} PRIVATE
+          GABENCHMARK_LIBRARY=${LIBRARY}
+          GABENCHMARK_OPERATION=${OPERATION}
+          GABENCHMARK_MODEL=${MODEL}
+          GABENCHMARK_D_DIMENSIONS=${D_DIMENSIONS}
+        )
+      endif()
     endif()
   endif()
 endforeach()

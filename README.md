@@ -1,12 +1,27 @@
 # ga-benchmark
 
-## Overview
+Contents:
+1. [Overview](#1-overview)
+2. [Requirements](#2-requirements)
+3. [Building](#3-building)
+4. [Compiling and Running](#4-compiling-and-running)
+5. [Ploting Results](#5-ploting-results)
+6. [Further Knowledge](#6-further-knowledge)
+  1. [Gaalop](#61-gaalop)
+  2. [Garamon](#62-garamon)
+  3. [GATL](#63-gatl)
+  4. [GluCat](#64-glucat)
+  5. [Versor](#65-versor)
+7. [License](#7-license)
+
+
+## 1. Overview
 This repository is a joint effort to define standards and methodologies for benchmarking Geometric Algebra libraries.
 
 The goal of this project is to help physicists, chemists, engineers, and computer scientists to choose the Geometric Algebra library that best suits their practical needs, as well as to push further the improvement of the compared solutions and to motivate the development of new tools.
 
 
-## Requirements
+## 2. Requirements
 Make sure that you have all the following tools, libraries and library generators installed and working before attempting to use **ga-benchmark**.
 
 Required tools:
@@ -32,10 +47,10 @@ Expected Geometric Algebra libraries and library generators:
 - [GluCat: Clifford Algebra Templates](https://github.com/penguian/glucat)
 - [Versor](http://versor.mat.ucsb.edu)
 
-The *Further Knowledge* section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above. Notice that Gaalop and Garamon must be instrumented 
+The (Further Knowledge)[#6-further-knowledge] section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above. Notice that Gaalop and Garamon must be instrumented 
 
 
-## Building
+## 3. Building
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project:
 ```bash
 $ git clone https://github.com/ga-developers/ga-benchmark.git ga-benchmark
@@ -49,14 +64,14 @@ $ cd build
 $ cmake -DCMAKE_BUILD_TYPE=Release ..
 ```
 
-## Compiling and Running
+## 4. Compiling and Running
 Assuming a makefile generator was used:
 ```bash
 $ make -j8
 $ make test
 ```
 
-## Ploting Results
+## 5. Ploting Results
 Assuming that the current folder is `ga-benchmark/build` and you want to save resulting charts and tables to the `ga-benchmark/results` folder:
 ```bash
 $ cd ..
@@ -65,14 +80,14 @@ $ python -m plot -i ./build -o ./results
 
 If everything is alright, then results are in the `ga-benchmark/results` folder.
 
-## Further Knowledge
+## 6. Further Knowledge
 If your system does not include the expected libraries and library generators listed above then you must install them following the instructions provided by the developers.
 
 The commands below summarize the installation process of each of the expected solutions. However, it is important to note that the process may have changed with the release of new versions.
 
 Here, we assume that `ga-benchmark` is the current folder and Linux operating system. The installation procedures will place the expected solutions inside the `ga-benchmark/libs` folder.
 
-### Gaalop
+### 6.1. Gaalop
 ```bash
 $ sudo apt install xmaxima
 $ sudo apt install default-jre
@@ -86,7 +101,7 @@ $ rmdir libs/Gaalop/download/GaalopPrecompiler-2.0.1447-Linux
 
 See [Gaalop's download page](http://www.gaalop.de/download/) for a list of prebuilt binaries of the precompiler for Linux and Windows.
 
-### Garamon
+### 6.2. Garamon
 ```bash
 $ sudo apt install libeigen3-dev
 $ git clone https://git.renater.fr/garamon.git libs/Garamon/repository
@@ -110,12 +125,12 @@ $ for conf in ../../../../source/Garamon/algebras/*.conf
 $ cd ../../../..
 ```
 
-### GATL
+### 6.3. GATL
 ```bash
 $ git clone https://github.com/laffernandes/gatl.git libs/GATL/repository
 ```
 
-### GluCat
+### 6.4. GluCat
 ```bash
 $ sudo apt install libeigen3-dev
 $ sudo apt install libboost-all-dev
@@ -128,7 +143,7 @@ $ make DESTDIR=$(realpath ../install) install
 $ cd ../../..
 ```
 
-### Versor
+### 6.5. Versor
 ```bash
 $ git clone https://github.com/wolftype/versor.git libs/Versor/repository
 $ mkdir libs/Versor/repository/build
@@ -144,5 +159,5 @@ $ cd ../../../..
 A given library or library generator will be recognized by **ga-benchmark** if and only if the `ga-benchmark/source` folder includes a subfolder with the benchmark code of the given solution. The [`ga-benchmark/source/README.md`](source/README.md) file presents detailed instructions about how to prepare such subfolder.
 
 
-## License
+## 7. License
 This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.
