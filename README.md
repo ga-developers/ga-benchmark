@@ -84,7 +84,7 @@ If everything is alright, then results are in the `ga-benchmark/results` folder.
 
 
 ## 6. Latest Results
-The latest results are available here: (`ga-benchmark/runs/results-2019.03.23.zip`)[runs/results-2019.03.23.zip]. 
+The latest results are available here: [`ga-benchmark/runs/results-2019.03.23.zip`](runs/results-2019.03.23.zip). 
 
 
 ## 7. Further Knowledge
