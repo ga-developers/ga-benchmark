@@ -6,14 +6,15 @@ Contents:
 3. [Building](#3-building)
 4. [Compiling and Running](#4-compiling-and-running)
 5. [Ploting Results](#5-ploting-results)
-6. [Further Knowledge](#6-further-knowledge)
+6. [Latest Results](#6-latest-results)
+7. [Further Knowledge](#7-further-knowledge)
    - [Gaalop](#gaalop)
    - [Garamon](#garamon)
    - [GATL](#gatl)
    - [GluCat](#glucat)
    - [Versor](#versor)
    - [How ga-benchmark Recognizes a Solution](#how-ga-benchmark-recognizes-a-solution)
-7. [License](#7-license)
+8. [License](#8-license)
 
 
 ## 1. Overview
@@ -48,7 +49,7 @@ Expected Geometric Algebra libraries and library generators:
 - [GluCat: Clifford Algebra Templates](https://github.com/penguian/glucat)
 - [Versor](http://versor.mat.ucsb.edu)
 
-The (Further Knowledge)[#6-further-knowledge] section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above. Notice that Gaalop and Garamon must be instrumented 
+The (Further Knowledge)[#7-further-knowledge] section describes how to install the expected libraries and library generators, and how to make **ga-benchmark** recognize the existence of a solution to be compared, including custom ones not listed above. Notice that Gaalop and Garamon must be instrumented 
 
 
 ## 3. Building
@@ -81,7 +82,12 @@ $ python -m plot -i ./build -o ./results
 
 If everything is alright, then results are in the `ga-benchmark/results` folder.
 
-## 6. Further Knowledge
+
+## 6. Latest Results
+The latest results are available here: (`ga-benchmark/runs/results-2019.03.23.zip`)[runs/results-2019.03.23.zip]. 
+
+
+## 7. Further Knowledge
 If your system does not include the expected libraries and library generators listed above then you must install them following the instructions provided by the developers.
 
 The commands below summarize the installation process of each of the expected solutions. However, it is important to note that the process may have changed with the release of new versions.
@@ -160,5 +166,5 @@ $ cd ../../../..
 A given library or library generator will be recognized by **ga-benchmark** if and only if the `ga-benchmark/source` folder includes a subfolder with the benchmark code of the given solution. The [`ga-benchmark/source/README.md`](source/README.md) file presents detailed instructions about how to prepare such subfolder.
 
 
-## 7. License
+## 8. License
 This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.

@@ -160,6 +160,8 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                                 ax = fig.add_subplot(111)
                                 ax.set_xlabel('Libraries')
                                 ax.set_ylabel('ms')
+                                for tick in ax.xaxis.get_major_ticks():
+                                    tick.label.set_rotation('vertical')
                                 plt.bar(np.arange(1, len(libraries) + 1), values, tick_label=libraries, color=[mpl.colors.rgb2hex(cmap(all_libraries.index(library) / (len(all_libraries) - 1))) for library in libraries])
                                 fig.tight_layout()
                                 fig.savefig(os.path.join(folder, relative_path, 'Result.pdf'))
@@ -215,7 +217,7 @@ def _plot_data(data: dict, all_libraries: list, folder: str, verbose: bool) -> N
                                 ax.set_yticks(np.arange(y_min, y_max + 1))
                                 ax.imshow(best_color_ind, interpolation='none', origin='lower', cmap=cmap, vmin=0, vmax=1)
                                 for x, y in zip(X.flatten(), Y.flatten()):
-                                    ax.text(x, y, '%s\n%1.5f ms' % (best_library[y-y_min, x-x_min], best_Z[y-y_min, x-x_min]), va='center', ha='center')
+                                    ax.text(x, y, '%s\n%1.5f ms' % (best_library[y-y_min, x-x_min], best_Z[y-y_min, x-x_min]), va='center', ha='center', fontsize=6)
                                 fig.tight_layout()
                                 fig.savefig(os.path.join(folder, relative_path, 'Result.pdf'))
                                 # plt.show()
