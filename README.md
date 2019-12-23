@@ -24,7 +24,7 @@ The goal of this project is to help physicists, chemists, engineers, and compute
 Make sure that you have all the following tools, libraries and library generators installed and working before attempting to use **ga-benchmark**.
 
 Required tools:
-- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
+- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B17) compiler
 - [Python 3](https://www.python.org) interpreter
 - [CMake](https://cmake.org)
 
