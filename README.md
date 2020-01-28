@@ -16,6 +16,7 @@ The goal of this project is to help physicists, chemists, engineers, and compute
    - [Garamon](#garamon)
    - [GATL](#gatl)
    - [GluCat](#glucat)
+   - [TbGAL](#tbgal)
    - [Versor](#versor)
    - [How ga-benchmark Recognizes a Solution](#how-ga-benchmark-recognizes-a-solution)
 6. [License](#6-license)
