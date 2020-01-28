@@ -64,7 +64,7 @@ The [Further Knowledge](#6-further-knowledge) section describes how to install t
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project:
 
 ```bash
-git clone https://github.com/ga-developers/ga-benchmark.git ga-benchmark
+git clone --branch beta-version-2.0 https://github.com/ga-developers/ga-benchmark.git ga-benchmark
 cd ga-benchmark
 ```
 
@@ -97,8 +97,6 @@ python -m gabm -i ./build -o ./results
 ```
 
 If everything is alright, then results are in the `ga-benchmark/results` folder. This is the folder structure expected by the repository [`https://github.com/ga-developers/ga-benchmark-runs`](https://github.com/ga-developers/ga-benchmark-runs), since it also includes a copy of the input JSON files.
-
-
 
 ## 4. Latest Results
 

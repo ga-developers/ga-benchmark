@@ -25,13 +25,9 @@ GABM_DEFINE_UNARY_OPERATION(CliffordConjugation, arg) {
     return arg.conjugation();
 }
 
-#if !GABM_CHECK_MODEL(MinkowskiModel)
-    GABM_DEFINE_UNARY_OPERATION(Dualization, arg) {
-        return arg.dual();
-    }
-#else
-    GABM_REPORT_THAT_UNARY_OPERATION_LEADS_TO_COMPILATION_ERROR(Dualization)
-#endif
+GABM_DEFINE_UNARY_OPERATION(Dualization, arg) {
+    return arg.dual();
+}
 
 GABM_DEFINE_UNARY_OPERATION(GradeInvolution, arg) {
     return arg.involution();
@@ -59,12 +55,8 @@ GABM_DEFINE_UNARY_OPERATION(UnaryMinus, arg) {
 
 GABM_REPORT_THAT_UNARY_OPERATION_IS_NOT_IMPLEMENTED(UnaryPlus)
 
-#if !GABM_CHECK_MODEL(MinkowskiModel)
-    GABM_DEFINE_UNARY_OPERATION(Undualization, arg) {
-        return arg.undual();
-    }
-#else
-    GABM_REPORT_THAT_UNARY_OPERATION_LEADS_TO_COMPILATION_ERROR(Undualization)
-#endif
+GABM_DEFINE_UNARY_OPERATION(Undualization, arg) {
+    return arg.undual();
+}
 
 #endif // __GABM_SPECIALIZED_UNARY_OPERATIONS_HPP__
