@@ -1,9 +1,14 @@
+/.env
+/.ipynb_checkpoints
+/.vscode
+/__pycache__
+/build
+/libs/Gaalet
 /libs/Gaalop
 /libs/Garamon
 /libs/GATL
 /libs/GluCat
+/libs/TbGAL
 /libs/Versor
-/build
-/.vscode
 /results
-/__pycache__
+/gabm_results-checkpoint.ipynb

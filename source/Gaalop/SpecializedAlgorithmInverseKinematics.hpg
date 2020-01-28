@@ -1,90 +1,84 @@
-/**
-Copyright(C) 2018 ga-developers
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-Repository: https://github.com/ga-developers/ga-benchmark.git
+#ifndef __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
+#define __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
 
-This file is part of the GA-Benchmark project.
-
-GA-Benchmark is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-GA-Benchmark is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
-/**/
-
-#ifndef __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
-#define __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
-
-namespace gabenchmark {
-
-    template<typename Scalar>
-    constexpr decltype(auto) InverseKinematics(Scalar const &ang1, Scalar const &ang2, Scalar const &ang3, Scalar const &ang4, Scalar const &ang5) {
+GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ang1, ang2, ang3, ang4, ang5) {
 #pragma gpc begin
 #pragma clucalc begin
-        createPoint = {
-            _P(1)*e1 + _P(2)*e2 + _P(3)*e3 + eo + 0.5*(_P(1)*_P(1) + _P(2)*_P(2) + _P(3)*_P(3))*ei
-        }
-      
-        expp = {
-            1 + _P(1) + _P(1)*_P(1)/2 + _P(1)*_P(1)*_P(1)/6 + _P(1)*_P(1)*_P(1)*_P(1)/24
-        }
+    createPoint = {
+        _P(1)*e1 + _P(2)*e2 + _P(3)*e3 + eo + 0.5*(_P(1)*_P(1) + _P(2)*_P(2) + _P(3)*_P(3))*ei
+    }
+    
+    expp = {
+        1 + _P(1) + _P(1)*_P(1)/2 + _P(1)*_P(1)*_P(1)/6 + _P(1)*_P(1)*_P(1)*_P(1)/24
+    }
 
-        d1 = 200; d2 = 680; d3 = 150; d4 = 140; d5 = 114.2;
-        l12 = 890; l23 = 880;
+    d1 = 200; d2 = 680; d3 = 150; d4 = 140; d5 = 114.2;
+    l12 = 890; l23 = 880;
 
-        J1_x = d1; J1_y = 0; J1_z = d2;
-        J2_x = d1; J2_y = 0; J2_z = d2+l12;
-        J3_x = d1+l23; J3_y = 0; J3_z = d2+l12+d3;
-        Jg_x = d1+l23+d4+d5; Jg_y=0; Jg_z = d2+l12+d3;
+    J1_x = d1; J1_y = 0; J1_z = d2;
+    J2_x = d1; J2_y = 0; J2_z = d2+l12;
+    J3_x = d1+l23; J3_y = 0; J3_z = d2+l12+d3;
+    Jg_x = d1+l23+d4+d5; Jg_y=0; Jg_z = d2+l12+d3;
 
-        J1 = createPoint(J1_x, J1_y, J1_z);
-        J2 = createPoint(J2_x, J2_y, J2_z);
-        J3 = createPoint(J3_x, J3_y, J3_z);
-        Jg = createPoint(Jg_x, Jg_y, Jg_z);
+    J1 = createPoint(J1_x, J1_y, J1_z);
+    J2 = createPoint(J2_x, J2_y, J2_z);
+    J3 = createPoint(J3_x, J3_y, J3_z);
+    Jg = createPoint(Jg_x, Jg_y, Jg_z);
 
-        Pz = createPoint(0,0,1);
-        Lz = *(eo^Pz^ei);
-        ?R1 = expp(ang1*Lz/2);
+    Pz = createPoint(0,0,1);
+    Lz = *(eo^Pz^ei);
+    ?R1 = expp(ang1*Lz/2);
 
-        P2_help = createPoint(J1_x, J1_y+1, J1_z);
-        L2init = *(J1^P2_help^ei);  
-        L2 = R1 * L2init * ~R1;
-        ?R2 = expp(ang2*L2/2); 
+    P2_help = createPoint(J1_x, J1_y+1, J1_z);
+    L2init = *(J1^P2_help^ei);  
+    L2 = R1 * L2init * ~R1;
+    ?R2 = expp(ang2*L2/2); 
 
-        J2_f = (R2*R1) * J2 * ~(R2*R1);
+    J2_f = (R2*R1) * J2 * ~(R2*R1);
 
-        P3_help = createPoint(J2_x, J2_y + 1, J2_z);
-        L3init = *(J2^P3_help^ei);
-        ?L3 = (R2*R1) * L3init * ~(R2*R1);
-        ?R3 = expp(ang3*L3/2);
+    P3_help = createPoint(J2_x, J2_y + 1, J2_z);
+    L3init = *(J2^P3_help^ei);
+    ?L3 = (R2*R1) * L3init * ~(R2*R1);
+    ?R3 = expp(ang3*L3/2);
 
-        J2_rot1 = R1 * J2 * ~R1;
-        t2 = (J2_f.e1-J2_rot1.e1)*e1 + (J2_f.e2-J2_rot1.e2)*e2 + (J2_f.e3-J2_rot1.e3)*e3;
-        ?T2 = expp(-0.5*t2*ei);
+    J2_rot1 = R1 * J2 * ~R1;
+    t2 = (J2_f.e1-J2_rot1.e1)*e1 + (J2_f.e2-J2_rot1.e2)*e2 + (J2_f.e3-J2_rot1.e3)*e3;
+    ?T2 = expp(-0.5*t2*ei);
 
-        ?L4init = *(J3^Jg^ei);
-        ?L4 = (R3*T2*R1) * (L4init/abs(L4init)) * ~(R3*T2*R1);
-        ?R4 = expp(ang4*L4/2);
+    ?L4init = *(J3^Jg^ei);
+    ?L4 = (R3*T2*R1) * (L4init/abs(L4init)) * ~(R3*T2*R1);
+    ?R4 = expp(ang4*L4/2);
 
-        Pg_help = createPoint(J3_x, J3_y + 1, J3_z);
-        ?Lginit = *(J3^Pg_help^ei);
-        ?Lg = (R4*R3*T2*R1) * Lginit * ~(R4*R3*T2*R1);
-        ?Rg = expp(ang5*Lg/2);
+    Pg_help = createPoint(J3_x, J3_y + 1, J3_z);
+    ?Lginit = *(J3^Pg_help^ei);
+    ?Lg = (R4*R3*T2*R1) * Lginit * ~(R4*R3*T2*R1);
+    ?Rg = expp(ang5*Lg/2);
 
-        ?Jg_f = (Rg*R3*T2*R1) * Jg * ~(Rg*R3*T2*R1);
+    ?Jg_f = (Rg*R3*T2*R1) * Jg * ~(Rg*R3*T2*R1);
 #pragma clucalc end
 #pragma gpc end
 
-        return std::make_tuple(to_array(R1), to_array(R2), to_array(R3), to_array(T2), to_array(R4), to_array(Rg), to_array(Jg_f));
-    }
-
+    return std::make_tuple(to_array(R1), to_array(R2), to_array(R3), to_array(T2), to_array(R4), to_array(Rg), to_array(Jg_f));
 }
 
-#endif // __GABENCHMARK_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
+#endif // __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__

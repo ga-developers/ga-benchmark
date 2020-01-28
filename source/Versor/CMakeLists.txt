@@ -1,4 +1,4 @@
-# Copyright (C) 2018 ga-developers
+# Copyright (C) ga-developers
 # 
 # Repository: https://github.com/ga-developers/ga-benchmark.git
 # 
@@ -37,17 +37,21 @@ endif()
 
 set(Versor_LIBS_INIT ${Versor_LIBRARY})
 
-# Set include directories and libraries for products
-set(Versor_Products_INCLUDE_DIR "")
-set(Versor_Products_LIBS_INIT "")
-
 # Set include directories and libraries for inverse kinematics
 set(Versor_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Versor_AlgorithmInverseKinematics_LIBS_INIT "")
 
+# Set include directories and libraries for binary operations
+set(Versor_BinaryOperations_INCLUDE_DIR "")
+set(Versor_BinaryOperations_LIBS_INIT "")
+
+# Set include directories and libraries for unary operations
+set(Versor_UnaryOperations_INCLUDE_DIR "")
+set(Versor_UnaryOperations_LIBS_INIT "")
+
 # Job done!
 if(${Versor_SUCCESS})
-  set(Versor_ENABLED true CACHE BOOL "If set, the Versor library is added to the benchmark.")
+  set(Versor_ENABLED true CACHE BOOL "If set, the Versor library will be added to the benchmark.")
 else()
-  set(Versor_ENABLED false CACHE BOOL "If set, the Versor library is added to the benchmark." FORCE)
+  set(Versor_ENABLED false CACHE BOOL "If set, the Versor library will be added to the benchmark." FORCE)
 endif()

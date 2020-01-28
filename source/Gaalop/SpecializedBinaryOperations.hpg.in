@@ -1,0 +1,114 @@
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#ifndef __GABM_SPECIALIZED_BINARY_OPERATIONS_HPP__
+#define __GABM_SPECIALIZED_BINARY_OPERATIONS_HPP__
+
+GABM_DEFINE_BINARY_OPERATION(Addition, lhs, rhs) {
+#pragma gpc begin
+    a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+    b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+#pragma clucalc begin
+    ?add_r = a + b;
+#pragma clucalc end
+#pragma gpc end
+    return to_array(add_r);
+}
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(CommutatorProduct)
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(DotProduct)
+
+GABM_DEFINE_BINARY_OPERATION(GeometricProduct, lhs, rhs) {
+#pragma gpc begin
+    a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+    b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+#pragma clucalc begin
+    ?gp_r = a * b;
+#pragma clucalc end
+#pragma gpc end
+    return to_array(gp_r);
+}
+
+#if (GABM_LEFT_GRADE) != 0 && (GABM_RIGHT_GRADE) != 0
+    GABM_DEFINE_BINARY_OPERATION(HestenesInnerProduct, lhs, rhs) {
+    #pragma gpc begin
+        a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+        b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+    #pragma clucalc begin
+        ?hip_r = a . b;
+    #pragma clucalc end
+    #pragma gpc end
+        return to_array(hip_r);
+    }
+#else
+    GABM_REPORT_THAT_BINARY_OPERATION_LEADS_TO_COMPILATION_ERROR(HestenesInnerProduct)
+#endif
+
+GABM_REPORT_THAT_BINARY_OPERATION_LEADS_TO_COMPILATION_ERROR(InverseGeometricProduct)
+// Gaalop replaces the CLUCalc code below by a truncated version of the source code that should be generated, which leads to compilation error.
+/*
+GABM_DEFINE_BINARY_OPERATION(InverseGeometricProduct, lhs, rhs) {
+#pragma gpc begin
+    a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+    b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+#pragma clucalc begin
+    ?igp_r = a / b;
+#pragma clucalc end
+#pragma gpc end
+    return to_array(igp_r);
+}
+*/
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(LeftContraction)
+
+#if (GABM_LEFT_GRADE) + (GABM_RIGHT_GRADE) <= (GABM_N_DIMENSIONS)
+    GABM_DEFINE_BINARY_OPERATION(OuterProduct, lhs, rhs) {
+    #pragma gpc begin
+        a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+        b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+    #pragma clucalc begin
+        ?op_r = a ^ b;
+    #pragma clucalc end
+    #pragma gpc end
+        return to_array(op_r);
+    }
+#else
+    GABM_REPORT_THAT_BINARY_OPERATION_LEADS_TO_COMPILATION_ERROR(OuterProduct)
+#endif
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(RegressiveProduct)
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(RightContraction)
+
+GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(ScalarProduct)
+
+GABM_DEFINE_BINARY_OPERATION(Subtraction, lhs, rhs) {
+#pragma gpc begin
+    a = mv_from_array(lhs, @LEFT_BASIS_BLADES@);
+    b = mv_from_array(rhs, @RIGHT_BASIS_BLADES@);
+#pragma clucalc begin
+    ?sub_r = a - b;
+#pragma clucalc end
+#pragma gpc end
+    return to_array(sub_r);
+}
+
+#endif // __GABM_SPECIALIZED_BINARY_OPERATIONS_HPP__
