@@ -26,6 +26,11 @@ if(NOT ${EIGEN3_FOUND})
   set(TbGAL_SUCCESS false)
 endif()
 
+# # Set (global) properties
+# set(TbGAL_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(TbGAL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/TbGAL/install/include" CACHE PATH "The include directory of the Tensor-based Geometric Algebra Library (TbGAL).")
 set(TbGAL_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})

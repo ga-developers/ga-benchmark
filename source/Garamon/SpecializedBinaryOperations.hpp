@@ -25,9 +25,9 @@ GABM_DEFINE_BINARY_OPERATION(Addition, lhs, rhs) {
     return lhs + rhs;
 }
 
-GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(CommutatorProduct)
+GABM_REPORT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(CommutatorProduct)
 
-GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(DotProduct)
+GABM_REPORT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(DotProduct)
 
 GABM_DEFINE_BINARY_OPERATION(GeometricProduct, lhs, rhs) {
     return lhs * rhs;
@@ -53,7 +53,7 @@ GABM_DEFINE_BINARY_OPERATION(RightContraction, lhs, rhs) {
     return lhs > rhs;
 }
 
-GABM_REPORT_THAT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(RegressiveProduct)
+GABM_REPORT_BINARY_OPERATION_IS_NOT_IMPLEMENTED(RegressiveProduct)
 
 GABM_DEFINE_BINARY_OPERATION(ScalarProduct, lhs, rhs) {
     return lhs.scalarProduct(rhs);

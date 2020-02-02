@@ -19,6 +19,11 @@
 
 set(GATL_SUCCESS true)
 
+# # Set (global) properties
+# set(GATL_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GATL/install/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
 set(GATL_INCLUDE_EXTRA_DIR "")

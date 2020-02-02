@@ -69,7 +69,7 @@
         ->DisplayAggregatesOnly(true);
 
 #define GABM_ASSERT_OPERATION_DEFINITION(GROUP, OPERATION) \
-    static_assert(GABM_##GROUP##_##OPERATION##_Defined, "Use GABM_DEFINE_<GROUP-NAME>[_<OPERATION-NAME>], GABM_REPORT_THAT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]IS_NOT_IMPLEMENTED, or GABM_REPORT_THAT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]LEADS_TO_COMPILATION_ERROR to define the missing operation.");
+    static_assert(GABM_##GROUP##_##OPERATION##_Defined, "Use GABM_DEFINE_<GROUP-NAME>[_<OPERATION-NAME>], GABM_REPORT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]IS_NOT_IMPLEMENTED, or GABM_REPORT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]LEADS_TO_COMPILATION_ERROR to define the missing operation.");
 
 #define GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(GROUP, OPERATION, ...) \
     auto const GABM_##GROUP##_##OPERATION##_RandomArguments = gabm::WrapRandomArguments(__VA_ARGS__);
@@ -103,7 +103,7 @@
         return GABM_##GROUP##_##OPERATION##_Wrapper(__VA_ARGS__); \
     }
 
-#define GABM_REPORT_THAT_OPERATION_IS_NOT_IMPLEMENTED(GROUP, OPERATION, CASE) \
+#define GABM_REPORT_OPERATION_IS_NOT_IMPLEMENTED(GROUP, OPERATION, CASE) \
     constexpr static bool GABM_##GROUP##_##OPERATION##_Defined = true; \
     \
     template<typename... ExtraArgsType> \
@@ -113,7 +113,7 @@
     \
     GABM_CAPTURE(GABM_##GROUP##_##OPERATION, GABM_SYSTEM_NAME, GABM_SYSTEM_VERSION, GABM_COMPILER_ID, GABM_COMPILER_VERSION, GABM_SOLUTION, GABM_MODEL, GABM_D_DIMENSIONS, CASE)
 
-#define GABM_REPORT_THAT_OPERATION_LEADS_TO_COMPILATION_ERROR(GROUP, OPERATION, CASE) \
+#define GABM_REPORT_OPERATION_LEADS_TO_COMPILATION_ERROR(GROUP, OPERATION, CASE) \
     constexpr static bool GABM_##GROUP##_##OPERATION##_Defined = true; \
     \
     template<typename... ExtraArgsType> \
@@ -133,7 +133,7 @@
     \
     GABM_CAPTURE(GABM_##GROUP##_##OPERATION, GABM_SYSTEM_NAME, GABM_SYSTEM_VERSION, GABM_COMPILER_ID, GABM_COMPILER_VERSION, GABM_SOLUTION, GABM_MODEL, GABM_D_DIMENSIONS, CASE)
 
-#define GABM_INITIALIZE_RANDOM_ANGLES(GLOBAL_VARIABLE) \
+#define GABM_DECLARE_RANDOM_ANGLES(GLOBAL_VARIABLE) \
     class GABM_##GLOBAL_VARIABLE##_Generator { \
     public: \
         static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
@@ -143,7 +143,7 @@
     \
     gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
 
-#define GABM_INITIALIZE_RANDOM_BLADES(GRADE, GLOBAL_VARIABLE) \
+#define GABM_DECLARE_RANDOM_BLADES(GRADE, GLOBAL_VARIABLE) \
     class GABM_##GLOBAL_VARIABLE##_Generator { \
     public: \
         static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
@@ -153,7 +153,7 @@
     \
     gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
 
-#define GABM_INITIALIZE_RANDOM_INVERTIBLE_BLADES(GRADE, GLOBAL_VARIABLE) \
+#define GABM_DECLARE_RANDOM_INVERTIBLE_BLADES(GRADE, GLOBAL_VARIABLE) \
     class GABM_##GLOBAL_VARIABLE##_Generator { \
     public: \
         static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
@@ -164,6 +164,14 @@
     gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
 
 #define GABM_MAIN() \
-    BENCHMARK_MAIN();
+    int main(int argc, char **argv) { \
+        benchmark::Initialize(&argc, argv); \
+        if (benchmark::ReportUnrecognizedArguments(argc, argv)) { \
+            return EXIT_FAILURE; \
+        } \
+        gabm::InitializeRandomEntries(); \
+        benchmark::RunSpecifiedBenchmarks(); \
+        return EXIT_SUCCESS; \
+    }
 
 #endif // __GABM_MACROS_HPP__

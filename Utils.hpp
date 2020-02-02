@@ -60,7 +60,7 @@ namespace gabm {
     template<grade_t Grade>
     decltype(auto) MakeRandomInvertibleBlade(std::default_random_engine &random_engine) {
         auto result = MakeRandomBlade<Grade>(random_engine);
-        while (abs(SquaredReverseNorm<Grade>(result)) <= GABM_ZERO_TOLERANCE) {
+        while (std::abs(SquaredReverseNorm<Grade>(result)) <= GABM_ZERO_TOLERANCE) {
             result = MakeRandomBlade<Grade>(random_engine);
         }
         return result;

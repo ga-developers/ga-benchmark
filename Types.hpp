@@ -29,6 +29,7 @@
 #include <random>
 #include <vector>
 
+#include <execinfo.h>
 #include <benchmark/benchmark.h>
 
 namespace gabm {
@@ -41,15 +42,31 @@ namespace gabm {
     using vector_coords_t = std::array<real_t, GABM_N_DIMENSIONS>;
     using factors_list_t = std::vector<vector_coords_t>;
 
+    class BaseRandomEntries;
+
     namespace detail {
 
         std::default_random_engine random_engine{ GABM_OPERATION }; /*The seed is constant because all solutions must use the same set of random numbers.*/
+        
+        std::vector<BaseRandomEntries*> random_entries;
     
     }
 
+    class BaseRandomEntries {
+    public:
+
+        BaseRandomEntries() {
+            detail::random_entries.push_back(this);
+        }
+
+        virtual void init() = 0;
+    };
+
     template<typename RandomEntryGeneratorClass>
-    class RandomEntries {
+    class RandomEntries : public BaseRandomEntries {
     private:
+
+        using Super = BaseRandomEntries;
 
         using entry_type = decltype(RandomEntryGeneratorClass::MakeRandomEntry(detail::random_engine));
         using container_type = std::vector<entry_type>;
@@ -62,29 +79,39 @@ namespace gabm {
         using const_reference = typename container_type::const_reference;
 
         RandomEntries() :
-            entries_() {
-            entries_.reserve(GABM_ITERATIONS);
-            for (std::size_t ind = 0; ind != (GABM_ITERATIONS); ++ind) {
-                entries_.push_back(RandomEntryGeneratorClass::MakeRandomEntry(detail::random_engine));
+            Super(),
+            _entries() {
+            _entries.resize(GABM_ITERATIONS);
+        }
+
+        void init() override {
+            for (auto &entry : _entries) {
+                entry = RandomEntryGeneratorClass::MakeRandomEntry(detail::random_engine);
             }
         }
 
         GABM_ALWAYS_INLINE size_type size() const {
-            return entries_.size();
+            return _entries.size();
         }
         
         GABM_ALWAYS_INLINE reference operator[](size_type ind) {
-            return entries_[ind];
+            return _entries[ind];
         }
 
         GABM_ALWAYS_INLINE const_reference operator[](size_type ind) const {
-            return entries_[ind];
+            return _entries[ind];
         }
 
     private:
 
-        container_type entries_;
+        container_type _entries;
     };
+
+    void InitializeRandomEntries() {
+        for (auto ptr : detail::random_entries) {
+            ptr->init();
+        }
+    }
 
 }
 

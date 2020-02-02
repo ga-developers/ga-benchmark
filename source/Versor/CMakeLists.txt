@@ -26,6 +26,11 @@ if(NOT EXISTS ${Versor_LIBRARY})
   set(Versor_SUCCESS false)
 endif()
 
+# # Set (global) properties
+# set(Versor_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
 set(Versor_INCLUDE_EXTRA_DIR "") # no dependencies

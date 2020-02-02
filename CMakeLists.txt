@@ -26,7 +26,7 @@ endif()
 # Create the project
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 1)
+set(VERSION_PATCH 2)
 
 project(GA-Benchmark
   VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
@@ -67,7 +67,7 @@ endmacro()
 
 function(configure_target TARGET_NAME OPERATION SOLUTION)
   add_executable(${TARGET_NAME} "${PROJECT_SOURCE_DIR}/${OPERATION}.cpp")
-  set_target_properties(${TARGET_NAME} PROPERTIES OUTPUT_NAME ${TARGET_NAME})
+  set_target_properties(${TARGET_NAME} PROPERTIES ${${SOLUTION}_PROPERTIES} OUTPUT_NAME ${TARGET_NAME})
             
   string(CONFIGURE "${${SOLUTION}_${OPERATION}_INCLUDE_DIR}" ${OPERATION}_INCLUDE_DIR)
   target_include_directories(${TARGET_NAME} PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/source/${SOLUTION}" ${GoogleBenchmark_INCLUDE_DIRS} ${${SOLUTION}_INCLUDE_EXTRA_DIR} ${${SOLUTION}_INCLUDE_DIR} ${${OPERATION}_INCLUDE_DIR})

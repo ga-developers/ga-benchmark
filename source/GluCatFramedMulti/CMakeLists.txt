@@ -19,6 +19,11 @@
 
 set(GluCatFramedMulti_SUCCESS true)
 
+# # Set (global) properties
+# set(GluCatFramedMulti_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
 set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "")

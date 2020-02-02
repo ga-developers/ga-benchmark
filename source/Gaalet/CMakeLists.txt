@@ -19,6 +19,11 @@
 
 set(Gaalet_SUCCESS true)
 
+# # Set (global) properties
+# set(Gaalet_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(Gaalet_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalet/install/include/gaalet" CACHE PATH "The include directory of the Geometric Algebra ALgorithms Expression Templates (Gaalet).")
 set(Gaalet_INCLUDE_EXTRA_DIR "")

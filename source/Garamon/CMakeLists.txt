@@ -43,6 +43,11 @@ foreach(MODEL ${MODELS_LIST})
   endforeach()
 endforeach()
 
+# # Set (global) properties
+# set(Garamon_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
 set(Garamon_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})

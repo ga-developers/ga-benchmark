@@ -56,6 +56,11 @@ if(NOT EXISTS ${Gaalop_JAR_FILE})
   set(Gaalop_SUCCESS false)
 endif()
 
+# # Set (global) properties
+# set(Gaalop_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include" DOC "The include directory of the Geometric Algebra Algorithms Optimizer (Gaalop).")
 set(Gaalop_INCLUDE_EXTRA_DIR "") # no dependencies

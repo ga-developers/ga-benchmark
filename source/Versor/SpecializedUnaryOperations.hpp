@@ -53,7 +53,7 @@ GABM_DEFINE_UNARY_OPERATION(UnaryMinus, arg) {
     return -arg;
 }
 
-GABM_REPORT_THAT_UNARY_OPERATION_IS_NOT_IMPLEMENTED(UnaryPlus)
+GABM_REPORT_UNARY_OPERATION_IS_NOT_IMPLEMENTED(UnaryPlus)
 
 GABM_DEFINE_UNARY_OPERATION(Undualization, arg) {
     return arg.undual();
