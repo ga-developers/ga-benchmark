@@ -29,7 +29,6 @@
 #include <random>
 #include <vector>
 
-#include <execinfo.h>
 #include <benchmark/benchmark.h>
 
 namespace gabm {

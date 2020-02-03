@@ -41,18 +41,18 @@ GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ang1, ang2, ang3, ang4, ang5) {
     auto Jg = point(Jg_x, Jg_y, Jg_z);
 
     auto Pz = point(0.0, 0.0, 1.0);
-    auto Lz = dual(no ^ Pz ^ ni);
+    auto Lz = eval(dual(no ^ Pz ^ ni));
     auto R1 = expp((ang1 * 0.5) * Lz);
 
     auto P2_help = point(J1_x, J1_y + 1.0, J1_z);
-    auto L2init = dual(J1 ^ P2_help ^ ni);
+    auto L2init = eval(dual(J1 ^ P2_help ^ ni));
     auto L2 = apply_rotor(R1, L2init);
     auto R2 = expp((ang2 * 0.5) * L2);
 
     auto J2_f = apply_rotor(R2 * R1, J2);
 
     auto P3_help = point(J2_x, J2_y + 1.0, J2_z);
-    auto L3init = dual(J2 ^ P3_help ^ ni);
+    auto L3init = eval(dual(J2 ^ P3_help ^ ni));
     auto L3 = apply_rotor(R2 * R1, L3init);
     auto R3 = expp((ang3 * 0.5) * L3);
 
@@ -60,12 +60,12 @@ GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ang1, ang2, ang3, ang4, ang5) {
     auto t2 = euclidean_vector(element<1>(J2_f) - element<1>(J2_rot1), element<2>(J2_f) - element<2>(J2_rot1), element<3>(J2_f) - element<3>(J2_rot1));
     auto T2 = expp(-0.5 * (t2 ^ ni));
 
-    auto L4init = dual(J3 ^ Jg ^ ni);
+    auto L4init = eval(dual(J3 ^ Jg ^ ni));
     auto L4 = apply_rotor(R3 * T2 * R1, unit(L4init));
     auto R4 = expp((ang4 * 0.5) * L4);
 
     auto Pg_help = point(J3_x, J3_y + 1.0, J3_z);
-    auto Lginit = dual(J3 ^ Pg_help ^ ni);
+    auto Lginit = eval(dual(J3 ^ Pg_help ^ ni));
     auto Lg = apply_rotor(R4 * R3 * T2 * R1, Lginit);
     auto Rg = expp((ang5 * 0.5) * Lg);
 

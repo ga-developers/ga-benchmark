@@ -24,8 +24,6 @@
 #include <utility>
 #include <gaalet.h>
 
-using namespace gaalet;
-
 #if GABM_CHECK_MODEL(ConformalModel)
 
     // Gaalet requires mapping from Minkoski to Conformal and vice-versa.
@@ -37,21 +35,21 @@ using namespace gaalet;
 
     #else
 
-        using space = algebra<signature<(GABM_D_DIMENSIONS) + 1, 1>, gabm::real_t>;
+        using space = gaalet::algebra<gaalet::signature<(GABM_D_DIMENSIONS) + 1, 1>, gabm::real_t>;
 
     #endif
 
 #elif GABM_CHECK_MODEL(EuclideanModel)
 
-    using space = algebra<signature<GABM_D_DIMENSIONS, 0>, gabm::real_t>;
+    using space = gaalet::algebra<gaalet::signature<GABM_D_DIMENSIONS, 0>, gabm::real_t>;
 
 #elif GABM_CHECK_MODEL(HomogeneousModel)
 
-    using space = algebra<signature<(GABM_D_DIMENSIONS) + 1, 0>, gabm::real_t>;
+    using space = gaalet::algebra<gaalet::signature<(GABM_D_DIMENSIONS) + 1, 0>, gabm::real_t>;
 
 #elif GABM_CHECK_MODEL(MinkowskiModel)
 
-    using space = algebra<signature<(GABM_D_DIMENSIONS) + 1, 1>, gabm::real_t>;
+    using space = gaalet::algebra<gaalet::signature<(GABM_D_DIMENSIONS) + 1, 1>, gabm::real_t>;
 
 #endif
 
@@ -67,14 +65,14 @@ using namespace gaalet;
     template<typename Type>
     inline decltype(auto) svalue(Type const &value) noexcept {
         using result_t = typename space::mv<0>::type;
-        return result_t(value);
+        return result_t({value});
     }
 
     // Helper function to define unit basis vectors (the first index is 1).
     template<std::size_t Index>
     inline decltype(auto) e() noexcept {
         using result_t = typename space::mv<(1 << (Index - 1))>::type;
-        return result_t(1);
+        return result_t({1});
     }
 
     // Helper function to define vectors.
@@ -90,7 +88,7 @@ using namespace gaalet;
     inline decltype(auto) vector(Types &&... coords) noexcept {
         static_assert(GABM_N_DIMENSIONS == sizeof...(Types), "The number of coordinates must be equal to the number of dimensions of the vector space.");
         using result_t = typename _gaalet_vector_impl<std::make_index_sequence<GABM_N_DIMENSIONS> >::type;
-        return result_t(std::move(coords)...);
+        return result_t({std::move(coords)...});
     }
 
     // Other constant values and helper functions.
@@ -122,7 +120,7 @@ using namespace gaalet;
 
     inline decltype(auto) pseudoscalar() noexcept {
         using result_t = typename space::mv<(1 << GABM_N_DIMENSIONS) - 1>::type;
-        return result_t(1);
+        return result_t({1});
     }
 
     static auto const I = pseudoscalar();
@@ -132,18 +130,13 @@ using namespace gaalet;
     inline decltype(auto) euclidean_vector(Types &&... coords) noexcept {
         static_assert(GABM_D_DIMENSIONS == sizeof...(Types), "The number of coordinates must be equal to the number of dimensions of the Euclidean vector space.");
         using result_t = typename _gaalet_vector_impl<std::make_index_sequence<GABM_D_DIMENSIONS> >::type;
-        return result_t(std::move(coords)...);
+        return result_t({std::move(coords)...});
     }
 
     template<typename... Types>
     inline decltype(auto) point(Types &&... coords) noexcept {
         auto aux = ((std::move(coords) * std::move(coords)) + ... + 0);
         return vector(std::move(coords)..., (aux - 1) * 0.5, (aux + 1) * 0.5);
-    }
-
-    template<typename ArgumentType>
-    inline decltype(auto) dual(ArgumentType const &arg) noexcept {
-        return eval(arg * invI);
     }
 
     template<typename ArgumentType>

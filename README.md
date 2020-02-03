@@ -115,7 +115,7 @@ Here, we assume that `ga-benchmark` is the current folder and Linux operating sy
 ```bash
 svn checkout https://svn.code.sf.net/p/gaalet/code/trunk libs/Gaalet/repository
 mkdir -p libs/Gaalet/install/include/gaalet
-cp libs/Gaalet/repository/include/cpp/* libs/Gaalet/install/include/gaalet
+cp libs/Gaalet/repository/include/cpp0x/* libs/Gaalet/install/include/gaalet
 ```
 
 ### Gaalop
