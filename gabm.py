@@ -455,8 +455,9 @@ def make_performance_charts(data: dict, solutions: dict, folder: str, start_fold
     :parm start_folder: the path to the folder where the HTML code will be placed.
     :return: a list of HTML documents, one for each table.
     """
-    TIME_TICKS_COUNT = 6 # Including 0 and max_time
     MEAN_TIME_AXIS_LABEL = 'Mean Time (ms)'
+    TIME_TICKS_COUNT = 6 # Including 0 and max_time
+    TOP_COUNT = 3
     plt.ioff()
     itr_count = sum([len(solutions_) if group_key != 'Algorithms' else 1 for _, models in data.values() for dimensions in models.values() for groups in dimensions.values() for group_key, subgroups in groups.items() for operations in subgroups.values() for solutions_ in operations.values()])
     htmls = list()
@@ -509,12 +510,17 @@ def make_performance_charts(data: dict, solutions: dict, folder: str, start_fold
                         html += '<p style="line-height: 1.5"><b>Context:</b> %s</p>' % context_str
                         html += '<table style="table-layout: fixed; width: %dpx;">' % (150 * (len(operations_keys) + 1))
                         if group_key == 'Algorithms':
+                            top_solutions_keys_per_operation = dict()
+                            # Full
                             html += '<tr>'
                             for subgroup_key in subgroups_keys:
                                 html += '<th colspan="%d">%s</th>' % (len([operation_key for curr_subgroup_key, operation_key in operations_keys if curr_subgroup_key == subgroup_key]), OPERATIONS[group_key]['subgroups'][subgroup_key]['description'])
                             html += '</tr><tr>'
                             for subgroup_key, operation_key in operations_keys:
                                 html += '<th>%s</th>' % OPERATIONS[group_key]['subgroups'][subgroup_key]['operations'][operation_key]['description']
+                            html += '</tr><tr>'
+                            for _ in operations_keys:
+                                html += '<td>All Solutions</td>'
                             html += '</tr><tr>'
                             for subgroup_key, operation_key in operations_keys:
                                 relative_path = os.path.join(_context_key_to_folder(context_key), model_key, str(d), group_key, subgroup_key)
@@ -524,6 +530,10 @@ def make_performance_charts(data: dict, solutions: dict, folder: str, start_fold
                                 for solution_ind, solution_key in enumerate(solutions_keys):
                                     for statistics_key in STATISTICS.keys():
                                         subgroup_table[statistics_key][solution_ind] = solutions_tables[solution_key].get(group_key, dict()).get(subgroup_key, dict()).get(operation_key, dict()).get(statistics_key, missing_subgroups_tables[subgroup_key][operation_key])
+                                top_solutions_keys_per_operation[operation_key] = set()
+                                for ind, (mean_time, solution_key) in enumerate(sorted(zip([mean_time if 0 <= mean_time and mean_time <= max_time else sys.float_info.max for mean_time in subgroup_table['mean']], solutions_keys))):
+                                    if ind < TOP_COUNT and mean_time != sys.float_info.max:
+                                        top_solutions_keys_per_operation[operation_key].add(solution_key)
                                 # Draw bar plot of performance.
                                 fig = plt.figure()
                                 barlist = plt.bar(np.arange(len(solutions_keys)), [mean_time if 0 <= mean_time and mean_time <= max_time else max_time for mean_time in subgroup_table['mean']], yerr=[stddev_time if 0 <= stddev_time and stddev_time <= max_time else 0 for stddev_time in subgroup_table['stddev']], edgecolor='k', linewidth=1)
@@ -536,6 +546,45 @@ def make_performance_charts(data: dict, solutions: dict, folder: str, start_fold
                                 ax.set_ylim(0, max_time)
                                 ax.set_yticks(time_ticks)
                                 ax.set_yticklabels(time_tick_labels)
+                                plt.grid(linestyle='--', linewidth=2, axis='y', alpha=0.5)
+                                if os.path.isfile(chart_filename):
+                                    os.remove(chart_filename)
+                                fig.savefig(chart_filename, bbox_inches='tight')
+                                plt.close(fig)
+                                html += '<td><img src="%s?modified=%f" style="max-height:100%%; max-width:100%%"></td>' % (os.path.relpath(chart_filename, start_folder), datetime.timestamp(datetime.now()))
+                                pbar.update(1)
+                            html += '</tr>'
+                            # Top K
+                            html += '<tr>'
+                            for _ in operations_keys:
+                                html += '<td>Top %d</td>' % TOP_COUNT
+                            html += '</tr><tr>'
+                            for subgroup_key, operation_key in operations_keys:
+                                top_tables, _, top_max_times = _tabulate_operations_times(data, contexts_keys={context_key}, models_keys={model_key}, ds={d}, groups_keys={group_key}, subgroups_keys={subgroup_key}, operations_keys={operation_key}, solutions_keys=top_solutions_keys_per_operation[operation_key])
+                                top_solutions_tables = top_tables[context_key][model_key][d]
+                                top_solutions_keys = sorted(list(top_solutions_tables.keys()))
+                                top_max_time = top_max_times[context_key][model_key][d]
+                                top_time_ticks = np.arange(0, TIME_TICKS_COUNT, 1) * (top_max_time / (TIME_TICKS_COUNT - 1))
+                                top_time_tick_labels = ['%1.4f' % tick for tick in top_time_ticks]
+                                relative_path = os.path.join(_context_key_to_folder(context_key), model_key, str(d), group_key, subgroup_key)
+                                chart_filename = os.path.join(folder, relative_path, '%s_top_%d.svg' % (operation_key, TOP_COUNT))
+                                os.makedirs(os.path.join(folder, relative_path), exist_ok=True)
+                                top_subgroup_table = {statistics_key: [MESSAGES['MISSING_DATA']['priority']] * len(top_solutions_keys) for statistics_key in STATISTICS.keys()}
+                                for solution_ind, solution_key in enumerate(top_solutions_keys):
+                                    for statistics_key in STATISTICS.keys():
+                                        top_subgroup_table[statistics_key][solution_ind] = top_solutions_tables[solution_key].get(group_key, dict()).get(subgroup_key, dict()).get(operation_key, dict()).get(statistics_key, missing_subgroups_tables[subgroup_key][operation_key])
+                                # Draw bar plot of performance.
+                                fig = plt.figure()
+                                barlist = plt.bar(np.arange(len(top_solutions_keys)), [mean_time if 0 <= mean_time and mean_time <= top_max_time else top_max_time for mean_time in top_subgroup_table['mean']], yerr=[stddev_time if 0 <= stddev_time and stddev_time <= top_max_time else 0 for stddev_time in top_subgroup_table['stddev']], edgecolor='k', linewidth=1)
+                                for bar, mean_time in zip(barlist, top_subgroup_table['mean']):
+                                    bar.set_facecolor(cmap(cmap.norm(mean_time)))
+                                ax = plt.gca()
+                                ax.set_xticks(np.arange(len(top_solutions_keys)))
+                                ax.set_xticklabels([solutions[solutions_key]['description'] for solutions_key in top_solutions_keys], rotation=45)
+                                ax.set_ylabel(MEAN_TIME_AXIS_LABEL)
+                                ax.set_ylim(0, top_max_time)
+                                ax.set_yticks(top_time_ticks)
+                                ax.set_yticklabels(top_time_tick_labels)
                                 plt.grid(linestyle='--', linewidth=2, axis='y', alpha=0.5)
                                 if os.path.isfile(chart_filename):
                                     os.remove(chart_filename)
