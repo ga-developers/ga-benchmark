@@ -26,7 +26,7 @@ endif()
 # Create the project
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 2)
+set(VERSION_PATCH 3)
 
 project(GA-Benchmark
   VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
@@ -159,12 +159,16 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
   endif()
 endforeach()
 
-# Set operations
+# Set operations and parameters
 set(OPERATIONS_LIST
   AlgorithmInverseKinematics
   BinaryOperations
   UnaryOperations
 )
+
+set(AlgorithmInverseKinematics_TIMEOUT 3000)
+set(BinaryOperations_TIMEOUT 600)
+set(UnaryOperations_TIMEOUT 600)
 
 message(STATUS "")
 message(STATUS "Set of operations:")
@@ -211,7 +215,7 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
           GABM_D_DIMENSIONS=${D_DIMENSIONS}
         )
 
-        set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT 300)
+        set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT ${${OPERATION}_TIMEOUT})
       endif()
     endif()
 
@@ -244,7 +248,7 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
                   GABM_RIGHT_GRADE=${RIGHT_GRADE}
                 )
 
-                set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT 300)
+                set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT ${${OPERATION}_TIMEOUT})
               endforeach()
             endforeach()
           endforeach()
@@ -279,7 +283,7 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
                 GABM_GRADE=${GRADE}
               )
 
-              set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT 300)
+              set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT ${${OPERATION}_TIMEOUT})
             endforeach()
           endforeach()
         endif()

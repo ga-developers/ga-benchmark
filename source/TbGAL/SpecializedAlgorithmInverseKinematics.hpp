@@ -21,6 +21,9 @@
 #ifndef __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
 #define __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
 
+GABM_REPORT_ALGORITHM_INVERSE_KINEMATICS_IS_NOT_IMPLEMENTED()
+
+/*
 static auto const e1 = e(1);
 static auto const e2 = e(2);
 static auto const e3 = e(3);
@@ -80,5 +83,6 @@ GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ang1, ang2, ang3, ang4, ang5) {
 
     return std::make_tuple(R1, R2, R3, T2, R4, Rg, Jg_f);
 }
+*/
 
 #endif // __GABM_SPECIALIZED_ALGORITHM_INVERSE_KINEMATICS_HPP__
