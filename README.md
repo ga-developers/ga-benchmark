@@ -64,7 +64,7 @@ The [Further Knowledge](#6-further-knowledge) section describes how to install t
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project:
 
 ```bash
-git clone --branch beta-version-2.0 https://github.com/ga-developers/ga-benchmark.git ga-benchmark
+git clone https://github.com/ga-developers/ga-benchmark.git ga-benchmark
 cd ga-benchmark
 ```
 
