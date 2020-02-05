@@ -1,25 +1,24 @@
-/**
-Copyright(C) 2018 ga-developers
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-Repository: https://github.com/ga-developers/ga-benchmark.git
-
-This file is part of the GA-Benchmark project.
-
-GA-Benchmark is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-GA-Benchmark is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
-/**/
-
-/** SANITY TEST
+/* SANITY TEST
  * 
  * When the input angles are:
  * 
@@ -42,34 +41,43 @@ along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
  * where 'no' is the null point at the origin and 'ni' is the null point at infinity.
  */
 
-#include "Declarations.hpp"
+#include "Macros.hpp"
+#include "Types.hpp"
 #include <SpecializedAlgebra.hpp>
 
-#if !defined(GABENCHMARK_DOES_NOT_IMPLEMENT_THE_MODEL)
+#if !defined(GABM_MODEL_NOT_IMPLEMENTED)
 
-    #include <SpecializedUtils.hpp>
-    #include <SpecializedAlgorithmInverseKinematics.hpp>
     #include "Utils.hpp"
 
-    #if !defined(GABENCHMARK_DOES_NOT_IMPLEMENT_AlgorithmInverseKinematics)
-        template<typename... ExtraArgs>
-        void BM_Algorithm_InverseKinematics(benchmark::State &state, ExtraArgs &&...) {
-            for (auto _ : state) {
-                state.PauseTiming();
-                auto ang1 = gabenchmark::MakeRandomAngle();
-                auto ang2 = gabenchmark::MakeRandomAngle();
-                auto ang3 = gabenchmark::MakeRandomAngle();
-                auto ang4 = gabenchmark::MakeRandomAngle();
-                auto ang5 = gabenchmark::MakeRandomAngle();
-                state.ResumeTiming();
+    #define GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ANG1_ARG, ANG2_ARG, ANG3_ARG, ANG4_ARG, ANG5_ARG) \
+        GABM_INLINE decltype(auto) GABM_Algorithm_InverseKinematics_Wrapper(gabm::real_t, gabm::real_t, gabm::real_t, gabm::real_t, gabm::real_t); \
+        \
+        GABM_DEFINE_OPERATION(Algorithm, InverseKinematics, _:_, ANG1_ARG, ANG2_ARG, ANG3_ARG, ANG4_ARG, ANG5_ARG) \
+        \
+        GABM_ALWAYS_INLINE decltype(auto) GABM_Algorithm_InverseKinematics_Wrapper(gabm::real_t ANG1_ARG, gabm::real_t ANG2_ARG, gabm::real_t ANG3_ARG, gabm::real_t ANG4_ARG, gabm::real_t ANG5_ARG)
 
-                benchmark::DoNotOptimize(gabenchmark::InverseKinematics(ang1, ang2, ang3, ang4, ang5));
-            }
-        }
+    #define GABM_REPORT_ALGORITHM_INVERSE_KINEMATICS_IS_NOT_IMPLEMENTED() \
+        GABM_REPORT_OPERATION_IS_NOT_IMPLEMENTED(Algorithm, InverseKinematics, _:_)
+    
+    #define GABM_REPORT_ALGORITHM_INVERSE_KINEMATICS_LEADS_TO_COMPILATION_ERROR() \
+        GABM_REPORT_OPERATION_LEADS_TO_COMPILATION_ERROR(Algorithm, InverseKinematics, _:_)
 
-        GABENCHMARK_CAPTURE_ALGORITHM(BM_Algorithm_InverseKinematics);
-    #endif
+    GABM_DECLARE_RANDOM_ANGLES(random_angles1)
+    GABM_DECLARE_RANDOM_ANGLES(random_angles2)
+    GABM_DECLARE_RANDOM_ANGLES(random_angles3)
+    GABM_DECLARE_RANDOM_ANGLES(random_angles4)
+    GABM_DECLARE_RANDOM_ANGLES(random_angles5)
+
+    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(Algorithm, InverseKinematics, random_angles1, random_angles2, random_angles3, random_angles4, random_angles5)
+
+    #include <SpecializedAlgorithmInverseKinematics.hpp>
+
+#else
+
+    GABM_SKIP_OPERATION_WHEN_MODEL_IS_NOT_IMPLEMENTED(Algorithm, InverseKinematics, _:_)
 
 #endif
 
-BENCHMARK_MAIN();
+GABM_ASSERT_OPERATION_DEFINITION(Algorithm, InverseKinematics)
+
+GABM_MAIN()

@@ -1,155 +1,86 @@
-/**
-Copyright(C) 2018 ga-developers
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-Repository: https://github.com/ga-developers/ga-benchmark.git
+#ifndef __GABM_SPECIALIZED_ALGEBRA_HPP__
+#define __GABM_SPECIALIZED_ALGEBRA_HPP__
 
-This file is part of the GA-Benchmark project.
+#define GA_DEFAULT_FLOATING_POINT_TYPE gabm::real_t
 
-GA-Benchmark is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+#if GABM_D_DIMENSIONS == 1
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1"
+#elif GABM_D_DIMENSIONS == 2
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2"
+#elif GABM_D_DIMENSIONS == 3
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3"
+#elif GABM_D_DIMENSIONS == 4
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4"
+#elif GABM_D_DIMENSIONS == 5
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5"
+#elif GABM_D_DIMENSIONS == 6
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5", "e6"
+#elif GABM_D_DIMENSIONS == 7
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5", "e6", "e7"
+#elif GABM_D_DIMENSIONS == 8
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8"
+#elif GABM_D_DIMENSIONS == 9
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9"
+#elif GABM_D_DIMENSIONS == 10
+    #define GABM_GATL_BASE_BASIS_VECTORS_NAMES "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "e10"
+#else
+    #error Update the "source/GATL/SpecializedAlgebra.hpp" file if you want to setup the benchmark with GABM_D_DIMENSIONS > 10.
+#endif
 
-GA-Benchmark is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+#include <gatl/ga/core.hpp>
+#include <gatl/ga/util.hpp>
+#include <gatl/ga/extra.hpp>
 
-You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
-/**/
+using namespace ga;
 
-#ifndef __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
-#define __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
+#if GABM_CHECK_MODEL(ConformalModel)
 
-#define GA_DEFAULT_FLOATING_POINT_TYPE gabenchmark::real_t
+    #include <gatl/ga/model/conformal.hpp>
+    _GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+    _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
 
-#if GABENCHMARK_CHECK_MODEL(ConformalModel)
+#elif GABM_CHECK_MODEL(EuclideanModel)
 
-    #if GABENCHMARK_D_DIMENSIONS == 2
-        
-        #include <gatl/ga2c.hpp>
-        
-        namespace gabenchmark {
+    #include <gatl/ga/model/euclidean.hpp>
+    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
 
-            using namespace ga2c;
+#elif GABM_CHECK_MODEL(HomogeneousModel)
 
-        }
+    #include <gatl/ga/model/homogeneous.hpp>
+    _GA_HOMOGENEOUS_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+    _GA_HOMOGENEOUS_ALGEBRA_OVERLOAD(space)
 
-    #elif GABENCHMARK_D_DIMENSIONS == 3
-        
-        #include <gatl/ga3c.hpp>
-        
-        namespace gabenchmark {
+#elif GABM_CHECK_MODEL(MinkowskiModel)
 
-            using namespace ga3c;
-
-        }
-
-    #endif
-
-#elif GABENCHMARK_CHECK_MODEL(EuclideanModel)
-
-    #if GABENCHMARK_D_DIMENSIONS == 2
-        
-        #include <gatl/ga2e.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga2e;
-            
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 3
-        
-        #include <gatl/ga3e.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga3e;
-            
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 4
-        
-        #include <gatl/ga4e.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga4e;
-            
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 5
-        
-        #include <gatl/ga5e.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga5e;
-            
-        }
-
-    #endif
-
-#elif GABENCHMARK_CHECK_MODEL(HomogeneousModel)
-
-    #if GABENCHMARK_D_DIMENSIONS == 2
-        
-        #include <gatl/ga2h.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga2h;
-            
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 3
-        
-        #include <gatl/ga3h.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga3h;
-            
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 4
-        
-        #include <gatl/ga4h.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga4h;
-            
-        }
-
-    #endif
-
-#elif GABENCHMARK_CHECK_MODEL(MinkowskiModel)
-
-    #if GABENCHMARK_D_DIMENSIONS == 2
-        
-        #include <gatl/ga2m.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga2m;
-
-        }
-
-    #elif GABENCHMARK_D_DIMENSIONS == 3
-        
-        #include <gatl/ga3m.hpp>
-        
-        namespace gabenchmark {
-
-            using namespace ga3m;
-
-        }
-
-    #endif
+    #include <gatl/ga/model/minkowski.hpp>
+    _GA_MINKOWSKI_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+    _GA_MINKOWSKI_ALGEBRA_OVERLOAD(space)
 
 #endif
 
-#endif // __GABENCHMARK_SPECIALIZED_ALGEBRA_HPP__
+_GA_CORE_OVERLOAD(space)
+_GA_UTIL_OVERLOAD(space)
+_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+
+#endif // __GABM_SPECIALIZED_ALGEBRA_HPP__

@@ -1,4 +1,4 @@
-# Copyright (C) 2018 ga-developers
+# Copyright (C) ga-developers
 # 
 # Repository: https://github.com/ga-developers/ga-benchmark.git
 # 
@@ -19,6 +19,11 @@
 
 set(GluCatFramedMulti_SUCCESS true)
 
+# # Set (global) properties
+# set(GluCatFramedMulti_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
 set(GluCatFramedMulti_INCLUDE_EXTRA_DIR "")
@@ -30,17 +35,21 @@ endif()
 
 set(GluCatFramedMulti_LIBS_INIT "")
 
-# Set include directories and libraries for products
-set(GluCatFramedMulti_Products_INCLUDE_DIR "")
-set(GluCatFramedMulti_Products_LIBS_INIT "")
-
 # Set include directories and libraries for inverse kinematics
 set(GluCatFramedMulti_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(GluCatFramedMulti_AlgorithmInverseKinematics_LIBS_INIT "")
 
+# Set include directories and libraries for binary operations
+set(GluCatFramedMulti_BinaryOperations_INCLUDE_DIR "")
+set(GluCatFramedMulti_BinaryOperations_LIBS_INIT "")
+
+# Set include directories and libraries for unary operations
+set(GluCatFramedMulti_UnaryOperations_INCLUDE_DIR "")
+set(GluCatFramedMulti_UnaryOperations_LIBS_INIT "")
+
 # Job done!
 if(${GluCatFramedMulti_SUCCESS})
-  set(GluCatFramedMulti_ENABLED true CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark.")
+  set(GluCatFramedMulti_ENABLED true CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library will be added to the benchmark.")
 else()
-  set(GluCatFramedMulti_ENABLED false CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library is added to the benchmark." FORCE)
+  set(GluCatFramedMulti_ENABLED false CACHE BOOL "If set, the Clifford Algebra Templates (GluCat) library will be added to the benchmark." FORCE)
 endif()

@@ -1,154 +1,480 @@
-/**
-Copyright(C) 2018 ga-developers
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-Repository: https://github.com/ga-developers/ga-benchmark.git
-
-This file is part of the GA-Benchmark project.
-
-GA-Benchmark is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-GA-Benchmark is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
-/**/
-
-#ifndef __GABENCHMARK_SPECIALIZED_UTILS_HPP__
-#define __GABENCHMARK_SPECIALIZED_UTILS_HPP__
+#ifndef __GABM_SPECIALIZED_UTILS_HPP__
+#define __GABM_SPECIALIZED_UTILS_HPP__
 
 #include <experimental/array>
 
+using std::experimental::to_array;
 
-namespace gabenchmark {
-
-    using std::experimental::to_array;
-
-    template<class Type>
-    constexpr std::array<Type, 1> to_array(Type const &arg) {
-        return std::array<Type, 1>{arg};
-    }
-
-    template<>
-    decltype(auto) MakeBlade<0, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        return kvector_t<0>{ scalar };
-    }
-
-#if GABENCHMARK_N_DIMENSIONS >= 1
-
-    template<>
-    decltype(auto) MakeBlade<1, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        kvector_t<1> const &factor0 = factors[0];
-
-#pragma gpc begin
-        f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
-#pragma clucalc begin
-        ?mb1_r = scalar * f0;
-#pragma clucalc end
-#pragma gpc end
-
-        return to_array(mb1_r);
-    }
-
-#endif
-
-#if GABENCHMARK_N_DIMENSIONS >= 2
-
-    template<>
-    decltype(auto) MakeBlade<2, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        kvector_t<1> const &factor0 = factors[0];
-        kvector_t<1> const &factor1 = factors[1];
-
-#pragma gpc begin
-        f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
-        f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
-#pragma clucalc begin
-        ?mb2_r = scalar * (f0 ^ f1);
-#pragma clucalc end
-#pragma gpc end
-
-        return to_array(mb2_r);
-    }
-
-#endif
-
-#if GABENCHMARK_N_DIMENSIONS >= 3
-
-    template<>
-    decltype(auto) MakeBlade<3, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        kvector_t<1> const &factor0 = factors[0];
-        kvector_t<1> const &factor1 = factors[1];
-        kvector_t<1> const &factor2 = factors[2];
-
-#pragma gpc begin
-        f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
-        f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
-        f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
-#pragma clucalc begin
-        ?mb3_r = scalar * (f0 ^ f1 ^ f2);
-#pragma clucalc end
-#pragma gpc end
-
-        return to_array(mb3_r);
-    }
-
-#endif
-
-#if GABENCHMARK_N_DIMENSIONS >= 4
-
-    template<>
-    decltype(auto) MakeBlade<4, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        kvector_t<1> const &factor0 = factors[0];
-        kvector_t<1> const &factor1 = factors[1];
-        kvector_t<1> const &factor2 = factors[2];
-        kvector_t<1> const &factor3 = factors[3];
-
-#pragma gpc begin
-        f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
-        f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
-        f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
-        f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
-#pragma clucalc begin
-        ?mb4_r = scalar * (f0 ^ f1 ^ f2 ^ f3);
-#pragma clucalc end
-#pragma gpc end
-
-        return to_array(mb4_r);
-    }
-
-#endif
-
-#if GABENCHMARK_N_DIMENSIONS >= 5
-
-    template<>
-    decltype(auto) MakeBlade<5, GABENCHMARK_N_DIMENSIONS, real_t, factors_list_t>(real_t const &scalar, factors_list_t const &factors) {
-        kvector_t<1> const &factor0 = factors[0];
-        kvector_t<1> const &factor1 = factors[1];
-        kvector_t<1> const &factor2 = factors[2];
-        kvector_t<1> const &factor3 = factors[3];
-        kvector_t<1> const &factor4 = factors[4];
-
-#pragma gpc begin
-        f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
-        f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
-        f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
-        f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
-        f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
-#pragma clucalc begin
-        ?mb5_r = scalar * (f0 ^ f1 ^ f2 ^ f3 ^ f4);
-#pragma clucalc end
-#pragma gpc end
-
-        return to_array(mb5_r);
-    }
-
-#endif
-
+template<class Type>
+constexpr std::array<Type, 1> to_array(Type const &arg) {
+    return std::array<Type, 1>{arg};
 }
 
-#endif // __GABENCHMARK_SPECIALIZED_UTILS_HPP__
+template<std::size_t Grade>
+inline decltype(auto) _gaalop_MakeBladeImpl(gabm::real_t, gabm::factors_list_t const &);
+
+template<std::size_t Grade>
+struct _gaalop_SquaredReverseNormImpl;
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<0>(gabm::real_t scalar_factor, gabm::factors_list_t const &) {
+    return kvector_t<0>{ scalar_factor };
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<0> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+        return arg[0] * arg[0];
+    }
+};
+
+#if GABM_N_DIMENSIONS >= 1
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<1>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb1_r = scalar_factor * f0;
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb1_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<1> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_1@);
+#pragma clucalc begin
+        ?srn1_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn1_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 2
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<2>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb2_r = scalar_factor * (f0 ^ f1);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb2_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<2> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_2@);
+#pragma clucalc begin
+        ?srn2_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn2_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 3
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<3>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb3_r = scalar_factor * (f0 ^ f1 ^ f2);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb3_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<3> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_3@);
+#pragma clucalc begin
+        ?srn3_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn3_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 4
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<4>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb4_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb4_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<4> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_4@);
+#pragma clucalc begin
+        ?srn4_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn4_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 5
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<5>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb5_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb5_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<5> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_5@);
+#pragma clucalc begin
+        ?srn5_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn5_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 6
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<6>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+    kvector_t<1> const &factor5 = vector_factors[5];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+    f5 = mv_from_array(factor5, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb6_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4 ^ f5);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb6_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<6> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_6@);
+#pragma clucalc begin
+        ?srn6_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn6_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 7
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<7>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+    kvector_t<1> const &factor5 = vector_factors[5];
+    kvector_t<1> const &factor6 = vector_factors[6];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+    f5 = mv_from_array(factor5, @BASIS_BLADES_1@);
+    f6 = mv_from_array(factor6, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb7_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4 ^ f5 ^ f6);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb7_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<7> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_7@);
+#pragma clucalc begin
+        ?srn7_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn7_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 8
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<8>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+    kvector_t<1> const &factor5 = vector_factors[5];
+    kvector_t<1> const &factor6 = vector_factors[6];
+    kvector_t<1> const &factor7 = vector_factors[7];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+    f5 = mv_from_array(factor5, @BASIS_BLADES_1@);
+    f6 = mv_from_array(factor6, @BASIS_BLADES_1@);
+    f7 = mv_from_array(factor7, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb8_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4 ^ f5 ^ f6 ^ f7);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb8_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<8> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_8@);
+#pragma clucalc begin
+        ?srn8_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn8_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 9
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<9>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+    kvector_t<1> const &factor5 = vector_factors[5];
+    kvector_t<1> const &factor6 = vector_factors[6];
+    kvector_t<1> const &factor7 = vector_factors[7];
+    kvector_t<1> const &factor8 = vector_factors[8];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+    f5 = mv_from_array(factor5, @BASIS_BLADES_1@);
+    f6 = mv_from_array(factor6, @BASIS_BLADES_1@);
+    f7 = mv_from_array(factor7, @BASIS_BLADES_1@);
+    f8 = mv_from_array(factor8, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb9_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4 ^ f5 ^ f6 ^ f7 ^ f8);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb9_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<9> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_9@);
+#pragma clucalc begin
+        ?srn9_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn9_r;
+    }
+};
+
+#endif
+
+#if GABM_N_DIMENSIONS >= 10
+
+template<>
+inline decltype(auto) _gaalop_MakeBladeImpl<10>(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors) {
+    kvector_t<1> const &factor0 = vector_factors[0];
+    kvector_t<1> const &factor1 = vector_factors[1];
+    kvector_t<1> const &factor2 = vector_factors[2];
+    kvector_t<1> const &factor3 = vector_factors[3];
+    kvector_t<1> const &factor4 = vector_factors[4];
+    kvector_t<1> const &factor5 = vector_factors[5];
+    kvector_t<1> const &factor6 = vector_factors[6];
+    kvector_t<1> const &factor7 = vector_factors[7];
+    kvector_t<1> const &factor8 = vector_factors[8];
+    kvector_t<1> const &factor9 = vector_factors[9];
+
+#pragma gpc begin
+    f0 = mv_from_array(factor0, @BASIS_BLADES_1@);
+    f1 = mv_from_array(factor1, @BASIS_BLADES_1@);
+    f2 = mv_from_array(factor2, @BASIS_BLADES_1@);
+    f3 = mv_from_array(factor3, @BASIS_BLADES_1@);
+    f4 = mv_from_array(factor4, @BASIS_BLADES_1@);
+    f5 = mv_from_array(factor5, @BASIS_BLADES_1@);
+    f6 = mv_from_array(factor6, @BASIS_BLADES_1@);
+    f7 = mv_from_array(factor7, @BASIS_BLADES_1@);
+    f8 = mv_from_array(factor8, @BASIS_BLADES_1@);
+    f9 = mv_from_array(factor9, @BASIS_BLADES_1@);
+#pragma clucalc begin
+    ?mb10_r = scalar_factor * (f0 ^ f1 ^ f2 ^ f3 ^ f4 ^ f5 ^ f6 ^ f7 ^ f8 ^ f9);
+#pragma clucalc end
+#pragma gpc end
+
+    return to_array(mb10_r);
+}
+
+template<>
+struct _gaalop_SquaredReverseNormImpl<10> {
+    template<typename ArgumentType>
+    inline static gabm::real_t eval(ArgumentType const &arg) {
+#pragma gpc begin
+        a = mv_from_array(arg, @BASIS_BLADES_10@);
+#pragma clucalc begin
+        ?srn10_r = a . ~a;
+#pragma clucalc end
+#pragma gpc end
+
+        return srn10_r;
+    }
+};
+
+#endif
+
+GABM_DEFINE_MAKE_BLADE(scalar_factor, vector_factors, grade) {
+    return _gaalop_MakeBladeImpl<grade>(scalar_factor, vector_factors);
+}
+
+GABM_DEFINE_SQUARED_REVERSE_NORM(arg, grade) {
+    return _gaalop_SquaredReverseNormImpl<grade>::eval(arg);
+}
+
+#endif // __GABM_SPECIALIZED_UTILS_HPP__

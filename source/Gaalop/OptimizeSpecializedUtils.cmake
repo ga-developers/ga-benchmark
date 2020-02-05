@@ -1,4 +1,4 @@
-# Copyright (C) 2018 ga-developers
+# Copyright (C) ga-developers
 # 
 # Repository: https://github.com/ga-developers/ga-benchmark.git
 # 

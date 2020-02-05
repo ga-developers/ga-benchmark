@@ -1,52 +1,44 @@
-/**
-Copyright(C) 2018 ga-developers
+/* Copyright(C) ga-developers
+ *
+ * Repository: https://github.com/ga-developers/ga-benchmark.git
+ * 
+ * This file is part of the GA-Benchmark project.
+ * 
+ * GA-Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GA-Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-Repository: https://github.com/ga-developers/ga-benchmark.git
+#ifndef __GABM_SPECIALIZED_UTILS_HPP__
+#define __GABM_SPECIALIZED_UTILS_HPP__
 
-This file is part of the GA-Benchmark project.
-
-GA-Benchmark is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-GA-Benchmark is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
-/**/
-
-#ifndef __GABENCHMARK_SPECIALIZED_UTILS_HPP__
-#define __GABENCHMARK_SPECIALIZED_UTILS_HPP__
-
-namespace gabenchmark {
-
-    template<typename Scalar>
-    Scalar MakeScalar(Scalar const &scalar) {
-        return scalar;
+inline multivector_t _glucat_MakeBladeFactorImpl(gabm::vector_coords_t const &coords) {
+    multivector_t result;
+    for (std::size_t i = 0; i != coords.size(); ++i) {
+        result += coords[i] * e(i + 1);
     }
-
-    template<dims_t Dimensions, typename Coordinates>
-    multivector_t MakeVector(Coordinates const &coords) {
-        multivector_t result;
-        for (dims_t i = 0; i != Dimensions; ++i) {
-            result += coords[i] * e(i + 1);
-        }
-        return result;
-    }
-
-    template<grade_t Grade, dims_t Dimensions, typename Scalar, typename Factors>
-    decltype(auto) MakeBlade(Scalar const &scalar, Factors const &factors) {
-        multivector_t result = MakeScalar(scalar);
-        for (auto const &coords : factors) {
-            result ^= MakeVector<Dimensions>(coords);
-        }
-        return result;
-    }
-
+    return result;
 }
 
-#endif // __GABENCHMARK_SPECIALIZED_UTILS_HPP__
+GABM_DEFINE_MAKE_BLADE(scalar_factor, vector_factors, grade) {
+    multivector_t result = scalar_factor;
+    for (auto const &coords : vector_factors) {
+        result ^= _glucat_MakeBladeFactorImpl(coords);
+    }
+    return result;
+}
+
+GABM_DEFINE_SQUARED_REVERSE_NORM(arg, grade) {
+    return quad(arg);
+}
+
+#endif // __GABM_SPECIALIZED_UTILS_HPP__

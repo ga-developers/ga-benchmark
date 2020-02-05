@@ -1,4 +1,4 @@
-# Copyright (C) 2018 ga-developers
+# Copyright (C) ga-developers
 # 
 # Repository: https://github.com/ga-developers/ga-benchmark.git
 # 
@@ -43,6 +43,11 @@ foreach(MODEL ${MODELS_LIST})
   endforeach()
 endforeach()
 
+# # Set (global) properties
+# set(Garamon_PROPERTIES
+#   PROPERTY VALUE
+# )
+
 # Set (global) include directories and libraries
 set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
 set(Garamon_INCLUDE_EXTRA_DIR ${EIGEN3_INCLUDE_DIR})
@@ -54,17 +59,21 @@ endif()
 
 set(Garamon_LIBS_INIT "")
 
-# Set include directories and libraries for products
-set(Garamon_Products_INCLUDE_DIR "")
-set(Garamon_Products_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
-
 # Set include directories and libraries for inverse kinematics
 set(Garamon_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Garamon_AlgorithmInverseKinematics_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
 
+# Set include directories and libraries for binary operations
+set(Garamon_BinaryOperations_INCLUDE_DIR "")
+set(Garamon_BinaryOperations_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
+
+# Set include directories and libraries for unary operations
+set(Garamon_UnaryOperations_INCLUDE_DIR "")
+set(Garamon_UnaryOperations_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
+
 # Job done!
 if(${Garamon_SUCCESS})
-  set(Garamon_ENABLED true CACHE BOOL "If set, the Geometric Algebra Recursive and Adaptive Monster (Garamon) is added to the benchmark.")
+  set(Garamon_ENABLED true CACHE BOOL "If set, the Geometric Algebra Recursive and Adaptive Monster (Garamon) will be added to the benchmark.")
 else()
-  set(Garamon_ENABLED false CACHE BOOL "If set, the Geometric Algebra Recursive and Adaptive Monster (Garamon) is added to the benchmark." FORCE)
+  set(Garamon_ENABLED false CACHE BOOL "If set, the Geometric Algebra Recursive and Adaptive Monster (Garamon) will be added to the benchmark." FORCE)
 endif()
