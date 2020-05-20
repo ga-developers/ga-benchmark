@@ -55,8 +55,7 @@ and one algorithm:
 
 - Inverse kinematics assuming the conformal model of 3D Euclidean space
 
-
-**Contents:**
+The project documentation is structured as follows:
 
 1. [Requirements](#1-requirements)
 2. [Building and Running](#2-building-and-running)
