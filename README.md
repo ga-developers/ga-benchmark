@@ -4,6 +4,58 @@ This repository is a joint effort to define standards and methodologies for benc
 
 The goal of this project is to help physicists, chemists, engineers, and computer scientists to choose the Geometric Algebra solution that best suits their practical needs, as well as to push further the improvement of the compared solutions and to motivate the development of new tools.
 
+The current version compares seven C++ solutions:
+
+- Gaalet (https://sourceforge.net/projects/gaalet)
+- Gaalop (http://www.gaalop.de)
+- Garamon (https://github.com/vincentnozick/garamon)
+- GATL (https://github.com/laffernandes/gatl)
+- GluCat (https://github.com/penguian/glucat)
+- TbGAL (https://github.com/Prograf-UFF/tbgal)
+- Versor (http://versor.mat.ucsb.edu)
+
+But it is easy to include new ones!
+
+The solutions are compared considering four models of geometry:
+
+- Conformal (2D and 3D)
+- Euclidean (2D, 3D, 4D, and 5D)
+- Homogeneous (2D, 3D, and 4D)
+- Minkowski (2D and 3D)
+
+ten unary operations:
+
+- Clifford conjugation
+- Dualization
+- Grade Involution
+- Inversion
+- Normalization
+- Reversion
+- Squared reverse norm
+- Unary minus
+- Unary plus
+- Undualization
+
+twelve binary operations:
+
+- Addition
+- Commutator product
+- Dot product
+- Geometric product
+- Hestenes inner product
+- Inverse geometric product
+- Left contraction
+- Outer product
+- Regressive product
+- Right contraction
+- Scalar product
+- Subtraction
+
+and one algorithm:
+
+- Inverse kinematics assuming the conformal model of 3D Euclidean space
+
+
 **Contents:**
 
 1. [Requirements](#1-requirements)
