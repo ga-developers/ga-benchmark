@@ -56,10 +56,11 @@ if(NOT EXISTS ${Gaalop_JAR_FILE})
   set(Gaalop_SUCCESS false)
 endif()
 
-# # Set (global) properties
-# set(Gaalop_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(Gaalop_PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 find_path(Gaalop_INCLUDE_DIR NAMES GPCUtils.h HINTS "${Gaalop_ROOT_DIR}/include" DOC "The include directory of the Geometric Algebra Algorithms Optimizer (Gaalop).")
@@ -93,6 +94,29 @@ set(Gaalop_AlgorithmInverseKinematics_PRE_BUILD_COMMANDS
     "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
     "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
     -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedAlgorithmInverseKinematics.cmake"
+)
+
+# Set include directories, libraries and pre-build commands for ray tracing
+set(Gaalop_AlgorithmRayTracing_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}")
+set(Gaalop_AlgorithmRayTracing_LIBS_INIT "")
+
+set(Gaalop_AlgorithmRayTracing_PRE_BUILD_COMMANDS
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    "-DMODEL=\${MODEL}"
+    "-DD_DIMENSIONS=\${D_DIMENSIONS}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedUtils.cmake"
+  COMMAND "${CMAKE_COMMAND}"
+    "-DJava_JAVA_EXECUTABLE=\"${Java_JAVA_EXECUTABLE}\""
+    "-DMAXIMA_BIN=\"${MAXIMA_BIN}\""
+    "-DGaalop_OPTIMIZATION_DIR=\"${CMAKE_CURRENT_BINARY_DIR}/GaalopPrecompiler/\${TARGET_NAME}\""
+    "-DGaalop_JAR_FILE=\"${Gaalop_JAR_FILE}\""
+    "-DGaalop_ALGEBRA_NAME=\"\${Gaalop_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga\""
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/source/Gaalop/OptimizeSpecializedAlgorithmRayTracing.cmake"
 )
 
 # Set include directories, libraries and pre-build commands for binary operations

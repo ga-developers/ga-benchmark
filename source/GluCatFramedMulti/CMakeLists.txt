@@ -19,10 +19,11 @@
 
 set(GluCatFramedMulti_SUCCESS true)
 
-# # Set (global) properties
-# set(GluCatFramedMulti_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(GluCatFramedMulti_PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(GluCatFramedMulti_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GluCat/install/usr/local/include" CACHE PATH "The include directory of the Clifford Algebra Templates (GluCat) library.")
@@ -38,6 +39,10 @@ set(GluCatFramedMulti_LIBS_INIT "")
 # Set include directories and libraries for inverse kinematics
 set(GluCatFramedMulti_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(GluCatFramedMulti_AlgorithmInverseKinematics_LIBS_INIT "")
+
+# Set include directories and libraries for ray tracing
+set(GluCatFramedMulti_AlgorithmRayTracing_INCLUDE_DIR "")
+set(GluCatFramedMulti_AlgorithmRayTracing_LIBS_INIT "")
 
 # Set include directories and libraries for binary operations
 set(GluCatFramedMulti_BinaryOperations_INCLUDE_DIR "")

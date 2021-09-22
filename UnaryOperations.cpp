@@ -18,6 +18,8 @@
  * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#define GABM_ITERATIONS 10000
+
 #include "Macros.hpp"
 #include "Types.hpp"
 #include <SpecializedAlgebra.hpp>
@@ -41,19 +43,19 @@
     #define GABM_REPORT_UNARY_OPERATION_LEADS_TO_COMPILATION_ERROR(OPERATION) \
         GABM_REPORT_OPERATION_LEADS_TO_COMPILATION_ERROR(UnaryOperation, OPERATION, Grade:GABM_GRADE)
 
-    GABM_DECLARE_RANDOM_BLADES(GABM_GRADE, random_blades)
-    GABM_DECLARE_RANDOM_INVERTIBLE_BLADES(GABM_GRADE, random_invertible_blades)
+    GABM_DECLARE_INPUT_RANDOM_BLADES(GABM_GRADE, random_blades)
+    GABM_DECLARE_INPUT_RANDOM_INVERTIBLE_BLADES(GABM_GRADE, random_invertible_blades)
 
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, CliffordConjugation, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, Dualization, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, GradeInvolution, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, Inversion, random_invertible_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, Normalization, random_invertible_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, Reversion, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, SquaredReverseNorm, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, UnaryMinus, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, UnaryPlus, random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(UnaryOperation, Undualization, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, CliffordConjugation, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, Dualization, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, GradeInvolution, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, Inversion, random_invertible_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, Normalization, random_invertible_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, Reversion, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, SquaredReverseNorm, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, UnaryMinus, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, UnaryPlus, random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(UnaryOperation, Undualization, random_blades)
 
     #include <SpecializedUnaryOperations.hpp>
 

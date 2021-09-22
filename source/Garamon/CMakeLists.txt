@@ -43,10 +43,11 @@ foreach(MODEL ${MODELS_LIST})
   endforeach()
 endforeach()
 
-# # Set (global) properties
-# set(Garamon_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(Garamon_PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(Garamon_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Garamon/install/usr/local/include" CACHE PATH "The include directory of the Geometric Algebra Recursive and Adaptive Monster (Garamon).")
@@ -62,6 +63,10 @@ set(Garamon_LIBS_INIT "")
 # Set include directories and libraries for inverse kinematics
 set(Garamon_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Garamon_AlgorithmInverseKinematics_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
+
+# Set include directories and libraries for ray tracing
+set(Garamon_AlgorithmRayTracing_INCLUDE_DIR "")
+set(Garamon_AlgorithmRayTracing_LIBS_INIT "\${Garamon_\${Garamon_\${MODEL}_MNEMONIC}\${D_DIMENSIONS}ga_LIBRARY}")
 
 # Set include directories and libraries for binary operations
 set(Garamon_BinaryOperations_INCLUDE_DIR "")

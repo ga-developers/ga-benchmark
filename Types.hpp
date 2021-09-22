@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -38,36 +39,41 @@ namespace gabm {
     using grade_t = std::int32_t;
     using dims_t = std::uint32_t;
 
+    using direction_coords_t = std::array<real_t, GABM_D_DIMENSIONS>;
     using vector_coords_t = std::array<real_t, GABM_N_DIMENSIONS>;
     using factors_list_t = std::vector<vector_coords_t>;
 
-    class BaseRandomEntries;
+#if GABM_CHECK_MODEL(ConformalModel) || GABM_CHECK_MODEL(HomogeneousModel) || GABM_CHECK_MODEL(MinkowskiModel)
+    using location_coords_t = std::array<real_t, GABM_D_DIMENSIONS>;
+#endif
 
+    class BaseEntries;
+    
     namespace detail {
 
         std::default_random_engine random_engine{ GABM_OPERATION }; /*The seed is constant because all solutions must use the same set of random numbers.*/
         
-        std::vector<BaseRandomEntries*> random_entries;
+        std::vector<BaseEntries*> entries;
     
     }
 
-    class BaseRandomEntries {
+    class BaseEntries {
     public:
 
-        BaseRandomEntries() {
-            detail::random_entries.push_back(this);
+        BaseEntries() {
+            detail::entries.push_back(this);
         }
 
         virtual void init() = 0;
     };
 
-    template<typename RandomEntryGeneratorClass>
-    class RandomEntries : public BaseRandomEntries {
+    template<typename EntryGeneratorClass>
+    class Entries : public BaseEntries {
     private:
 
-        using Super = BaseRandomEntries;
+        using Super = BaseEntries;
 
-        using entry_type = decltype(RandomEntryGeneratorClass::MakeRandomEntry(detail::random_engine));
+        using entry_type = decltype(EntryGeneratorClass::MakeEntry());
         using container_type = std::vector<entry_type>;
 
     public:
@@ -77,15 +83,16 @@ namespace gabm {
         using reference = typename container_type::reference;
         using const_reference = typename container_type::const_reference;
 
-        RandomEntries() :
+        Entries() :
             Super(),
             _entries() {
-            _entries.resize(GABM_ITERATIONS);
         }
 
         void init() override {
-            for (auto &entry : _entries) {
-                entry = RandomEntryGeneratorClass::MakeRandomEntry(detail::random_engine);
+            _entries.clear();
+            _entries.reserve(GABM_ITERATIONS);
+            for (std::size_t ind = 0; ind != (GABM_ITERATIONS); ++ind) {
+                _entries.push_back(EntryGeneratorClass::MakeEntry());
             }
         }
 
@@ -106,8 +113,8 @@ namespace gabm {
         container_type _entries;
     };
 
-    void InitializeRandomEntries() {
-        for (auto ptr : detail::random_entries) {
+    void Initialize() {
+        for (BaseEntries *ptr : detail::entries) {
             ptr->init();
         }
     }

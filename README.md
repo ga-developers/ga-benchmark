@@ -27,7 +27,7 @@ Make sure that you have all the following tools, libraries, library generators, 
 
 Required tools:
 
-- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B17) compiler
+- Your favorite [C++14](https://en.wikipedia.org/wiki/C%2B%2B14) compiler
 - [CMake](https://cmake.org)
 - [Python 3](https://www.python.org) interpreter
 - [Jupyter Notebook](https://jupyter.org)

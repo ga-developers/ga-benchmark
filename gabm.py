@@ -129,7 +129,8 @@ OPERATIONS = {
             'Miscellaneous': {
                 'description': 'Miscellaneous',
                 'operations': {
-                    'InverseKinematics': {'description': 'Inverse Kinematics'}
+                    'InverseKinematics': {'description': 'Inverse Kinematics'},
+                    'RayTracing': {'description': 'Ray Tracing'}
                 }
             }
         }
@@ -457,7 +458,7 @@ def make_performance_charts(data: dict, solutions: dict, folder: str, start_fold
     """
     MEAN_TIME_AXIS_LABEL = 'Mean Time (ms)'
     TIME_TICKS_COUNT = 6 # Including 0 and max_time
-    TOP_COUNT = 3
+    TOP_COUNT = 4
     plt.ioff()
     itr_count = sum([len(solutions_) if group_key != 'Algorithms' else 1 for _, models in data.values() for dimensions in models.values() for groups in dimensions.values() for group_key, subgroups in groups.items() for operations in subgroups.values() for solutions_ in operations.values()])
     htmls = list()

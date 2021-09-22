@@ -25,8 +25,8 @@ endif()
 
 # Create the project
 set(VERSION_MAJOR 2)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 3)
+set(VERSION_MINOR 1)
+set(VERSION_PATCH 0)
 
 project(GA-Benchmark
   VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
@@ -35,7 +35,7 @@ project(GA-Benchmark
   LANGUAGES CXX
 )
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(CTest)
@@ -104,23 +104,19 @@ set(MODELS_LIST
 
 set(ConformalModel_ENABLED TRUE)
 set(ConformalModel_EXTRA_DIMENSIONS 2)
-set(ConformalModel_MIN_D_DIMENSIONS 2)
-set(ConformalModel_MAX_D_DIMENSIONS 3)
+set(ConformalModel_D_DIMENSIONS_LIST 2 3)
 
 set(EuclideanModel_ENABLED TRUE)
 set(EuclideanModel_EXTRA_DIMENSIONS 0)
-set(EuclideanModel_MIN_D_DIMENSIONS 2)
-set(EuclideanModel_MAX_D_DIMENSIONS 5)
+set(EuclideanModel_D_DIMENSIONS_LIST 2 3 4 5)
 
 set(HomogeneousModel_ENABLED FALSE)
 set(HomogeneousModel_EXTRA_DIMENSIONS 1)
-set(HomogeneousModel_MIN_D_DIMENSIONS 2)
-set(HomogeneousModel_MAX_D_DIMENSIONS 4)
+set(HomogeneousModel_D_DIMENSIONS_LIST 2 3 4)
 
 set(MinkowskiModel_ENABLED TRUE)
 set(MinkowskiModel_EXTRA_DIMENSIONS 2)
-set(MinkowskiModel_MIN_D_DIMENSIONS 2)
-set(MinkowskiModel_MAX_D_DIMENSIONS 3)
+set(MinkowskiModel_D_DIMENSIONS_LIST 2 3)
 
 message(STATUS "")
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
@@ -162,11 +158,13 @@ endforeach()
 # Set operations and parameters
 set(OPERATIONS_LIST
   AlgorithmInverseKinematics
+  AlgorithmRayTracing
   BinaryOperations
   UnaryOperations
 )
 
 set(AlgorithmInverseKinematics_TIMEOUT 3000)
+set(AlgorithmRayTracing_TIMEOUT 3000)
 set(BinaryOperations_TIMEOUT 600)
 set(UnaryOperations_TIMEOUT 600)
 
@@ -219,13 +217,42 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
       endif()
     endif()
 
+    # ... for ray tracing
+    set(OPERATION AlgorithmRayTracing)
+    if(GABenchmarkOperation_${OPERATION}_ENABLED)
+      set(MODEL ConformalModel)
+      if(GABenchmarkModel_${MODEL}_ENABLED)
+        set(D_DIMENSIONS 3)
+
+        message(STATUS "    - " ${OPERATION})
+        message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS})
+                  
+        set(TARGET_NAME GABenchmark_${OPERATION}_${MODEL}_D${D_DIMENSIONS}_${SOLUTION})
+
+        configure_target(${TARGET_NAME} ${OPERATION} ${SOLUTION})
+
+        target_compile_definitions(${TARGET_NAME} PRIVATE
+          GABM_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+          GABM_SYSTEM_VERSION=${CMAKE_SYSTEM_VERSION}
+          GABM_COMPILER_ID=${CMAKE_CXX_COMPILER_ID}
+          GABM_COMPILER_VERSION=${CMAKE_CXX_COMPILER_VERSION}
+          GABM_SOLUTION=${SOLUTION}
+          GABM_OPERATION=${OPERATION}
+          GABM_MODEL=${MODEL}
+          GABM_D_DIMENSIONS=${D_DIMENSIONS}
+        )
+
+        set_tests_properties(${TARGET_NAME} PROPERTIES TIMEOUT ${${OPERATION}_TIMEOUT})
+      endif()
+    endif()
+
     # ... for binary operations
     set(OPERATION BinaryOperations)
     if(GABenchmarkOperation_${OPERATION}_ENABLED)
       message(STATUS "    - " ${OPERATION})
       foreach(MODEL ${MODELS_LIST})
         if(GABenchmarkModel_${MODEL}_ENABLED)
-          foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
+          foreach(D_DIMENSIONS IN ITEMS ${${MODEL}_D_DIMENSIONS_LIST})
             math(EXPR N_DIMENSIONS "${D_DIMENSIONS} + ${${MODEL}_EXTRA_DIMENSIONS}")
             foreach(LEFT_GRADE RANGE 0 ${N_DIMENSIONS})
               foreach(RIGHT_GRADE RANGE 0 ${N_DIMENSIONS})
@@ -237,7 +264,6 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
                 
                 target_compile_definitions(${TARGET_NAME} PRIVATE
                   GABM_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
-                  GABM_SYSTEM_VERSION=${CMAKE_SYSTEM_VERSION}
                   GABM_COMPILER_ID=${CMAKE_CXX_COMPILER_ID}
                   GABM_COMPILER_VERSION=${CMAKE_CXX_COMPILER_VERSION}
                   GABM_SOLUTION=${SOLUTION}
@@ -262,7 +288,7 @@ foreach(SOLUTION ${SOLUTIONS_LIST})
       message(STATUS "    - " ${OPERATION})
       foreach(MODEL ${MODELS_LIST})
         if(GABenchmarkModel_${MODEL}_ENABLED)
-          foreach(D_DIMENSIONS RANGE ${${MODEL}_MIN_D_DIMENSIONS} ${${MODEL}_MAX_D_DIMENSIONS})
+          foreach(D_DIMENSIONS IN ITEMS ${${MODEL}_D_DIMENSIONS_LIST})
             math(EXPR N_DIMENSIONS "${D_DIMENSIONS} + ${${MODEL}_EXTRA_DIMENSIONS}")
             foreach(GRADE RANGE 0 ${N_DIMENSIONS})
               message(STATUS "      - " ${MODEL} ", D = " ${D_DIMENSIONS} ", GRADE = " ${GRADE})

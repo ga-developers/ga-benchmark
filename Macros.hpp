@@ -39,8 +39,9 @@
 #define GABM_CHECK_MODEL(MODEL) (MODEL == GABM_MODEL)
 
 #define AlgorithmInverseKinematics 0x11
-#define BinaryOperations           0x12
-#define UnaryOperations            0x13
+#define AlgorithmRayTracing        0x12
+#define BinaryOperations           0x13
+#define UnaryOperations            0x14
 #define GABM_CHECK_OPERATION(OPERATION) (OPERATION == GABM_OPERATION)
 
 #if GABM_CHECK_MODEL(ConformalModel)
@@ -55,7 +56,6 @@
     #error The value assumed by GABM_MODEL is invalid.
 #endif
 
-#define GABM_ITERATIONS 10000
 #define GABM_REPETITIONS 30
 
 #define GABM_ZERO_TOLERANCE 1.0e-8
@@ -71,20 +71,65 @@
 #define GABM_ASSERT_OPERATION_DEFINITION(GROUP, OPERATION) \
     static_assert(GABM_##GROUP##_##OPERATION##_Defined, "Use GABM_DEFINE_<GROUP-NAME>[_<OPERATION-NAME>], GABM_REPORT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]IS_NOT_IMPLEMENTED, or GABM_REPORT_<OPERATION-GROUP-NAME>_[OPERATION-NAME_]LEADS_TO_COMPILATION_ERROR to define the missing operation.");
 
-#define GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(GROUP, OPERATION, ...) \
-    auto const GABM_##GROUP##_##OPERATION##_RandomArguments = gabm::WrapRandomArguments(__VA_ARGS__);
+#define GABM_BIND_ARGUMENTS_FOR_OPERATION(GROUP, OPERATION, ...) \
+    using GABM_##GROUP##_##OPERATION##_Arguments_t = decltype(std::tie(__VA_ARGS__)); \
+    GABM_##GROUP##_##OPERATION##_Arguments_t GABM_##GROUP##_##OPERATION##_Arguments = std::tie(__VA_ARGS__);
+
+#define GABM_DEFINE_ENTRY_GENERATOR(GLOBAL_VARIABLE) \
+    GABM_INLINE decltype(auto) GABM_##GLOBAL_VARIABLE##_Generator_Impl()
+
+#define GABM_DECLARE_INPUT_ENTRIES(GLOBAL_VARIABLE) \
+    class GABM_##GLOBAL_VARIABLE##_Generator { \
+    public: \
+        static GABM_INLINE decltype(auto) MakeEntry() { \
+            return GABM_##GLOBAL_VARIABLE##_Generator_Impl(); \
+        } \
+    }; \
+    \
+    gabm::Entries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
+
+#define GABM_DECLARE_INPUT_RANDOM_ANGLES(GLOBAL_VARIABLE) \
+    GABM_DEFINE_ENTRY_GENERATOR(GLOBAL_VARIABLE) { \
+        return gabm::MakeRandomAngle(gabm::detail::random_engine); \
+    } \
+    \
+    GABM_DECLARE_INPUT_ENTRIES(GLOBAL_VARIABLE)
+
+#define GABM_DECLARE_INPUT_RANDOM_BLADES(GRADE, GLOBAL_VARIABLE) \
+    GABM_DEFINE_ENTRY_GENERATOR(GLOBAL_VARIABLE) { \
+        return gabm::MakeRandomBlade<GRADE>(gabm::detail::random_engine); \
+    } \
+    \
+    GABM_DECLARE_INPUT_ENTRIES(GLOBAL_VARIABLE)
+
+#define GABM_DECLARE_INPUT_RANDOM_INVERTIBLE_BLADES(GRADE, GLOBAL_VARIABLE) \
+    GABM_DEFINE_ENTRY_GENERATOR(GLOBAL_VARIABLE) { \
+        return gabm::MakeRandomInvertibleBlade<GRADE>(gabm::detail::random_engine); \
+    } \
+    \
+    GABM_DECLARE_INPUT_ENTRIES(GLOBAL_VARIABLE)
+
+#define GABM_DECLARE_RESULTING_ENTRIES(GLOBAL_VARIABLE) \
+    class GABM_##GLOBAL_VARIABLE##_Generator { \
+    public: \
+        static GABM_INLINE decltype(auto) MakeEntry() { \
+            return GABM_##GLOBAL_VARIABLE##_Generator_Impl(); \
+        } \
+    }; \
+    \
+    gabm::Entries<GABM_##GLOBAL_VARIABLE##_Generator> GLOBAL_VARIABLE;
 
 #define GABM_DEFINE_OPERATION(GROUP, OPERATION, CASE, ...) \
     constexpr static bool GABM_##GROUP##_##OPERATION##_Defined = true; \
     \
-    template<typename... Types> \
-    GABM_INLINE decltype(auto) GABM_##GROUP##_##OPERATION##_Impl(std::tuple<Types...> const &); \
+    template<typename... Types, std::size_t... Indices> \
+    GABM_INLINE decltype(auto) GABM_##GROUP##_##OPERATION##_Impl(std::size_t const, std::tuple<Types &...> const &, std::index_sequence<Indices...>); \
     \
     template<typename... ExtraArgsType> \
     void GABM_##GROUP##_##OPERATION(benchmark::State &state, ExtraArgsType &&...) try { \
         std::size_t ind = 0; \
         while (state.KeepRunning()) { \
-            benchmark::DoNotOptimize(GABM_##GROUP##_##OPERATION##_Impl(GABM_##GROUP##_##OPERATION##_RandomArguments[ind])); \
+            benchmark::DoNotOptimize(GABM_##GROUP##_##OPERATION##_Impl(ind, GABM_##GROUP##_##OPERATION##_Arguments, std::make_index_sequence<std::tuple_size_v<GABM_##GROUP##_##OPERATION##_Arguments_t> >())); \
             ++ind; \
         } \
     } \
@@ -97,10 +142,9 @@
     \
     GABM_CAPTURE(GABM_##GROUP##_##OPERATION, GABM_SYSTEM_NAME, GABM_SYSTEM_VERSION, GABM_COMPILER_ID, GABM_COMPILER_VERSION, GABM_SOLUTION, GABM_MODEL, GABM_D_DIMENSIONS, CASE) \
     \
-    template<typename... Types> \
-    GABM_ALWAYS_INLINE decltype(auto) GABM_##GROUP##_##OPERATION##_Impl(std::tuple<Types...> const &args) { \
-        auto const & [__VA_ARGS__] = args; \
-        return GABM_##GROUP##_##OPERATION##_Wrapper(__VA_ARGS__); \
+    template<typename... Types, std::size_t... Indices> \
+    GABM_ALWAYS_INLINE decltype(auto) GABM_##GROUP##_##OPERATION##_Impl(std::size_t const ind, std::tuple<Types &...> const &args, std::index_sequence<Indices...>) { \
+        return GABM_##GROUP##_##OPERATION##_Wrapper(std::get<Indices>(args)[ind]...); \
     }
 
 #define GABM_REPORT_OPERATION_IS_NOT_IMPLEMENTED(GROUP, OPERATION, CASE) \
@@ -133,43 +177,13 @@
     \
     GABM_CAPTURE(GABM_##GROUP##_##OPERATION, GABM_SYSTEM_NAME, GABM_SYSTEM_VERSION, GABM_COMPILER_ID, GABM_COMPILER_VERSION, GABM_SOLUTION, GABM_MODEL, GABM_D_DIMENSIONS, CASE)
 
-#define GABM_DECLARE_RANDOM_ANGLES(GLOBAL_VARIABLE) \
-    class GABM_##GLOBAL_VARIABLE##_Generator { \
-    public: \
-        static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
-            return gabm::MakeRandomAngle(random_engine); \
-        } \
-    }; \
-    \
-    gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
-
-#define GABM_DECLARE_RANDOM_BLADES(GRADE, GLOBAL_VARIABLE) \
-    class GABM_##GLOBAL_VARIABLE##_Generator { \
-    public: \
-        static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
-            return gabm::MakeRandomBlade<GRADE>(random_engine); \
-        } \
-    }; \
-    \
-    gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
-
-#define GABM_DECLARE_RANDOM_INVERTIBLE_BLADES(GRADE, GLOBAL_VARIABLE) \
-    class GABM_##GLOBAL_VARIABLE##_Generator { \
-    public: \
-        static GABM_INLINE decltype(auto) MakeRandomEntry(std::default_random_engine &random_engine) { \
-            return gabm::MakeRandomInvertibleBlade<GRADE>(random_engine); \
-        } \
-    }; \
-    \
-    gabm::RandomEntries<GABM_##GLOBAL_VARIABLE##_Generator> const GLOBAL_VARIABLE;
-
 #define GABM_MAIN() \
     int main(int argc, char **argv) { \
         benchmark::Initialize(&argc, argv); \
         if (benchmark::ReportUnrecognizedArguments(argc, argv)) { \
             return EXIT_FAILURE; \
         } \
-        gabm::InitializeRandomEntries(); \
+        gabm::Initialize(); \
         benchmark::RunSpecifiedBenchmarks(); \
         return EXIT_SUCCESS; \
     }

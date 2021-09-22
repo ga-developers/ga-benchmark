@@ -18,20 +18,4 @@
  * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __GABM_SPECIALIZED_UTILS_HPP__
-#define __GABM_SPECIALIZED_UTILS_HPP__
-
-template<std::size_t... Indices>
-constexpr decltype(auto) _gatl_MakeBladeImpl(gabm::real_t scalar_factor, gabm::factors_list_t const &vector_factors, std::index_sequence<Indices...>) noexcept {
-    return (vector(vector_factors[Indices].begin(), vector_factors[Indices].end()) ^ ... ^ scalar(scalar_factor));
-}
-
-GABM_DEFINE_MAKE_BLADE(scalar_factor, vector_factors, grade) {
-    return _gatl_MakeBladeImpl(scalar_factor, vector_factors, std::make_index_sequence<grade>{});
-}
-
-GABM_DEFINE_SQUARED_REVERSE_NORM(arg, grade) {
-    return rnorm_sqr(arg);
-}
-
-#endif // __GABM_SPECIALIZED_UTILS_HPP__
+#include "../GluCatFramedMulti/SpecializedAlgorithmRayTracing.hpp"

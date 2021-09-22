@@ -19,10 +19,11 @@
 
 set(Gaalet_SUCCESS true)
 
-# # Set (global) properties
-# set(Gaalet_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(Gaalet_PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(Gaalet_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Gaalet/install/include/gaalet" CACHE PATH "The include directory of the Geometric Algebra ALgorithms Expression Templates (Gaalet).")
@@ -38,6 +39,10 @@ set(Gaalet_LIBS_INIT "")
 # Set include directories and libraries for inverse kinematics
 set(Gaalet_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Gaalet_AlgorithmInverseKinematics_LIBS_INIT "")
+
+# Set include directories and libraries for ray tracing
+set(Gaalet_AlgorithmRayTracing_INCLUDE_DIR "")
+set(Gaalet_AlgorithmRayTracing_LIBS_INIT "")
 
 # Set include directories and libraries for binary operations
 set(Gaalet_BinaryOperations_INCLUDE_DIR "")

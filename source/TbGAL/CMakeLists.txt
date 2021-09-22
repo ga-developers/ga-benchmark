@@ -26,10 +26,11 @@ if(NOT ${EIGEN3_FOUND})
   set(TbGAL_SUCCESS false)
 endif()
 
-# # Set (global) properties
-# set(TbGAL_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(TbGAL_PROPERTIES
+  CXX_STANDARD 17
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(TbGAL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/TbGAL/install/include" CACHE PATH "The include directory of the Tensor-based Geometric Algebra Library (TbGAL).")
@@ -45,6 +46,10 @@ set(TbGAL_LIBS_INIT "")
 # Set include directories and libraries for inverse kinematics
 set(TbGAL_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(TbGAL_AlgorithmInverseKinematics_LIBS_INIT "")
+
+# Set include directories and libraries for ray tracing
+set(TbGAL_AlgorithmRayTracing_INCLUDE_DIR "")
+set(TbGAL_AlgorithmRayTracing_LIBS_INIT "")
 
 # Set include directories and libraries for binary operations
 set(TbGAL_BinaryOperations_INCLUDE_DIR "")

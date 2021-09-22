@@ -26,10 +26,11 @@ if(NOT EXISTS ${Versor_LIBRARY})
   set(Versor_SUCCESS false)
 endif()
 
-# # Set (global) properties
-# set(Versor_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(Versor_PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(Versor_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/Versor/install/usr/local/include" CACHE PATH "The include directory of the Versor library.")
@@ -45,6 +46,10 @@ set(Versor_LIBS_INIT ${Versor_LIBRARY})
 # Set include directories and libraries for inverse kinematics
 set(Versor_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(Versor_AlgorithmInverseKinematics_LIBS_INIT "")
+
+# Set include directories and libraries for ray tracing
+set(Versor_AlgorithmRayTracing_INCLUDE_DIR "")
+set(Versor_AlgorithmRayTracing_LIBS_INIT "")
 
 # Set include directories and libraries for binary operations
 set(Versor_BinaryOperations_INCLUDE_DIR "")

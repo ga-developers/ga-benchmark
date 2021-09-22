@@ -18,6 +18,8 @@
  * along with GA-Benchmark. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#define GABM_ITERATIONS 10000
+
 #include "Macros.hpp"
 #include "Types.hpp"
 #include <SpecializedAlgebra.hpp>
@@ -41,22 +43,22 @@
     #define GABM_REPORT_BINARY_OPERATION_LEADS_TO_COMPILATION_ERROR(OPERATION) \
         GABM_REPORT_OPERATION_LEADS_TO_COMPILATION_ERROR(BinaryOperation, OPERATION, LeftGrade:GABM_LEFT_GRADE/RightGrade:GABM_RIGHT_GRADE)
 
-    GABM_DECLARE_RANDOM_BLADES(GABM_LEFT_GRADE, left_random_blades)
-    GABM_DECLARE_RANDOM_BLADES(GABM_RIGHT_GRADE, right_random_blades)
-    GABM_DECLARE_RANDOM_INVERTIBLE_BLADES(GABM_RIGHT_GRADE, right_random_invertible_blades)
+    GABM_DECLARE_INPUT_RANDOM_BLADES(GABM_LEFT_GRADE, left_random_blades)
+    GABM_DECLARE_INPUT_RANDOM_BLADES(GABM_RIGHT_GRADE, right_random_blades)
+    GABM_DECLARE_INPUT_RANDOM_INVERTIBLE_BLADES(GABM_RIGHT_GRADE, right_random_invertible_blades)
 
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, Addition, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, CommutatorProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, DotProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, GeometricProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, HestenesInnerProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, InverseGeometricProduct, left_random_blades, right_random_invertible_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, LeftContraction, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, OuterProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, RegressiveProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, RightContraction, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, ScalarProduct, left_random_blades, right_random_blades)
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(BinaryOperation, Subtraction, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, Addition, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, CommutatorProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, DotProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, GeometricProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, HestenesInnerProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, InverseGeometricProduct, left_random_blades, right_random_invertible_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, LeftContraction, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, OuterProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, RegressiveProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, RightContraction, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, ScalarProduct, left_random_blades, right_random_blades)
+    GABM_BIND_ARGUMENTS_FOR_OPERATION(BinaryOperation, Subtraction, left_random_blades, right_random_blades)
 
     #include <SpecializedBinaryOperations.hpp>
 

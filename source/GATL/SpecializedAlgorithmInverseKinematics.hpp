@@ -27,8 +27,7 @@ static auto const e3 = e(c<3>);
 
 template<typename Type>
 constexpr decltype(auto) expp(Type const &arg) noexcept {
-    auto lazy = make_lazy_context(arg);
-    auto x = lazy.template argument<0>();
+    auto [lazy, x] = make_lazy_context_tuple(arg);
     return lazy.eval(c<1> + x + x * x / c<2> + x * x * x / c<6> + x * x * x * x / c<24>);
 };
 

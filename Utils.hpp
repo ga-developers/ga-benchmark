@@ -66,16 +66,6 @@ namespace gabm {
         return result;
     }
 
-    template<typename... RandomEntryGeneratorClasses>
-    decltype(auto) WrapRandomArguments(RandomEntries<RandomEntryGeneratorClasses> const &... args) {
-        std::vector<std::tuple<typename RandomEntries<RandomEntryGeneratorClasses>::const_reference ...> > result;
-        result.reserve(GABM_ITERATIONS);
-        for (std::size_t ind = 0; ind != (GABM_ITERATIONS); ++ind) {
-            result.emplace_back(args[ind]...);
-        }
-        return result;
-    }
-
 }
 
 #define GABM_DEFINE_MAKE_BLADE(SCALAR_FACTOR, VECTOR_FACTORS, GRADE) \

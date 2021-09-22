@@ -41,6 +41,8 @@
  * where 'no' is the null point at the origin and 'ni' is the null point at infinity.
  */
 
+#define GABM_ITERATIONS 10000
+
 #include "Macros.hpp"
 #include "Types.hpp"
 #include <SpecializedAlgebra.hpp>
@@ -50,6 +52,14 @@
     #include "Utils.hpp"
 
     #define GABM_DEFINE_ALGORITHM_INVERSE_KINEMATICS(ANG1_ARG, ANG2_ARG, ANG3_ARG, ANG4_ARG, ANG5_ARG) \
+        GABM_DECLARE_INPUT_RANDOM_ANGLES(random_angles1) \
+        GABM_DECLARE_INPUT_RANDOM_ANGLES(random_angles2) \
+        GABM_DECLARE_INPUT_RANDOM_ANGLES(random_angles3) \
+        GABM_DECLARE_INPUT_RANDOM_ANGLES(random_angles4) \
+        GABM_DECLARE_INPUT_RANDOM_ANGLES(random_angles5) \
+        \
+        GABM_BIND_ARGUMENTS_FOR_OPERATION(Algorithm, InverseKinematics, random_angles1, random_angles2, random_angles3, random_angles4, random_angles5) \
+        \
         GABM_INLINE decltype(auto) GABM_Algorithm_InverseKinematics_Wrapper(gabm::real_t, gabm::real_t, gabm::real_t, gabm::real_t, gabm::real_t); \
         \
         GABM_DEFINE_OPERATION(Algorithm, InverseKinematics, _:_, ANG1_ARG, ANG2_ARG, ANG3_ARG, ANG4_ARG, ANG5_ARG) \
@@ -61,14 +71,6 @@
     
     #define GABM_REPORT_ALGORITHM_INVERSE_KINEMATICS_LEADS_TO_COMPILATION_ERROR() \
         GABM_REPORT_OPERATION_LEADS_TO_COMPILATION_ERROR(Algorithm, InverseKinematics, _:_)
-
-    GABM_DECLARE_RANDOM_ANGLES(random_angles1)
-    GABM_DECLARE_RANDOM_ANGLES(random_angles2)
-    GABM_DECLARE_RANDOM_ANGLES(random_angles3)
-    GABM_DECLARE_RANDOM_ANGLES(random_angles4)
-    GABM_DECLARE_RANDOM_ANGLES(random_angles5)
-
-    GABM_DEFINE_RANDOM_ARGUMENTS_FOR_OPERATION(Algorithm, InverseKinematics, random_angles1, random_angles2, random_angles3, random_angles4, random_angles5)
 
     #include <SpecializedAlgorithmInverseKinematics.hpp>
 

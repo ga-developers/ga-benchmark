@@ -56,8 +56,20 @@ using namespace ga;
 #if GABM_CHECK_MODEL(ConformalModel)
 
     #include <gatl/ga/model/conformal.hpp>
+
     _GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
     _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
+
+    #include <gatl/ga/model/euclidean.hpp>
+
+    namespace euclidean {
+
+        _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_N_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+        _GA_CORE_OVERLOAD(space)
+        _GA_UTIL_OVERLOAD(space)
+        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+
+    }
 
 #elif GABM_CHECK_MODEL(EuclideanModel)
 
@@ -76,6 +88,17 @@ using namespace ga;
     #include <gatl/ga/model/minkowski.hpp>
     _GA_MINKOWSKI_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_D_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
     _GA_MINKOWSKI_ALGEBRA_OVERLOAD(space)
+
+    #include <gatl/ga/model/euclidean.hpp>
+
+    namespace euclidean {
+
+        _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, GABM_N_DIMENSIONS, GABM_GATL_BASE_BASIS_VECTORS_NAMES)
+        _GA_CORE_OVERLOAD(space)
+        _GA_UTIL_OVERLOAD(space)
+        _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+
+    }
 
 #endif
 

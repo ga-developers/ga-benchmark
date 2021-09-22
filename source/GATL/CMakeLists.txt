@@ -19,10 +19,11 @@
 
 set(GATL_SUCCESS true)
 
-# # Set (global) properties
-# set(GATL_PROPERTIES
-#   PROPERTY VALUE
-# )
+# Set (global) properties
+set(GATL_PROPERTIES
+  CXX_STANDARD 17
+  CXX_STANDARD_REQUIRED ON
+)
 
 # Set (global) include directories and libraries
 set(GATL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libs/GATL/install/include" CACHE PATH "The include directory of the Geometric Algebra Template Library (GATL).")
@@ -38,6 +39,10 @@ set(GATL_LIBS_INIT "")
 # Set include directories and libraries for inverse kinematics
 set(GATL_AlgorithmInverseKinematics_INCLUDE_DIR "")
 set(GATL_AlgorithmInverseKinematics_LIBS_INIT "")
+
+# Set include directories and libraries for ray tracing
+set(GATL_AlgorithmRayTracing_INCLUDE_DIR "")
+set(GATL_AlgorithmRayTracing_LIBS_INIT "")
 
 # Set include directories and libraries for binary operations
 set(GATL_BinaryOperations_INCLUDE_DIR "")

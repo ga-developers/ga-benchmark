@@ -23,6 +23,7 @@
 
 GABM_REPORT_ALGORITHM_INVERSE_KINEMATICS_IS_NOT_IMPLEMENTED()
 
+//TODO Implementar o que falta
 /*
 static auto const e1 = e(1);
 static auto const e2 = e(2);
